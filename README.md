@@ -1,2 +1,2 @@
-# mocroservice003-crud-student-profile
+# microservice003-crud-student-profile
 CRUD operation of Student Profile
