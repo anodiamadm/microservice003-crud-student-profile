@@ -1,6 +1,6 @@
-package com.anodiam.JWTAuth.db.repository;
+package com.anodiam.CRUDStudentProfile.db.repository;
 
-import com.anodiam.JWTAuth.model.User;
+import com.anodiam.CRUDStudentProfile.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

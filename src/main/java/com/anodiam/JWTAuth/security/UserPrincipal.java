@@ -1,6 +1,6 @@
-package com.anodiam.JWTAuth.security;
+package com.anodiam.CRUDStudentProfile.security;
 
-import com.anodiam.JWTAuth.model.User;
+import com.anodiam.CRUDStudentProfile.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

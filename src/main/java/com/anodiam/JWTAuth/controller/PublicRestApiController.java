@@ -1,7 +1,7 @@
-package com.anodiam.JWTAuth.controller;
+package com.anodiam.CRUDStudentProfile.controller;
 
-import com.anodiam.JWTAuth.db.repository.UserRepository;
-import com.anodiam.JWTAuth.model.User;
+import com.anodiam.CRUDStudentProfile.db.repository.UserRepository;
+import com.anodiam.CRUDStudentProfile.model.User;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +19,7 @@ public class PublicRestApiController {
         this.userRepository = userRepository;
     }
 
-//    Available to ROLE_ADMIN
+    //    Available to all authenticated users
     @GetMapping("user/profile")
     public List<User> users(){
         return this.userRepository.findAll();
