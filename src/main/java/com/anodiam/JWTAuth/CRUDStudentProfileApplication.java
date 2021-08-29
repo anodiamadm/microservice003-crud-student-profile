@@ -1,4 +1,4 @@
-package com.anodiam.CRUDStudentProfile;
+package com.anodiam.JWTAuth;
 
 import org.apache.catalina.Context;
 import org.apache.catalina.connector.Connector;

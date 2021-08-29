@@ -1,7 +1,7 @@
-package com.anodiam.CRUDStudentProfile.controller;
+package com.anodiam.JWTAuth.controller;
 
-import com.anodiam.CRUDStudentProfile.db.repository.UserRepository;
-import com.anodiam.CRUDStudentProfile.model.User;
+import com.anodiam.JWTAuth.db.repository.UserRepository;
+import com.anodiam.JWTAuth.model.User;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

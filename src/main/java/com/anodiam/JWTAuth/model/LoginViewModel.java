@@ -1,4 +1,4 @@
-package com.anodiam.CRUDStudentProfile.model;
+package com.anodiam.JWTAuth.model;
 
 public class LoginViewModel {
 

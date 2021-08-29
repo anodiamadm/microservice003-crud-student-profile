@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.anodiam.services</groupId>
-	<artifactId>CRUD Student Profile</artifactId>
+	<artifactId>CRUDStudentProfile</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>CRUDStudentProfile</name>
 	<description>CRUD operation of Student Profile</description>

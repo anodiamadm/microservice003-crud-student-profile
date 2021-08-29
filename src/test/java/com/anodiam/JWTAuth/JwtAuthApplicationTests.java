@@ -1,4 +1,4 @@
-package com.anodiam.CRUDStudentProfile;
+package com.anodiam.JWTAuth;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

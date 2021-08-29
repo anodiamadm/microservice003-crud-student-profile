@@ -1,7 +1,7 @@
-package com.anodiam.CRUDStudentProfile.security;
+package com.anodiam.JWTAuth.security;
 
-import com.anodiam.CRUDStudentProfile.db.repository.UserRepository;
-import com.anodiam.CRUDStudentProfile.model.User;
+import com.anodiam.JWTAuth.db.repository.UserRepository;
+import com.anodiam.JWTAuth.model.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

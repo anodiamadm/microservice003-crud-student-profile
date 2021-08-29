@@ -1,4 +1,4 @@
-package com.anodiam.CRUDStudentProfile.model;
+package com.anodiam.JWTAuth.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;

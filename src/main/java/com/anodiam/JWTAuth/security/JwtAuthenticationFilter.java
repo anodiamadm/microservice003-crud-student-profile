@@ -32,16 +32,18 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
 //        Grab credentials to map them to LoginViewModel
         LoginViewModel credentials = null;
+        UsernamePasswordAuthenticationToken authenticationToken = null;
+        Authentication auth = null;
         try {
             credentials = new ObjectMapper().readValue(request.getInputStream(), LoginViewModel.class);
-        } catch (IOException e) {
+//           Create Login Token
+            authenticationToken = new UsernamePasswordAuthenticationToken(
+                    credentials.getUsername(), credentials.getPassword(), new ArrayList<>());
+//           Authenticate User
+            auth = authenticationManager.authenticate(authenticationToken);
+        } catch (Exception e) {
             e.printStackTrace();
         }
-//        Create Login Token
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                credentials.getUsername(), credentials.getPassword(), new ArrayList<>());
-//        Authenticate User
-        Authentication auth = authenticationManager.authenticate(authenticationToken);
         return  auth;
     }
 
