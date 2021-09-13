@@ -65,7 +65,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                                                           TOKEN_PREFIX, HEADER_STRING)))
                 .authorizeRequests()
 //                Configure Access Rules
-                .antMatchers("/api/public/user/profile").authenticated();
+                .antMatchers("/api/user/*").authenticated()
+                .antMatchers("/api/master-data/*").authenticated()
+                .antMatchers("/api/address/*").authenticated();
     }
 
     @Bean
