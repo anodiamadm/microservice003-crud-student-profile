@@ -8,6 +8,6 @@ CRUD operation of Student Profile
 
 ### GET :: api/address/
 	countries :: List all countries - to populate dropdowns in the frontend
-	states :: List all states of given country - to populate dropdowns in the frontend
-	towns :: List all towns of given state - to populate dropdowns in the frontend
-	suburbs :: List all suburbs of given town - to populate dropdowns in the frontend
+	states(BigInt country_id) :: List all states of given country - to populate dropdowns in the frontend
+	towns(BigInt state_id) :: List all towns of given state - to populate dropdowns in the frontend
+	suburbs(BigInt town_id) :: List all suburbs of given town - to populate dropdowns in the frontend
