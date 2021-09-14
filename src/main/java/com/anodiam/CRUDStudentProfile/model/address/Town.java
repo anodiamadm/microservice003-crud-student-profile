@@ -3,75 +3,79 @@ package com.anodiam.CRUDStudentProfile.model.address;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-@Table(name = "mst_state",
-		uniqueConstraints={@UniqueConstraint(name="uk_state_name", columnNames="state_name"),
-							@UniqueConstraint(name="uk_state_code", columnNames="state_code")},
-		indexes={@Index(name="idx_state_name", columnList="state_name"),
-					@Index(name="idx_state_code", columnList="state_code")})
-public class State {
+@Table(name = "mst_town",
+		uniqueConstraints={@UniqueConstraint(name="uk_town_name", columnNames="town_name")},
+		indexes={@Index(name="idx_town_name", columnList="town_name")})
+public class Town {
 
 	@Id
-	@Column(name = "state_id", nullable = false, updatable = false)
+	@Column(name = "town_id", nullable = false, updatable = false)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private BigInteger stateId;
+	private BigInteger townId;
 
-	@Column(name = "state_name", nullable = false, updatable = false, length = 255)
-	private String stateName;
-
-	@Column(name = "state_code", nullable = false, updatable = false, length = 15)
-	private String stateCode;
+	@Column(name = "town_name", nullable = false, updatable = false, length = 255)
+	private String townName;
 
 	@ManyToOne
-	@JoinColumn(name = "country_id")
+	@JoinColumn(name = "state_id")
 	@JsonBackReference
 	@JsonIgnore
-	private Country country;
+	private State state;
 
-	public State(String stateName, String stateCode) {
-		this.stateName = stateName;
-		this.stateCode = stateCode;
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "town")
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@JsonManagedReference
+	private List<Suburb> suburbList = new ArrayList<>();
+
+	public Town(String townName) {
+		this.townName = townName;
 	}
 
-	public State() {
+	public Town() {
 	}
 
 	@JsonBackReference
 	@JsonIgnore
-	public Country getCountry() {
-		return country;
+	public State getState() {
+		return state;
 	}
 
-	public void setCountry(Country country) {
-		this.country = country;
+	public void setState(State state) {
+		this.state = state;
 	}
 
-	public void setStateId(BigInteger stateId) {
-		this.stateId = stateId;
+	public void setTownId(BigInteger townId) {
+		this.townId = townId;
 	}
 
-	public BigInteger getStateId() {
-		return stateId;
+	public BigInteger getTownId() {
+		return townId;
 	}
 
-	public String getStateName() {
-		return stateName;
+	public String getTownName() {
+		return townName;
 	}
 
-	public void setStateName(String stateName) {
-		this.stateName = stateName;
+	public void setTownName(String townName) {
+		this.townName = townName;
 	}
 
-	public String getStateCode() {
-		return stateCode;
+	public List<Suburb> getSuburbList() {
+		return suburbList;
 	}
 
-	public void setStateCode(String stateCode) {
-		this.stateCode = stateCode;
+	public void setSuburbList(List<Suburb> suburbList) {
+		this.suburbList = suburbList;
 	}
 }

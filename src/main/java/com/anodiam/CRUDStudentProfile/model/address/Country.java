@@ -30,7 +30,6 @@ public class Country {
 	@Column(name = "country_code", nullable = false, updatable = false, length = 15)
 	private String countryCode;
 
-
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "country")
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@JsonManagedReference

@@ -12,7 +12,7 @@ import java.util.List;
 @RestController
 @RequestMapping("api/master-data")
 @CrossOrigin
-public class MasterDataController {
+public class ReadMasterDataController {
 
     @Autowired
     private BoardRepository boardRepository;

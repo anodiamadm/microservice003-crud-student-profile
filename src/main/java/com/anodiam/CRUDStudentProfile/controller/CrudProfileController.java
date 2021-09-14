@@ -12,13 +12,13 @@ import java.math.BigInteger;
 @RestController
 @RequestMapping("api/user")
 @CrossOrigin
-public class PublicRestApiController {
+public class CrudProfileController {
 
     private UserRepository userRepository;
     private StudentProfileRepository studentProfileRepository;
 
-    public PublicRestApiController(UserRepository userRepository,
-                                   StudentProfileRepository studentProfileRepository) {
+    public CrudProfileController(UserRepository userRepository,
+                                 StudentProfileRepository studentProfileRepository) {
         this.userRepository = userRepository;
         this.studentProfileRepository = studentProfileRepository;
     }

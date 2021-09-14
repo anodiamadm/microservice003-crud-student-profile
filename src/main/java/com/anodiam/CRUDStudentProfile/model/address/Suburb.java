@@ -9,57 +9,68 @@ import java.math.BigInteger;
 
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-@Table(name = "mst_town",
-		uniqueConstraints={@UniqueConstraint(name="uk_town_name", columnNames="town_name"),
-							@UniqueConstraint(name="uk_town_code", columnNames="town_code")},
-		indexes={@Index(name="idx_town_name", columnList="town_name"),
-					@Index(name="idx_town_code", columnList="town_code")})
-public class Town {
+@Table(name = "mst_suburb",
+		uniqueConstraints={@UniqueConstraint(name="uk_suburb_name", columnNames="suburb_name"),
+							@UniqueConstraint(name="uk_zip_code", columnNames="zip_code")},
+		indexes={@Index(name="idx_suburb_name", columnList="suburb_name"),
+					@Index(name="idx_zip_code", columnList="zip_code")})
+public class Suburb {
 
 	@Id
-	@Column(name = "town_id", nullable = false, updatable = false)
+	@Column(name = "suburb_id", nullable = false, updatable = false)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private BigInteger townId;
+	private BigInteger suburbId;
 
-	@Column(name = "town_name", nullable = false, updatable = false, length = 255)
-	private String townName;
+	@Column(name = "suburb_name", nullable = false, updatable = false, length = 255)
+	private String suburbName;
+
+	@Column(name = "zip_code", nullable = false, updatable = false, length = 15)
+	private String zipCode;
 
 	@ManyToOne
-	@JoinColumn(name = "state_id")
+	@JoinColumn(name = "town_id")
 	@JsonBackReference
 	@JsonIgnore
-	private State state;
+	private Town town;
 
-	public Town(String townName) {
-		this.townName = townName;
+	public Suburb(String suburbName) {
+		this.suburbName = suburbName;
 	}
 
-	public Town() {
+	public Suburb() {
 	}
 
 	@JsonBackReference
 	@JsonIgnore
-	public State getState() {
-		return state;
+	public Town getTown() {
+		return town;
 	}
 
-	public void setState(State state) {
-		this.state = state;
+	public void setTown(Town town) {
+		this.town = town;
 	}
 
-	public void setTownId(BigInteger townId) {
-		this.townId = townId;
+	public void setSuburbId(BigInteger suburbId) {
+		this.suburbId = suburbId;
 	}
 
-	public BigInteger getTownId() {
-		return townId;
+	public BigInteger getSuburbId() {
+		return suburbId;
 	}
 
-	public String getTownName() {
-		return townName;
+	public String getSuburbName() {
+		return suburbName;
 	}
 
-	public void setTownName(String townName) {
-		this.townName = townName;
+	public void setSuburbName(String suburbName) {
+		this.suburbName = suburbName;
+	}
+
+	public String getZipCode() {
+		return zipCode;
+	}
+
+	public void setZipCode(String zipCode) {
+		this.zipCode = zipCode;
 	}
 }

@@ -17,7 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("api/address")
 @CrossOrigin
-public class AddressController {
+public class ReadAddressController {
 
     @Autowired
     private CountryRepository countryRepository;

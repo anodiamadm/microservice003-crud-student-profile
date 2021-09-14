@@ -3,9 +3,14 @@ package com.anodiam.CRUDStudentProfile.model.address;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
@@ -33,12 +38,25 @@ public class State {
 	@JsonIgnore
 	private Country country;
 
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "state")
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@JsonManagedReference
+	private List<Town> townList = new ArrayList<>();
+
 	public State(String stateName, String stateCode) {
 		this.stateName = stateName;
 		this.stateCode = stateCode;
 	}
 
 	public State() {
+	}
+
+	public List<Town> getTownList() {
+		return townList;
+	}
+
+	public void setTownList(List<Town> townList) {
+		this.townList = townList;
 	}
 
 	@JsonBackReference
