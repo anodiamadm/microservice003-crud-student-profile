@@ -1,9 +1,15 @@
 package com.anodiam.CRUDStudentProfile.model.masterData;
 
+import com.anodiam.CRUDStudentProfile.model.StudentProfile;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
@@ -25,10 +31,10 @@ public class Level {
 	@Column(name = "level_code", nullable = false, updatable = false, length = 15)
 	private String levelCode;
 
-//	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "level")
-//	@LazyCollection(LazyCollectionOption.FALSE)
-//	@JsonManagedReference
-//	private List<StudentProfile> studentProfileList = new ArrayList<>();
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "level")
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@JsonManagedReference
+	private List<StudentProfile> studentProfileList = new ArrayList<>();
 
 	public Level(String levelName, String levelCode) {
 		this.levelName = levelName;
@@ -38,13 +44,13 @@ public class Level {
 	public Level() {
 	}
 
-//	public List<State> getStateList() {
-//		return stateList;
-//	}
-//
-//	public void setStateList(List<State> stateList) {
-//		this.stateList = stateList;
-//	}
+	public List<StudentProfile> getStudentProfileList() {
+		return studentProfileList;
+	}
+
+	public void setStudentProfileList(List<StudentProfile> studentProfileList) {
+		this.studentProfileList = studentProfileList;
+	}
 
 	public void setLevelId(BigInteger levelId) {
 		this.levelId = levelId;
@@ -69,12 +75,4 @@ public class Level {
 	public void setLevelCode(String levelCode) {
 		this.levelCode = levelCode;
 	}
-
-//	public List<StudentProfile> getStudentProfileList() {
-//		return studentProfileList;
-//	}
-//
-//	public void setStudentProfileList(List<StudentProfile> studentProfileList) {
-//		this.studentProfileList = studentProfileList;
-//	}
 }

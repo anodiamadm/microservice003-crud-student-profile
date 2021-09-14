@@ -5,9 +5,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigInteger;
+import java.util.List;
 
 @Repository
 public interface StudentProfileRepository extends JpaRepository<StudentProfile, BigInteger> {
 
-    StudentProfile findByStudentProfileId(BigInteger StudentProfileId);
+    StudentProfile findByStudentProfileId(BigInteger studentProfileId);
 }

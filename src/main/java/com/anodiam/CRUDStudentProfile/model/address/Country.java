@@ -1,5 +1,6 @@
 package com.anodiam.CRUDStudentProfile.model.address;
 
+import com.anodiam.CRUDStudentProfile.model.StudentProfile;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.LazyCollection;
@@ -35,10 +36,11 @@ public class Country {
 	@JsonManagedReference
 	private List<State> stateList = new ArrayList<>();
 
-//	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "country")
-//	@LazyCollection(LazyCollectionOption.FALSE)
-//	@JsonManagedReference
-//	private List<StudentProfile> studentProfileList = new ArrayList<>();
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "country")
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@JsonManagedReference
+	private List<StudentProfile> studentProfileList = new ArrayList<>();
+
 
 	public Country(String countryName, String countryCode) {
 		this.countryName = countryName;
@@ -54,6 +56,14 @@ public class Country {
 
 	public void setStateList(List<State> stateList) {
 		this.stateList = stateList;
+	}
+
+	public List<StudentProfile> getStudentProfileList() {
+		return studentProfileList;
+	}
+
+	public void setStudentProfileList(List<StudentProfile> studentProfileList) {
+		this.studentProfileList = studentProfileList;
 	}
 
 	public void setCountryId(BigInteger countryId) {
@@ -80,11 +90,4 @@ public class Country {
 		this.countryCode = countryCode;
 	}
 
-//	public List<StudentProfile> getStudentProfileList() {
-//		return studentProfileList;
-//	}
-//
-//	public void setStudentProfileList(List<StudentProfile> studentProfileList) {
-//		this.studentProfileList = studentProfileList;
-//	}
 }

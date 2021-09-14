@@ -1,5 +1,6 @@
 package com.anodiam.CRUDStudentProfile.model.address;
 
+import com.anodiam.CRUDStudentProfile.model.StudentProfile;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -43,6 +44,11 @@ public class State {
 	@JsonManagedReference
 	private List<Town> townList = new ArrayList<>();
 
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "state")
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@JsonManagedReference
+	private List<StudentProfile> studentProfileList = new ArrayList<>();
+
 	public State(String stateName, String stateCode) {
 		this.stateName = stateName;
 		this.stateCode = stateCode;
@@ -57,6 +63,14 @@ public class State {
 
 	public void setTownList(List<Town> townList) {
 		this.townList = townList;
+	}
+
+	public List<StudentProfile> getStudentProfileList() {
+		return studentProfileList;
+	}
+
+	public void setStudentProfileList(List<StudentProfile> studentProfileList) {
+		this.studentProfileList = studentProfileList;
 	}
 
 	@JsonBackReference

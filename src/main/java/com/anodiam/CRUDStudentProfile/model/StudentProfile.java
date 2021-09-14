@@ -1,5 +1,13 @@
 package com.anodiam.CRUDStudentProfile.model;
 
+import com.anodiam.CRUDStudentProfile.model.address.Country;
+import com.anodiam.CRUDStudentProfile.model.address.State;
+import com.anodiam.CRUDStudentProfile.model.address.Suburb;
+import com.anodiam.CRUDStudentProfile.model.address.Town;
+import com.anodiam.CRUDStudentProfile.model.masterData.Board;
+import com.anodiam.CRUDStudentProfile.model.masterData.Level;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -56,23 +64,43 @@ public class StudentProfile {
     @Column(name = "profile_image_link", nullable = true, length = 1023)
     private String profileImageLink;
 
-//    @ManyToOne
-//    @JoinColumn(name = "country_id")
-//    @JsonBackReference
-//    @JsonIgnore
-//    private Country country;
+    @ManyToOne
+    @JoinColumn(name = "board_id")
+    @JsonBackReference
+    @JsonIgnore
+    private Board board;
+
+    @ManyToOne
+    @JoinColumn(name = "level_id")
+    @JsonBackReference
+    @JsonIgnore
+    private Level level;
+
+    @ManyToOne
+    @JoinColumn(name = "country_id")
+    @JsonBackReference
+    @JsonIgnore
+    private Country country;
+
+    @ManyToOne
+    @JoinColumn(name = "state_id")
+    @JsonBackReference
+    @JsonIgnore
+    private State state;
+
+    @ManyToOne
+    @JoinColumn(name = "town_id")
+    @JsonBackReference
+    @JsonIgnore
+    private Town town;
+
+    @ManyToOne
+    @JoinColumn(name = "suburb_id")
+    @JsonBackReference
+    @JsonIgnore
+    private Suburb suburb;
 
     protected StudentProfile(){}
-
-//    @JsonBackReference
-//    @JsonIgnore
-//    public Country getCountry() {
-//        return country;
-//    }
-
-//    public void setCountry(Country country) {
-//        this.country = country;
-//    }
 
     public BigInteger getStudentProfileId() {
         return studentProfileId;
@@ -160,5 +188,65 @@ public class StudentProfile {
 
     public void setGuardiansPhoneNumber(String guardiansPhoneNumber) {
         this.guardiansPhoneNumber = guardiansPhoneNumber;
+    }
+
+    @JsonBackReference
+    @JsonIgnore
+    public Board getBoard() {
+        return board;
+    }
+
+    public void setBoard(Board board) {
+        this.board = board;
+    }
+
+    @JsonBackReference
+    @JsonIgnore
+    public Level getLevel() {
+        return level;
+    }
+
+    public void setLevel(Level level) {
+        this.level = level;
+    }
+
+    @JsonBackReference
+    @JsonIgnore
+    public Country getCountry() {
+        return country;
+    }
+
+    public void setCountry(Country country) {
+        this.country = country;
+    }
+
+    @JsonBackReference
+    @JsonIgnore
+    public State getState() {
+        return state;
+    }
+
+    public void setState(State state) {
+        this.state = state;
+    }
+
+    @JsonBackReference
+    @JsonIgnore
+    public Town getTown() {
+        return town;
+    }
+
+    public void setTown(Town town) {
+        this.town = town;
+    }
+
+    @JsonBackReference
+    @JsonIgnore
+    public Suburb getSuburb() {
+        return suburb;
+    }
+
+    public void setSuburb(Suburb suburb) {
+        this.suburb = suburb;
     }
 }

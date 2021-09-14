@@ -1,9 +1,16 @@
 package com.anodiam.CRUDStudentProfile.model.masterData;
 
+import com.anodiam.CRUDStudentProfile.model.StudentProfile;
+import com.anodiam.CRUDStudentProfile.model.address.State;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
@@ -25,10 +32,10 @@ public class Board {
 	@Column(name = "board_short_name", nullable = false, updatable = false, length = 15)
 	private String boardCode;
 
-//	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "board")
-//	@LazyCollection(LazyCollectionOption.FALSE)
-//	@JsonManagedReference
-//	private List<StudentProfile> studentProfileList = new ArrayList<>();
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "board")
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@JsonManagedReference
+	private List<StudentProfile> studentProfileList = new ArrayList<>();
 
 	public Board(String boardName, String boardCode) {
 		this.boardName = boardName;
@@ -37,14 +44,6 @@ public class Board {
 
 	public Board() {
 	}
-
-//	public List<State> getStateList() {
-//		return stateList;
-//	}
-//
-//	public void setStateList(List<State> stateList) {
-//		this.stateList = stateList;
-//	}
 
 	public void setBoardId(BigInteger boardId) {
 		this.boardId = boardId;
@@ -70,11 +69,11 @@ public class Board {
 		this.boardCode = boardCode;
 	}
 
-//	public List<StudentProfile> getStudentProfileList() {
-//		return studentProfileList;
-//	}
-//
-//	public void setStudentProfileList(List<StudentProfile> studentProfileList) {
-//		this.studentProfileList = studentProfileList;
-//	}
+	public List<StudentProfile> getStudentProfileList() {
+		return studentProfileList;
+	}
+
+	public void setStudentProfileList(List<StudentProfile> studentProfileList) {
+		this.studentProfileList = studentProfileList;
+	}
 }
