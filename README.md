@@ -3,7 +3,7 @@ CRUD operation of Student Profile
 
 ## API End Points
 ### GET :: /api/master-data/
-	~~boards~~ :: List all boards - to populate dropdowns in the frontend
+	boards :: List all boards - to populate dropdowns in the frontend
 	levels :: List all levels - to populate dropdowns in the frontend
 
 ### GET :: api/address/
