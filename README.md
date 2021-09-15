@@ -1,7 +1,12 @@
 # microservice003-crud-student-profile
-CRUD operation of Student Profile
-
 ## API End Points
+
+### GET :: /api/user/
+	profile :: List Profile Info of the Current Logged-in User: state the name of fields here....
+
+### POST :: /api/user/
+	profile :: Save Updated Profile Info of the Current Logged-in User
+
 ### GET :: /api/master-data/
 	boards :: List all boards - to populate dropdowns in the frontend
 	levels :: List all levels - to populate dropdowns in the frontend
