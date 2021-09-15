@@ -31,7 +31,6 @@ public class ReadAddressController {
     @Autowired
     private SuburbRepository suburbRepository;
 
-//  REVIEW COMMENT::  TRY - CATCH needs to narrow down to specific exception instead of just EXCEPTION
 //  @GetMapping("countries") :: List all countries - to populate dropdowns in the frontend
     @GetMapping("countries")
     @ResponseBody
