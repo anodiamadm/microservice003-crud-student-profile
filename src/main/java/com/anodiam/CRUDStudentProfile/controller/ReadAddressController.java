@@ -50,8 +50,11 @@ public class ReadAddressController {
     @ResponseBody
     public List<State> getSatesOfCountry(@PathVariable("country_id")BigInteger country_id) throws Exception {
         try {
-            List<State> stateList = stateRepository.findByCountry(country_id);
-            return stateList;
+            Country country = countryRepository.getById(country_id);
+            if(country!=null){
+                List<State> stateList = stateRepository.findByCountry(country);
+                return stateList;
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -63,8 +66,11 @@ public class ReadAddressController {
     @ResponseBody
     public List<Town> getTownsOfState(@PathVariable("state_id")BigInteger state_id) throws Exception {
         try {
-            List<Town> townList = townRepository.findByState(state_id);
-            return townList;
+            State state = stateRepository.getById(state_id);
+            if(state!=null){
+                List<Town> townList = townRepository.findByState(state);
+                return townList;
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -76,8 +82,11 @@ public class ReadAddressController {
     @ResponseBody
     public List<Suburb> getSuburbsOfTown(@PathVariable("town_id")BigInteger town_id) throws Exception {
         try {
-            List<Suburb> suburbList = suburbRepository.findByTown(town_id);
-            return suburbList;
+            Town town = townRepository.getById(town_id);
+            if(town!=null){
+                List<Suburb> suburbList = suburbRepository.findByTown(town);
+                return suburbList;
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

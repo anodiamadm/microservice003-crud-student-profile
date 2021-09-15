@@ -23,11 +23,10 @@ import java.math.BigInteger;
                 @Index(name="idx_email", columnList="email"),
                 @Index(name="idx_phone_number", columnList="phone_number"),
                 @Index(name="idx_guardians_email", columnList="guardians_email"),
-                @Index(name="idx_guardians_phone_number", columnList="guardians_phone_number")})
-//                @Index(name="idx_board_id", columnList="board_id"),
-//                @Index(name="idx_level_id", columnList="level_id"),
-//                @Index(name="idx_address", columnList="country_id,state_id")
-//                        "town_id,suburb_id")
+                @Index(name="idx_guardians_phone_number", columnList="guardians_phone_number"),
+                @Index(name="idx_board_id", columnList="board_id"),
+                @Index(name="idx_level_id", columnList="level_id"),
+                @Index(name="idx_address", columnList="country_id,state_id,town_id,suburb_id")})
 public class StudentProfile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

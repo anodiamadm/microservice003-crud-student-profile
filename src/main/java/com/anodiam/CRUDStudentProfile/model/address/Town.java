@@ -1,17 +1,11 @@
 package com.anodiam.CRUDStudentProfile.model.address;
 
-import com.anodiam.CRUDStudentProfile.model.StudentProfile;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
@@ -33,16 +27,6 @@ public class Town {
 	@JsonBackReference
 	@JsonIgnore
 	private State state;
-
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "town")
-	@LazyCollection(LazyCollectionOption.FALSE)
-	@JsonManagedReference
-	private List<Suburb> suburbList = new ArrayList<>();
-
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "town")
-	@LazyCollection(LazyCollectionOption.FALSE)
-	@JsonManagedReference
-	private List<StudentProfile> studentProfileList = new ArrayList<>();
 
 	public Town(String townName) {
 		this.townName = townName;
@@ -75,21 +59,5 @@ public class Town {
 
 	public void setTownName(String townName) {
 		this.townName = townName;
-	}
-
-	public List<Suburb> getSuburbList() {
-		return suburbList;
-	}
-
-	public void setSuburbList(List<Suburb> suburbList) {
-		this.suburbList = suburbList;
-	}
-
-	public List<StudentProfile> getStudentProfileList() {
-		return studentProfileList;
-	}
-
-	public void setStudentProfileList(List<StudentProfile> studentProfileList) {
-		this.studentProfileList = studentProfileList;
 	}
 }
