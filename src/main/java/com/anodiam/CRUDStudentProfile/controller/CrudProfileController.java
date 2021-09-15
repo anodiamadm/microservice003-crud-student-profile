@@ -23,7 +23,6 @@ public class CrudProfileController {
         this.studentProfileRepository = studentProfileRepository;
     }
 
-//  REVIEW COMMENT::  TRY - CATCH needs to narrow down to specific exception instead of just EXCEPTION
 //  @GetMapping("profile") :: Fetch logged-in user's profile Info
     @GetMapping("profile")
     @ResponseBody
