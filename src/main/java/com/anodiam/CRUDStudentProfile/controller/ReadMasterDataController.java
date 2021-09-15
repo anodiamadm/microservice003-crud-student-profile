@@ -20,7 +20,6 @@ public class ReadMasterDataController {
     @Autowired
     private LevelRepository levelRepository;
 
-//  REVIEW COMMENT::  TRY - CATCH needs to narrow down to specific exception instead of just EXCEPTION
 //  @GetMapping("boards") :: List all boards - to populate dropdowns in the frontend
     @GetMapping("boards")
     @ResponseBody
@@ -34,7 +33,6 @@ public class ReadMasterDataController {
         return null;
     }
 
-//  REVIEW COMMENT::  TRY - CATCH needs to narrow down to specific exception instead of just EXCEPTION
 //  @GetMapping("levels") :: List all levels - to populate dropdowns in the frontend
     @GetMapping("levels")
     @ResponseBody
