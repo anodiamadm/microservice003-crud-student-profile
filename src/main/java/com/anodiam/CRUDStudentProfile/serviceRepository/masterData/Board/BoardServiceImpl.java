@@ -7,5 +7,7 @@ import java.util.List;
 abstract class BoardServiceImpl implements BoardService {
 
     @Override
-    public List<Board> findAll() { return new BoardServiceDal().findAll(); }
+    public List<Board> findAll() {
+        return new BoardServiceDal().findAll();
+    }
 }

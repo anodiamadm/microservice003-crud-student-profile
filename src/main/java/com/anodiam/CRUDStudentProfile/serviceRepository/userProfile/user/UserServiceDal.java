@@ -1,8 +1,6 @@
 package com.anodiam.CRUDStudentProfile.serviceRepository.userProfile.user;
 
 import com.anodiam.CRUDStudentProfile.model.User;
-import com.anodiam.CRUDStudentProfile.model.common.MessageResponse;
-import com.anodiam.CRUDStudentProfile.model.common.ResponseCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,16 +16,15 @@ class UserServiceDal extends UserServiceImpl {
 
     @Override
     public Optional<User> findByUsername(String username) {
-        MessageResponse messageResponse = new MessageResponse();
-        try {
-            Optional<User> isUserPresent = userService.findByUsername(username);
-            if(isUserPresent.isPresent()) {
-                messageResponse = new MessageResponse(ResponseCode.SUCCESS.getID(), "User Exists by Username: " + username + "!");
-                return ;
 
+        try {
+            Optional<User> optionalUser = userService.findByUsername(username);
+            if(optionalUser.isPresent()) {
+                return optionalUser;
+            }
         } catch (Exception exception) {
             exception.printStackTrace();
         }
-        return userService.findByUsername(username);
+        return null;
     }
 }

@@ -6,28 +6,45 @@ import com.anodiam.CRUDStudentProfile.model.common.ResponseCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
+import java.util.Optional;
+
 @Service
 class StudentProfileServiceDal {
 
     @Autowired
-    private StudentProfileRepository studentProfileRepository;
+    private StudentProfileService studentProfileService;
 
     public StudentProfile save(StudentProfile studentProfile) {
         MessageResponse messageResponse = new MessageResponse();
         try {
-            StudentProfile savedStudentProfile = studentProfileRepository.save(studentProfile);
+            StudentProfile savedStudentProfile = studentProfileService.save(studentProfile);
             messageResponse = new MessageResponse(ResponseCode.SUCCESS.getID(),
                     "Successfully Saved Student Profile for ID: " + studentProfile.getStudentProfileId() + ": "
                             + studentProfile.getFirstName() + "!");
-            savedStudentProfile.setReturnMessage(messageResponse);
+            savedStudentProfile.setMessageResponse(messageResponse);
             return savedStudentProfile;
         } catch (Exception exception) {
             exception.printStackTrace();
             messageResponse = new MessageResponse(ResponseCode.FAILURE.getID(),
                     "Failed to Save Student Profile for ID: " + studentProfile.getStudentProfileId()
                             + ": " + studentProfile.getFirstName() + "!\n" + exception.getMessage());
-            studentProfile.setReturnMessage(messageResponse);
+            studentProfile.setMessageResponse(messageResponse);
             return studentProfile;
         }
+    }
+
+    public Optional<StudentProfile> findById(BigInteger studentProfileId) {
+
+        try {
+            Optional<StudentProfile> optionalStudentProfile =
+                    studentProfileService.findById(studentProfileId);
+            if(optionalStudentProfile.isPresent()) {
+                return optionalStudentProfile;
+            }
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+        return null;
     }
 }

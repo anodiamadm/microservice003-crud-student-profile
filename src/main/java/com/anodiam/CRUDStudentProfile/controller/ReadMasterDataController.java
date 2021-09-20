@@ -1,9 +1,11 @@
 package com.anodiam.CRUDStudentProfile.controller;
 
+import com.anodiam.CRUDStudentProfile.serviceRepository.masterData.Board.BoardRepository;
 import com.anodiam.CRUDStudentProfile.serviceRepository.masterData.Board.BoardService;
-import com.anodiam.CRUDStudentProfile.serviceRepository.masterData.Level.LevelService;
+import com.anodiam.CRUDStudentProfile.serviceRepository.masterData.Level.LevelRepository;
 import com.anodiam.CRUDStudentProfile.model.masterData.Board;
 import com.anodiam.CRUDStudentProfile.model.masterData.Level;
+import com.anodiam.CRUDStudentProfile.serviceRepository.masterData.Level.LevelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

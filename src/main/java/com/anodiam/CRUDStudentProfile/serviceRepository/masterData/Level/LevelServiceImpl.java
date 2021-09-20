@@ -7,5 +7,7 @@ import java.util.List;
 abstract class LevelServiceImpl implements LevelService {
 
     @Override
-    public List<Level> findAll() { return new LevelServiceDal().findAll(); }
+    public List<Level> findAll() {
+        return new LevelServiceDal().findAll();
+    }
 }

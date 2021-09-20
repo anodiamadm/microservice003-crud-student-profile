@@ -10,12 +10,20 @@ import java.util.List;
 class LevelServiceDal extends LevelServiceImpl {
 
     @Autowired
-    private LevelRepository levelRepository;
+    private LevelService levelService;
 
     public LevelServiceDal(){}
 
-    @Override
     public List<Level> findAll() {
-        return (List<Level>) levelRepository.findAll();
+
+        try {
+            List<Level> levels = levelService.findAll();
+            if(!levels.isEmpty()) {
+                return levels;
+            }
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+        return null;
     }
 }

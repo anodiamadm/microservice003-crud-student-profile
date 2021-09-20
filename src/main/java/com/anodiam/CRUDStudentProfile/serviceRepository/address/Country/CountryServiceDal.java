@@ -10,12 +10,19 @@ import java.util.List;
 class CountryServiceDal extends CountryServiceImpl {
 
     @Autowired
-    private CountryRepository countryRepository;
+    private CountryService countryService;
 
     public CountryServiceDal(){}
 
-    @Override
     public List<Country> findAll() {
-        return (List<Country>) countryRepository.findAll();
+        try {
+            List<Country> countries = countryService.findAll();
+            if(!countries.isEmpty()) {
+                return countries;
+            }
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+        return null;
     }
 }

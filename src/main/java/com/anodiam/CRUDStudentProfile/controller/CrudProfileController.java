@@ -2,6 +2,7 @@ package com.anodiam.CRUDStudentProfile.controller;
 
 import com.anodiam.CRUDStudentProfile.model.StudentProfile;
 import com.anodiam.CRUDStudentProfile.model.User;
+import com.anodiam.CRUDStudentProfile.serviceRepository.userProfile.studentProfile.StudentProfileService;
 import com.anodiam.CRUDStudentProfile.serviceRepository.userProfile.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -13,7 +14,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("api/user")
-@CrossOrigin
+@CrossOrigin(origins = "*", maxAge = 3600)
 public class CrudProfileController {
 
     @Autowired
@@ -31,7 +32,7 @@ public class CrudProfileController {
             if (!(auth instanceof AnonymousAuthenticationToken)) {
                 String currentUserName = auth.getName();
                 if(currentUserName!=null) {
-                    Optional<User> user = userService.findByUsername(currentUserName);
+                    Optional<User> optionalUser = userService.findByUsername(currentUserName);
 
 //                                                                .getStudentProfile()
 //                                                                .getStudentProfileId();
@@ -46,7 +47,7 @@ public class CrudProfileController {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
-        return null;
     }
 }

@@ -7,7 +7,7 @@ import java.util.List;
 abstract class CountryServiceImpl implements CountryService {
 
     @Override
-    public List<Country> findAll(){
+    public List<Country> findAll() {
         return new CountryServiceDal().findAll();
     }
 }

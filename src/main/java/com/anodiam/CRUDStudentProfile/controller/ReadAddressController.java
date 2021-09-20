@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/address")
-@CrossOrigin
+@CrossOrigin(origins = "*", maxAge = 3600)
 public class ReadAddressController {
 
     @Autowired
