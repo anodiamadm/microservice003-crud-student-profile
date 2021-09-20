@@ -16,7 +16,6 @@ class UserServiceDal extends UserServiceImpl {
 
     @Override
     public Optional<User> findByUsername(String username) {
-
         try {
             Optional<User> optionalUser = userService.findByUsername(username);
             if(optionalUser.isPresent()) {
