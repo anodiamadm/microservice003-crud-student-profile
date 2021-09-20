@@ -1,7 +1,7 @@
 package com.anodiam.CRUDStudentProfile.controller;
 
-import com.anodiam.CRUDStudentProfile.db.repository.masterData.BoardRepository;
-import com.anodiam.CRUDStudentProfile.db.repository.masterData.LevelRepository;
+import com.anodiam.CRUDStudentProfile.serviceRepository.masterData.Board.BoardService;
+import com.anodiam.CRUDStudentProfile.serviceRepository.masterData.Level.LevelService;
 import com.anodiam.CRUDStudentProfile.model.masterData.Board;
 import com.anodiam.CRUDStudentProfile.model.masterData.Level;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,26 +11,25 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/master-data")
-@CrossOrigin
+@CrossOrigin(origins = "*", maxAge = 3600)
 public class ReadMasterDataController {
 
     @Autowired
-    private BoardRepository boardRepository;
+    private BoardService boardService;
 
     @Autowired
-    private LevelRepository levelRepository;
+    private LevelService levelService;
 
 //  @GetMapping("boards") :: List all boards - to populate dropdowns in the frontend
     @GetMapping("boards")
     @ResponseBody
     public List<Board> getAllBoards() throws Exception {
         try {
-            List<Board> boardList = boardRepository.findAll();
-            return boardList;
+            return boardService.findAll();
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
-        return null;
     }
 
 //  @GetMapping("levels") :: List all levels - to populate dropdowns in the frontend
@@ -38,11 +37,10 @@ public class ReadMasterDataController {
     @ResponseBody
     public List<Level> getAllLevels() throws Exception {
         try {
-            List<Level> levelList = levelRepository.findAll();
-            return levelList;
+            return levelService.findAll();
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
-        return null;
     }
 }

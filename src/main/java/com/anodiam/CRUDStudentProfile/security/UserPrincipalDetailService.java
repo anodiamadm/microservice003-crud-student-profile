@@ -1,7 +1,7 @@
 package com.anodiam.CRUDStudentProfile.security;
 
-import com.anodiam.CRUDStudentProfile.db.repository.UserRepository;
 import com.anodiam.CRUDStudentProfile.model.User;
+import com.anodiam.CRUDStudentProfile.serviceRepository.userProfile.user.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

@@ -1,5 +1,6 @@
 package com.anodiam.CRUDStudentProfile.model.address;
 
+import com.anodiam.CRUDStudentProfile.model.common.MessageResponse;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -27,6 +28,9 @@ public class Town {
 	@JsonBackReference
 	@JsonIgnore
 	private State state;
+
+	@Transient
+	private MessageResponse returnMessage;
 
 	public Town(String townName) {
 		this.townName = townName;

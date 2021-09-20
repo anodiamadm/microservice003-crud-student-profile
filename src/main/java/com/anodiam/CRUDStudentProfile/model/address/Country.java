@@ -1,5 +1,6 @@
 package com.anodiam.CRUDStudentProfile.model.address;
 
+import com.anodiam.CRUDStudentProfile.model.common.MessageResponse;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -25,12 +26,23 @@ public class Country {
 	@Column(name = "country_code", nullable = false, updatable = false, length = 15)
 	private String countryCode;
 
+	@Transient
+	private MessageResponse returnMessage;
+
 	public Country(String countryName, String countryCode) {
 		this.countryName = countryName;
 		this.countryCode = countryCode;
 	}
 
 	public Country() {
+	}
+
+	public MessageResponse getReturnMessage() {
+		return returnMessage;
+	}
+
+	public void setReturnMessage(MessageResponse returnMessage) {
+		this.returnMessage = returnMessage;
 	}
 
 	public void setCountryId(BigInteger countryId) {

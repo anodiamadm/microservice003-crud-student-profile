@@ -1,4 +1,4 @@
-package com.anodiam.CRUDStudentProfile.db.repository.address;
+package com.anodiam.CRUDStudentProfile.serviceRepository.address.Country;
 
 import com.anodiam.CRUDStudentProfile.model.address.Country;
 import org.springframework.data.jpa.repository.JpaRepository;

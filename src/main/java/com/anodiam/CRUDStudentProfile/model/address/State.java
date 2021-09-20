@@ -1,5 +1,6 @@
 package com.anodiam.CRUDStudentProfile.model.address;
 
+import com.anodiam.CRUDStudentProfile.model.common.MessageResponse;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -33,12 +34,23 @@ public class State {
 	@JsonIgnore
 	private Country country;
 
+	@Transient
+	private MessageResponse returnMessage;
+
 	public State(String stateName, String stateCode) {
 		this.stateName = stateName;
 		this.stateCode = stateCode;
 	}
 
 	public State() {
+	}
+
+	public MessageResponse getReturnMessage() {
+		return returnMessage;
+	}
+
+	public void setReturnMessage(MessageResponse returnMessage) {
+		this.returnMessage = returnMessage;
 	}
 
 	@JsonBackReference

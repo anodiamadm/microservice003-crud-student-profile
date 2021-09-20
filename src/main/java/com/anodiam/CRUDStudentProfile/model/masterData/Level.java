@@ -1,5 +1,6 @@
 package com.anodiam.CRUDStudentProfile.model.masterData;
 
+import com.anodiam.CRUDStudentProfile.model.common.MessageResponse;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -25,12 +26,23 @@ public class Level {
 	@Column(name = "level_code", nullable = false, updatable = false, length = 15)
 	private String levelCode;
 
+	@Transient
+	private MessageResponse returnMessage;
+
 	public Level(String levelName, String levelCode) {
 		this.levelName = levelName;
 		this.levelCode = levelCode;
 	}
 
 	public Level() {
+	}
+
+	public MessageResponse getReturnMessage() {
+		return returnMessage;
+	}
+
+	public void setReturnMessage(MessageResponse returnMessage) {
+		this.returnMessage = returnMessage;
 	}
 
 	public void setLevelId(BigInteger levelId) {

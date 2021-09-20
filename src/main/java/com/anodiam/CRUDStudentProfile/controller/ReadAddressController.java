@@ -1,9 +1,9 @@
 package com.anodiam.CRUDStudentProfile.controller;
 
-import com.anodiam.CRUDStudentProfile.db.repository.address.CountryRepository;
-import com.anodiam.CRUDStudentProfile.db.repository.address.StateRepository;
-import com.anodiam.CRUDStudentProfile.db.repository.address.SuburbRepository;
-import com.anodiam.CRUDStudentProfile.db.repository.address.TownRepository;
+import com.anodiam.CRUDStudentProfile.serviceRepository.address.State.StateService;
+import com.anodiam.CRUDStudentProfile.serviceRepository.address.Country.CountryService;
+import com.anodiam.CRUDStudentProfile.serviceRepository.address.Suburb.SuburbService;
+import com.anodiam.CRUDStudentProfile.serviceRepository.address.Town.TownService;
 import com.anodiam.CRUDStudentProfile.model.address.Country;
 import com.anodiam.CRUDStudentProfile.model.address.State;
 import com.anodiam.CRUDStudentProfile.model.address.Suburb;
@@ -20,28 +20,27 @@ import java.util.List;
 public class ReadAddressController {
 
     @Autowired
-    private CountryRepository countryRepository;
+    private CountryService countryService;
 
     @Autowired
-    private StateRepository stateRepository;
+    private StateService stateService;
 
     @Autowired
-    private TownRepository townRepository;
+    private TownService townService;
 
     @Autowired
-    private SuburbRepository suburbRepository;
+    private SuburbService suburbService;
 
 //  @GetMapping("countries") :: List all countries - to populate dropdowns in the frontend
     @GetMapping("countries")
     @ResponseBody
     public List<Country> getAllCountries() throws Exception {
         try {
-            List<Country> countryList = countryRepository.findAll();
-            return countryList;
-        } catch (Exception e) {
-            e.printStackTrace();
+            return countryService.findAll();
+        } catch (Exception except) {
+            except.printStackTrace();
+            return null;
         }
-        return null;
     }
 
 //  @GetMapping("states") :: List all states of given country - to populate dropdowns in the frontend
@@ -49,15 +48,11 @@ public class ReadAddressController {
     @ResponseBody
     public List<State> getSatesOfCountry(@PathVariable("country_id")BigInteger country_id) throws Exception {
         try {
-            Country country = countryRepository.getById(country_id);
-            if(country!=null){
-                List<State> stateList = stateRepository.findByCountry(country);
-                return stateList;
-            }
+            return stateService.findByCountryId(country_id);
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
-        return null;
     }
 
 //  @GetMapping("towns") :: List all towns of given state - to populate dropdowns in the frontend
@@ -65,15 +60,11 @@ public class ReadAddressController {
     @ResponseBody
     public List<Town> getTownsOfState(@PathVariable("state_id")BigInteger state_id) throws Exception {
         try {
-            State state = stateRepository.getById(state_id);
-            if(state!=null){
-                List<Town> townList = townRepository.findByState(state);
-                return townList;
-            }
+            return townService.findByStateId(state_id);
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
-        return null;
     }
 
 //  @GetMapping("suburbs") :: List all suburbs of given town - to populate dropdowns in the frontend
@@ -81,14 +72,10 @@ public class ReadAddressController {
     @ResponseBody
     public List<Suburb> getSuburbsOfTown(@PathVariable("town_id")BigInteger town_id) throws Exception {
         try {
-            Town town = townRepository.getById(town_id);
-            if(town!=null){
-                List<Suburb> suburbList = suburbRepository.findByTown(town);
-                return suburbList;
-            }
+            return suburbService.findByTownId(town_id);
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
-        return null;
     }
 }

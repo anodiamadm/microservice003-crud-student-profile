@@ -1,7 +1,7 @@
 package com.anodiam.CRUDStudentProfile.security;
 
-import com.anodiam.CRUDStudentProfile.db.repository.UserRepository;
 import com.anodiam.CRUDStudentProfile.model.User;
+import com.anodiam.CRUDStudentProfile.serviceRepository.userProfile.user.UserRepository;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,6 +14,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Optional;
 
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
@@ -57,6 +58,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
     //            if so then grab user details and create Spring Auth token using username, pass, authorities / roles
                 if(userName != null) {
                     User user = userRepository.findByUsername(userName);
+                    Optional<User> user = userService.findByUsername(currentUserName);
                     UserPrincipal principal = new UserPrincipal(user);
                     UsernamePasswordAuthenticationToken authenticationToken = new
                             UsernamePasswordAuthenticationToken(userName, null, principal.getAuthorities());

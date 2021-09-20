@@ -1,4 +1,4 @@
-package com.anodiam.CRUDStudentProfile.db.repository;
+package com.anodiam.CRUDStudentProfile.serviceRepository.userProfile.studentProfile;
 
 import com.anodiam.CRUDStudentProfile.model.StudentProfile;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -8,6 +8,4 @@ import java.math.BigInteger;
 
 @Repository
 public interface StudentProfileRepository extends JpaRepository<StudentProfile, BigInteger> {
-
-    StudentProfile findByStudentProfileId(BigInteger studentProfileId);
 }

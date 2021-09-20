@@ -1,27 +1,26 @@
 package com.anodiam.CRUDStudentProfile.controller;
 
-import com.anodiam.CRUDStudentProfile.db.repository.*;
 import com.anodiam.CRUDStudentProfile.model.StudentProfile;
+import com.anodiam.CRUDStudentProfile.model.User;
+import com.anodiam.CRUDStudentProfile.serviceRepository.userProfile.user.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigInteger;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/user")
 @CrossOrigin
 public class CrudProfileController {
 
-    private UserRepository userRepository;
-    private StudentProfileRepository studentProfileRepository;
+    @Autowired
+    private UserService userService;
 
-    public CrudProfileController(UserRepository userRepository,
-                                 StudentProfileRepository studentProfileRepository) {
-        this.userRepository = userRepository;
-        this.studentProfileRepository = studentProfileRepository;
-    }
+    @Autowired
+    private StudentProfileService studentProfileService;
 
 //  @GetMapping("profile") :: Fetch logged-in user's profile Info
     @GetMapping("profile")
@@ -32,16 +31,17 @@ public class CrudProfileController {
             if (!(auth instanceof AnonymousAuthenticationToken)) {
                 String currentUserName = auth.getName();
                 if(currentUserName!=null) {
-                    BigInteger studentProfileId = userRepository.findByUsername(currentUserName)
-                                                                .getStudentProfile()
-                                                                .getStudentProfileId();
-                    if(studentProfileId!=null) {
-                        StudentProfile studentProfile = studentProfileRepository
-                                                            .findByStudentProfileId(studentProfileId);
-                        if(studentProfileId!=null) {
-                            return studentProfile;
-                        }
-                    }
+                    Optional<User> user = userService.findByUsername(currentUserName);
+
+//                                                                .getStudentProfile()
+//                                                                .getStudentProfileId();
+//                    if(studentProfileId!=null) {
+//                        StudentProfile studentProfile = studentProfileRepository
+//                                                            .findByStudentProfileId(studentProfileId);
+//                        if(studentProfileId!=null) {
+//                            return studentProfile;
+//                        }
+//                    }
                 }
             }
         } catch (Exception e) {

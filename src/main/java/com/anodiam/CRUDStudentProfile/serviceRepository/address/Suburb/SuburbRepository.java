@@ -1,4 +1,4 @@
-package com.anodiam.CRUDStudentProfile.db.repository.address;
+package com.anodiam.CRUDStudentProfile.serviceRepository.address.Suburb;
 
 import com.anodiam.CRUDStudentProfile.model.address.Suburb;
 import com.anodiam.CRUDStudentProfile.model.address.Town;

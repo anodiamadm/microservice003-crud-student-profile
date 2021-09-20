@@ -1,4 +1,4 @@
-package com.anodiam.CRUDStudentProfile.db.repository;
+package com.anodiam.CRUDStudentProfile.serviceRepository.userProfile.user;
 
 import com.anodiam.CRUDStudentProfile.model.Permission;
 import org.springframework.data.jpa.repository.JpaRepository;
