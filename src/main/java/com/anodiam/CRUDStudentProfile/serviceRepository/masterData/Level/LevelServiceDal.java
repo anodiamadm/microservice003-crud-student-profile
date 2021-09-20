@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class LevelServiceDal extends LevelServiceImpl {
+class LevelServiceDal extends LevelServiceImpl {
 
     @Autowired
     private LevelRepository levelRepository;

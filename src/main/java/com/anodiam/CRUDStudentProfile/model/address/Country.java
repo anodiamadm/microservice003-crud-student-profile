@@ -27,7 +27,7 @@ public class Country {
 	private String countryCode;
 
 	@Transient
-	private MessageResponse returnMessage;
+	private MessageResponse messageResponse;
 
 	public Country(String countryName, String countryCode) {
 		this.countryName = countryName;
@@ -37,12 +37,12 @@ public class Country {
 	public Country() {
 	}
 
-	public MessageResponse getReturnMessage() {
-		return returnMessage;
+	public MessageResponse getMessageResponse() {
+		return messageResponse;
 	}
 
-	public void setReturnMessage(MessageResponse returnMessage) {
-		this.returnMessage = returnMessage;
+	public void setMessageResponse(MessageResponse messageResponse) {
+		this.messageResponse = messageResponse;
 	}
 
 	public void setCountryId(BigInteger countryId) {

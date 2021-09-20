@@ -35,7 +35,7 @@ public class Suburb {
 	private Town town;
 
 	@Transient
-	private MessageResponse returnMessage;
+	private MessageResponse messageResponse;
 
 	public Suburb(String suburbName) {
 		this.suburbName = suburbName;
@@ -44,12 +44,12 @@ public class Suburb {
 	public Suburb() {
 	}
 
-	public MessageResponse getReturnMessage() {
-		return returnMessage;
+	public MessageResponse getMessageResponse() {
+		return messageResponse;
 	}
 
-	public void setReturnMessage(MessageResponse returnMessage) {
-		this.returnMessage = returnMessage;
+	public void setMessageResponse(MessageResponse messageResponse) {
+		this.messageResponse = messageResponse;
 	}
 
 	@JsonBackReference

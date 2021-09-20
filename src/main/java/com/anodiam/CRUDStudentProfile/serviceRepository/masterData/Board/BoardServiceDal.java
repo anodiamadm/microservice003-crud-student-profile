@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class BoardServiceDal extends BoardServiceImpl {
+class BoardServiceDal extends BoardServiceImpl {
 
     @Autowired
     private BoardRepository boardRepository;

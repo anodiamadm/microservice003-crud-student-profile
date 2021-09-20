@@ -35,7 +35,7 @@ public class State {
 	private Country country;
 
 	@Transient
-	private MessageResponse returnMessage;
+	private MessageResponse messageResponse;
 
 	public State(String stateName, String stateCode) {
 		this.stateName = stateName;
@@ -45,12 +45,12 @@ public class State {
 	public State() {
 	}
 
-	public MessageResponse getReturnMessage() {
-		return returnMessage;
+	public MessageResponse getMessageResponse() {
+		return messageResponse;
 	}
 
-	public void setReturnMessage(MessageResponse returnMessage) {
-		this.returnMessage = returnMessage;
+	public void setMessageResponse(MessageResponse messageResponse) {
+		this.messageResponse = messageResponse;
 	}
 
 	@JsonBackReference

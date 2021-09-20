@@ -53,7 +53,7 @@ public class User {
     private StudentProfile studentProfile;
 
     @Transient
-    private MessageResponse returnMessage;
+    private MessageResponse messageResponse;
 
     public User(String username, String password) {
         this.username = username;
@@ -62,12 +62,12 @@ public class User {
         this.dateCreated = new Date();
     }
 
-    public MessageResponse getReturnMessage() {
-        return returnMessage;
+    public MessageResponse getMessageResponse() {
+        return messageResponse;
     }
 
-    public void setReturnMessage(MessageResponse returnMessage) {
-        this.returnMessage = returnMessage;
+    public void setMessageResponse(MessageResponse messageResponse) {
+        this.messageResponse = messageResponse;
     }
 
     public void setUserId(BigInteger userId) {

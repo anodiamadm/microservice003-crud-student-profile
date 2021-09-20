@@ -1,7 +1,7 @@
 package com.anodiam.CRUDStudentProfile.controller;
 
-import com.anodiam.CRUDStudentProfile.serviceRepository.address.State.StateService;
 import com.anodiam.CRUDStudentProfile.serviceRepository.address.Country.CountryService;
+import com.anodiam.CRUDStudentProfile.serviceRepository.address.State.StateService;
 import com.anodiam.CRUDStudentProfile.serviceRepository.address.Suburb.SuburbService;
 import com.anodiam.CRUDStudentProfile.serviceRepository.address.Town.TownService;
 import com.anodiam.CRUDStudentProfile.model.address.Country;

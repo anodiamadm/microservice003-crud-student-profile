@@ -105,12 +105,12 @@ public class StudentProfile {
 
     protected StudentProfile(){}
 
-    public MessageResponse getReturnMessage() {
+    public MessageResponse getMessageResponse() {
         return messageResponse;
     }
 
-    public void setReturnMessage(MessageResponse returnMessage) {
-        this.messageResponse = returnMessage;
+    public void setMessageResponse(MessageResponse messageResponse) {
+        this.messageResponse = messageResponse;
     }
 
     public BigInteger getStudentProfileId() {

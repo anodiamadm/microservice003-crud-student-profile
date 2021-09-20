@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class CountryServiceDal extends CountryServiceImpl {
+class CountryServiceDal extends CountryServiceImpl {
 
     @Autowired
     private CountryRepository countryRepository;

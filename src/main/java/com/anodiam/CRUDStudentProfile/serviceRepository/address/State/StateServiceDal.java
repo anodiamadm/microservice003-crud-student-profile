@@ -8,7 +8,7 @@ import java.math.BigInteger;
 import java.util.List;
 
 @Service
-public class StateServiceDal extends StateServiceImpl {
+class StateServiceDal extends StateServiceImpl {
 
     @Autowired
     private StateService stateService;

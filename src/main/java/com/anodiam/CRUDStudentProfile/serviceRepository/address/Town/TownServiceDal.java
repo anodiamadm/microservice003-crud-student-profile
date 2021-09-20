@@ -8,7 +8,7 @@ import java.math.BigInteger;
 import java.util.List;
 
 @Service
-public class TownServiceDal extends TownServiceImpl {
+class TownServiceDal extends TownServiceImpl {
 
     @Autowired
     private TownService townService;

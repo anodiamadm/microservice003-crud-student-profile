@@ -30,13 +30,21 @@ public class Town {
 	private State state;
 
 	@Transient
-	private MessageResponse returnMessage;
+	private MessageResponse messageResponse;
 
 	public Town(String townName) {
 		this.townName = townName;
 	}
 
 	public Town() {
+	}
+
+	public MessageResponse getMessageResponse() {
+		return messageResponse;
+	}
+
+	public void setMessageResponse(MessageResponse messageResponse) {
+		this.messageResponse = messageResponse;
 	}
 
 	@JsonBackReference

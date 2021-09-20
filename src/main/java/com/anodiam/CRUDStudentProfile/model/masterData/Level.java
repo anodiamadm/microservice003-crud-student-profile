@@ -27,7 +27,7 @@ public class Level {
 	private String levelCode;
 
 	@Transient
-	private MessageResponse returnMessage;
+	private MessageResponse messageResponse;
 
 	public Level(String levelName, String levelCode) {
 		this.levelName = levelName;
@@ -37,12 +37,12 @@ public class Level {
 	public Level() {
 	}
 
-	public MessageResponse getReturnMessage() {
-		return returnMessage;
+	public MessageResponse getMessageResponse() {
+		return messageResponse;
 	}
 
-	public void setReturnMessage(MessageResponse returnMessage) {
-		this.returnMessage = returnMessage;
+	public void setMessageResponse(MessageResponse messageResponse) {
+		this.messageResponse = messageResponse;
 	}
 
 	public void setLevelId(BigInteger levelId) {

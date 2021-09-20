@@ -8,7 +8,7 @@ import java.math.BigInteger;
 import java.util.List;
 
 @Service
-public class SuburbServiceDal extends SuburbServiceImpl {
+class SuburbServiceDal extends SuburbServiceImpl {
 
     @Autowired
     private SuburbService suburbService;

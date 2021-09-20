@@ -27,7 +27,7 @@ public class Board {
 	private String boardCode;
 
 	@Transient
-	private MessageResponse returnMessage;
+	private MessageResponse messageResponse;
 
 	public Board(String boardName, String boardCode) {
 		this.boardName = boardName;
@@ -37,12 +37,12 @@ public class Board {
 	public Board() {
 	}
 
-	public MessageResponse getReturnMessage() {
-		return returnMessage;
+	public MessageResponse getMessageResponse() {
+		return messageResponse;
 	}
 
-	public void setReturnMessage(MessageResponse returnMessage) {
-		this.returnMessage = returnMessage;
+	public void setMessageResponse(MessageResponse messageResponse) {
+		this.messageResponse = messageResponse;
 	}
 
 	public void setBoardId(BigInteger boardId) {
