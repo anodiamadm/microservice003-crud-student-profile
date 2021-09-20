@@ -103,7 +103,7 @@ public class StudentProfile {
     @Transient
     private MessageResponse messageResponse;
 
-    protected StudentProfile(){}
+    public StudentProfile(){}
 
     public MessageResponse getMessageResponse() {
         return messageResponse;

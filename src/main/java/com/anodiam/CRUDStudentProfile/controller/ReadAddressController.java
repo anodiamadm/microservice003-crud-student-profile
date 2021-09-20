@@ -32,7 +32,7 @@ public class ReadAddressController {
     private SuburbService suburbService;
 
 //  @GetMapping("countries") :: List all countries - to populate dropdowns in the frontend
-    @GetMapping("countries")
+    @GetMapping("/countries")
     @ResponseBody
     public List<Country> getAllCountries() throws Exception {
         try {
@@ -44,7 +44,7 @@ public class ReadAddressController {
     }
 
 //  @GetMapping("states") :: List all states of given country - to populate dropdowns in the frontend
-    @GetMapping("states/{country_id}")
+    @GetMapping("/states/{country_id}")
     @ResponseBody
     public List<State> getSatesOfCountry(@PathVariable("country_id")BigInteger country_id) throws Exception {
         try {
@@ -56,7 +56,7 @@ public class ReadAddressController {
     }
 
 //  @GetMapping("towns") :: List all towns of given state - to populate dropdowns in the frontend
-    @GetMapping("towns/{state_id}")
+    @GetMapping("/towns/{state_id}")
     @ResponseBody
     public List<Town> getTownsOfState(@PathVariable("state_id")BigInteger state_id) throws Exception {
         try {
@@ -68,7 +68,7 @@ public class ReadAddressController {
     }
 
 //  @GetMapping("suburbs") :: List all suburbs of given town - to populate dropdowns in the frontend
-    @GetMapping("suburbs/{town_id}")
+    @GetMapping("/suburbs/{town_id}")
     @ResponseBody
     public List<Suburb> getSuburbsOfTown(@PathVariable("town_id")BigInteger town_id) throws Exception {
         try {

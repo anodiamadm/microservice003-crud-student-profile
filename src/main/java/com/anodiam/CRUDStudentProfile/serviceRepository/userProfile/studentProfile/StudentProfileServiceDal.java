@@ -10,41 +10,53 @@ import java.math.BigInteger;
 import java.util.Optional;
 
 @Service
-class StudentProfileServiceDal {
+class StudentProfileServiceDal extends StudentProfileServiceImpl {
 
     @Autowired
     private StudentProfileService studentProfileService;
 
+    @Override
+    public Optional<StudentProfile> findById(BigInteger studentProfileId) {
+        return studentProfileService.findById(studentProfileId);
+    }
+
+    @Override
     public StudentProfile save(StudentProfile studentProfile) {
         MessageResponse messageResponse = new MessageResponse();
         try {
             StudentProfile savedStudentProfile = studentProfileService.save(studentProfile);
             messageResponse = new MessageResponse(ResponseCode.SUCCESS.getID(),
-                    "Successfully Saved Student Profile for ID: " + studentProfile.getStudentProfileId() + ": "
-                            + studentProfile.getFirstName() + "!");
+                    "Successfully Saved Student Profile!");
             savedStudentProfile.setMessageResponse(messageResponse);
             return savedStudentProfile;
         } catch (Exception exception) {
             exception.printStackTrace();
             messageResponse = new MessageResponse(ResponseCode.FAILURE.getID(),
-                    "Failed to Save Student Profile for ID: " + studentProfile.getStudentProfileId()
-                            + ": " + studentProfile.getFirstName() + "!\n" + exception.getMessage());
-            studentProfile.setMessageResponse(messageResponse);
-            return studentProfile;
+                    "Failed to Save Student Profile!");
+            StudentProfile failedToSaveProfile = new StudentProfile();
+            failedToSaveProfile.setMessageResponse(messageResponse);
+            return failedToSaveProfile;
         }
     }
 
-    public Optional<StudentProfile> findById(BigInteger studentProfileId) {
-
+    @Override
+    public StudentProfile modify(StudentProfile studentProfile) {
+        MessageResponse messageResponse = new MessageResponse();
         try {
-            Optional<StudentProfile> optionalStudentProfile =
-                    studentProfileService.findById(studentProfileId);
-            if(optionalStudentProfile.isPresent()) {
-                return optionalStudentProfile;
+            if(studentProfileService.findById(studentProfile.getStudentProfileId())!=null) {
+                StudentProfile savedStudentProfile = studentProfileService.save(studentProfile);
+                messageResponse = new MessageResponse(ResponseCode.SUCCESS.getID(),
+                        "Successfully Modified Student Profile!");
+                savedStudentProfile.setMessageResponse(messageResponse);
+                return savedStudentProfile;
             }
         } catch (Exception exception) {
             exception.printStackTrace();
         }
-        return null;
+        messageResponse = new MessageResponse(ResponseCode.FAILURE.getID(),
+                "Failed to Modify Student Profile!");
+        StudentProfile failedToSaveProfile = new StudentProfile();
+        failedToSaveProfile.setMessageResponse(messageResponse);
+        return failedToSaveProfile;
     }
 }

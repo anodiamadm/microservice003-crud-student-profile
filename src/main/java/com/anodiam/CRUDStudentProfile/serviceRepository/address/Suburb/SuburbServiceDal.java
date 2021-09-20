@@ -1,6 +1,5 @@
 package com.anodiam.CRUDStudentProfile.serviceRepository.address.Suburb;
 
-import com.anodiam.CRUDStudentProfile.model.address.State;
 import com.anodiam.CRUDStudentProfile.model.address.Suburb;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

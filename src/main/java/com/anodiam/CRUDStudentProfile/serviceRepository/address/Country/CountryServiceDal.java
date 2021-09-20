@@ -10,13 +10,13 @@ import java.util.List;
 class CountryServiceDal extends CountryServiceImpl {
 
     @Autowired
-    private CountryService countryService;
+    private CountryRepository countryRepository;
 
     public CountryServiceDal(){}
 
     public List<Country> findAll() {
         try {
-            List<Country> countries = countryService.findAll();
+            List<Country> countries = countryRepository.findAll();
             if(!countries.isEmpty()) {
                 return countries;
             }

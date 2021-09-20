@@ -1,8 +1,6 @@
 package com.anodiam.CRUDStudentProfile.controller;
 
-import com.anodiam.CRUDStudentProfile.serviceRepository.masterData.Board.BoardRepository;
 import com.anodiam.CRUDStudentProfile.serviceRepository.masterData.Board.BoardService;
-import com.anodiam.CRUDStudentProfile.serviceRepository.masterData.Level.LevelRepository;
 import com.anodiam.CRUDStudentProfile.model.masterData.Board;
 import com.anodiam.CRUDStudentProfile.model.masterData.Level;
 import com.anodiam.CRUDStudentProfile.serviceRepository.masterData.Level.LevelService;
@@ -23,7 +21,7 @@ public class ReadMasterDataController {
     private LevelService levelService;
 
 //  @GetMapping("boards") :: List all boards - to populate dropdowns in the frontend
-    @GetMapping("boards")
+    @GetMapping("/boards")
     @ResponseBody
     public List<Board> getAllBoards() throws Exception {
         try {
@@ -35,7 +33,7 @@ public class ReadMasterDataController {
     }
 
 //  @GetMapping("levels") :: List all levels - to populate dropdowns in the frontend
-    @GetMapping("levels")
+    @GetMapping("/levels")
     @ResponseBody
     public List<Level> getAllLevels() throws Exception {
         try {
