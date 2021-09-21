@@ -15,7 +15,9 @@ class LevelServiceDal extends LevelServiceImpl {
     public LevelServiceDal(){}
 
     public List<Level> findAll() {
-
+        System.out.println("\n$$$$\n");
+        System.out.println("\n$$LEVEL DAL$$\n");
+        System.out.println("\n$$$$\n");
         try {
             List<Level> levels = levelService.findAll();
             if(!levels.isEmpty()) {

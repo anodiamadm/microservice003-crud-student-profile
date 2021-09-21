@@ -27,7 +27,7 @@ public class CrudProfileController {
     @Autowired
     private StudentProfileService studentProfileService;
 
-    //  @GetMapping("profile") :: Fetch logged-in user's profile Info
+    //  @GetMapping("/profile") :: List Profile Info of the Current Logged-in User:
     @GetMapping("/profile")
     @ResponseBody
     public StudentProfile getStudentProfileInfo() throws Exception {
@@ -57,7 +57,7 @@ public class CrudProfileController {
         return studentProfile;
     }
 
-    //  @PostMapping("save-profile") :: Fetch logged-in user's profile Info
+    //  @PostMapping("/save-profile") :: Save Profile Info of the Current Logged-in User
     @PostMapping("/save-profile")
     @ResponseBody
     public ResponseEntity<?> saveStudentProfileInfo(@Valid @RequestBody StudentProfile studentProfile)
@@ -85,7 +85,7 @@ public class CrudProfileController {
                 messageResponse.getMessage()));
     }
 
-    //  @PostMapping("modify-profile") :: Fetch logged-in user's profile Info
+    //  @PostMapping("/modify-profile") :: Save Updated Profile Info of the Current Logged-in User
     @PostMapping("/modify-profile")
     @ResponseBody
     public ResponseEntity<?> modifyStudentProfileInfo(@Valid @RequestBody StudentProfile studentProfile)
