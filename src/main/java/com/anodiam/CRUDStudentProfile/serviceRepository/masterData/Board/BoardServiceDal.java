@@ -14,8 +14,8 @@ class BoardServiceDal extends BoardServiceImpl {
 
     public BoardServiceDal(){}
 
+    @Override
     public List<Board> findAll() {
-
         try {
             List<Board> boards = boardService.findAll();
             if(!boards.isEmpty()) {

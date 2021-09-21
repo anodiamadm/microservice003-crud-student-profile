@@ -14,6 +14,7 @@ class LevelServiceDal extends LevelServiceImpl {
 
     public LevelServiceDal(){}
 
+    @Override
     public List<Level> findAll() {
         System.out.println("\n$$$$\n");
         System.out.println("\n$$LEVEL DAL$$\n");

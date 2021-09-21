@@ -19,7 +19,6 @@ class TownServiceDal extends TownServiceImpl {
 
     @Override
     public List<Town> findByStateId(BigInteger stateId) {
-
         try {
             List<Town> towns = townService.findByStateId(stateId);
             if(!towns.isEmpty()) {

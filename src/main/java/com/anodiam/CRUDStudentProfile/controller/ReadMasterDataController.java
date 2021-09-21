@@ -37,6 +37,9 @@ public class ReadMasterDataController {
     @ResponseBody
     public List<Level> getAllLevels() throws Exception {
         try {
+            System.out.println("\n****\n");
+            System.out.println("\n**LEVEL CONTROLLLER**\n");
+            System.out.println("\n****\n");
             return levelService.findAll();
         } catch (Exception e) {
             e.printStackTrace();
