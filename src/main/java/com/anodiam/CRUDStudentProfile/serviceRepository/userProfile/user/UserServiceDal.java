@@ -26,4 +26,15 @@ class UserServiceDal extends UserServiceImpl {
         }
         return null;
     }
+
+    @Override
+    public User save(User user) {
+        try {
+            userRepository.save(user);
+            return user;
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+        return null;
+    }
 }

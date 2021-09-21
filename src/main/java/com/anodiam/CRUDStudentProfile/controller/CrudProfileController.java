@@ -71,7 +71,7 @@ public class CrudProfileController {
                 if(currentUserName!=null) {
                     Optional<User> optionalUser = userService.findByUsername(currentUserName);
                     if(optionalUser.isPresent()) {
-                        StudentProfile savedStudentProfile = studentProfileService.save(studentProfile);
+                        StudentProfile savedStudentProfile = studentProfileService.save(studentProfile, optionalUser.get());
                         return ResponseEntity.ok(new MessageResponse(savedStudentProfile.getMessageResponse().getCode(),
                                 savedStudentProfile.getMessageResponse().getMessage()));
                     }
@@ -99,7 +99,7 @@ public class CrudProfileController {
                 if(currentUserName!=null) {
                     Optional<User> optionalUser = userService.findByUsername(currentUserName);
                     if(optionalUser.isPresent() && studentProfileService.findById(studentProfile.getStudentProfileId())!=null) {
-                        StudentProfile savedStudentProfile = studentProfileService.modify(studentProfile);
+                        StudentProfile savedStudentProfile = studentProfileService.modify(studentProfile, optionalUser.get());
                         return ResponseEntity.ok(new MessageResponse(savedStudentProfile.getMessageResponse().getCode(),
                                 savedStudentProfile.getMessageResponse().getMessage()));
                     }
