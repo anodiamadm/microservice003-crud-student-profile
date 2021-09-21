@@ -48,7 +48,7 @@ public class ReadAddressController {
     @ResponseBody
     public List<State> getSatesOfCountry(@PathVariable("country_id")BigInteger country_id) throws Exception {
         try {
-            return stateService.findByCountryId(country_id);
+            return stateService.findByCountry(country_id);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -60,7 +60,7 @@ public class ReadAddressController {
     @ResponseBody
     public List<Town> getTownsOfState(@PathVariable("state_id")BigInteger state_id) throws Exception {
         try {
-            return townService.findByStateId(state_id);
+            return townService.findByState(state_id);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -72,7 +72,7 @@ public class ReadAddressController {
     @ResponseBody
     public List<Suburb> getSuburbsOfTown(@PathVariable("town_id")BigInteger town_id) throws Exception {
         try {
-            return suburbService.findByTownId(town_id);
+            return suburbService.findByTown(town_id);
         } catch (Exception e) {
             e.printStackTrace();
             return null;

@@ -1,6 +1,8 @@
 package com.anodiam.CRUDStudentProfile.serviceRepository.address.State;
 
+import com.anodiam.CRUDStudentProfile.model.address.Country;
 import com.anodiam.CRUDStudentProfile.model.address.State;
+import com.anodiam.CRUDStudentProfile.serviceRepository.address.Country.CountryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,14 +13,18 @@ import java.util.List;
 class StateServiceDal extends StateServiceImpl {
 
     @Autowired
-    private StateService stateService;
+    private StateRepository stateRepository;
+
+    @Autowired
+    private CountryRepository countryRepository;
 
     public StateServiceDal(){}
 
     @Override
-    public List<State> findByCountryId(BigInteger countryId) {
+    public List<State> findByCountry(BigInteger countryId) {
         try {
-            List<State> states = stateService.findByCountryId(countryId);
+            Country country = countryRepository.getById(countryId);
+            List<State> states = stateRepository.findByCountry(country);
             if(!states.isEmpty()) {
                 return states;
             }

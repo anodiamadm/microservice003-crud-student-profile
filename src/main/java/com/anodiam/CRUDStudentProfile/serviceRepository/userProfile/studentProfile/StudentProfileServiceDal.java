@@ -13,18 +13,18 @@ import java.util.Optional;
 class StudentProfileServiceDal extends StudentProfileServiceImpl {
 
     @Autowired
-    private StudentProfileService studentProfileService;
+    private StudentProfileRepository studentProfileRepository;
 
     @Override
     public Optional<StudentProfile> findById(BigInteger studentProfileId) {
-        return studentProfileService.findById(studentProfileId);
+        return studentProfileRepository.findById(studentProfileId);
     }
 
     @Override
     public StudentProfile save(StudentProfile studentProfile) {
         MessageResponse messageResponse = new MessageResponse();
         try {
-            StudentProfile savedStudentProfile = studentProfileService.save(studentProfile);
+            StudentProfile savedStudentProfile = studentProfileRepository.save(studentProfile);
             messageResponse = new MessageResponse(ResponseCode.SUCCESS.getID(),
                     "Successfully Saved Student Profile!");
             savedStudentProfile.setMessageResponse(messageResponse);
@@ -43,8 +43,8 @@ class StudentProfileServiceDal extends StudentProfileServiceImpl {
     public StudentProfile modify(StudentProfile studentProfile) {
         MessageResponse messageResponse = new MessageResponse();
         try {
-            if(studentProfileService.findById(studentProfile.getStudentProfileId())!=null) {
-                StudentProfile savedStudentProfile = studentProfileService.save(studentProfile);
+            if(studentProfileRepository.findById(studentProfile.getStudentProfileId())!=null) {
+                StudentProfile savedStudentProfile = studentProfileRepository.save(studentProfile);
                 messageResponse = new MessageResponse(ResponseCode.SUCCESS.getID(),
                         "Successfully Modified Student Profile!");
                 savedStudentProfile.setMessageResponse(messageResponse);

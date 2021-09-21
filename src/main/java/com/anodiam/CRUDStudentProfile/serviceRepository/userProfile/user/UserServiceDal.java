@@ -10,14 +10,14 @@ import java.util.Optional;
 class UserServiceDal extends UserServiceImpl {
 
     @Autowired
-    private UserService userService;
+    private UserRepository userRepository;
 
     public UserServiceDal(){}
 
     @Override
     public Optional<User> findByUsername(String username) {
         try {
-            Optional<User> optionalUser = userService.findByUsername(username);
+            Optional<User> optionalUser = userRepository.findByUsername(username);
             if(optionalUser.isPresent()) {
                 return optionalUser;
             }

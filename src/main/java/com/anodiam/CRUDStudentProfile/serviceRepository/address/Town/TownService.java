@@ -6,5 +6,5 @@ import java.math.BigInteger;
 import java.util.List;
 
 public interface TownService {
-    List<Town> findByStateId(BigInteger stateId);
+    List<Town> findByState(BigInteger stateId);
 }

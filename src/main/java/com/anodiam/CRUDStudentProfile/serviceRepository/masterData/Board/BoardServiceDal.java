@@ -10,14 +10,14 @@ import java.util.List;
 class BoardServiceDal extends BoardServiceImpl {
 
     @Autowired
-    private BoardService boardService;
+    private BoardRepository boardRepository;
 
     public BoardServiceDal(){}
 
     @Override
     public List<Board> findAll() {
         try {
-            List<Board> boards = boardService.findAll();
+            List<Board> boards = boardRepository.findAll();
             if(!boards.isEmpty()) {
                 return boards;
             }

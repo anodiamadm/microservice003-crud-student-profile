@@ -1,6 +1,9 @@
 package com.anodiam.CRUDStudentProfile.serviceRepository.address.Suburb;
 
+import com.anodiam.CRUDStudentProfile.model.address.State;
 import com.anodiam.CRUDStudentProfile.model.address.Suburb;
+import com.anodiam.CRUDStudentProfile.model.address.Town;
+import com.anodiam.CRUDStudentProfile.serviceRepository.address.Town.TownRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,14 +14,18 @@ import java.util.List;
 class SuburbServiceDal extends SuburbServiceImpl {
 
     @Autowired
-    private SuburbService suburbService;
+    private SuburbRepository suburbRepository;
+
+    @Autowired
+    private TownRepository townRepository;
 
     public SuburbServiceDal(){}
 
     @Override
-    public List<Suburb> findByTownId(BigInteger townId) {
+    public List<Suburb> findByTown(BigInteger townId) {
         try {
-            List<Suburb> suburbs = suburbService.findByTownId(townId);
+            Town town = townRepository.getById(townId);
+            List<Suburb> suburbs = suburbRepository.findByTown(town);
             if(!suburbs.isEmpty()) {
                 return suburbs;
             }

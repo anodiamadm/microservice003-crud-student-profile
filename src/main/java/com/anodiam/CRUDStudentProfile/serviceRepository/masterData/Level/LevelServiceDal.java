@@ -10,17 +10,14 @@ import java.util.List;
 class LevelServiceDal extends LevelServiceImpl {
 
     @Autowired
-    private LevelService levelService;
+    private LevelRepository levelRepository;
 
     public LevelServiceDal(){}
 
     @Override
     public List<Level> findAll() {
-        System.out.println("\n$$$$\n");
-        System.out.println("\n$$LEVEL DAL$$\n");
-        System.out.println("\n$$$$\n");
         try {
-            List<Level> levels = levelService.findAll();
+            List<Level> levels = levelRepository.findAll();
             if(!levels.isEmpty()) {
                 return levels;
             }

@@ -6,5 +6,5 @@ import java.math.BigInteger;
 import java.util.List;
 
 public interface SuburbService {
-    List<Suburb> findByTownId(BigInteger townId);
+    List<Suburb> findByTown(BigInteger townId);
 }
