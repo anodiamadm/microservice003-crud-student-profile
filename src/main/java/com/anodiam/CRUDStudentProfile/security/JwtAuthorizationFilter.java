@@ -1,7 +1,7 @@
 package com.anodiam.CRUDStudentProfile.security;
 
-import com.anodiam.CRUDStudentProfile.db.repository.UserRepository;
 import com.anodiam.CRUDStudentProfile.model.User;
+import com.anodiam.CRUDStudentProfile.serviceRepository.userProfile.user.UserRepository;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,6 +14,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Optional;
 
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
@@ -48,15 +49,16 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
         String token = request.getHeader(jwtProperties.getHEADER_STRING());
         if(token != null) {
             try {
-                    //            Parse the token and validate it
+//            Parse the token and validate it
                 String userName = JWT.require(Algorithm.HMAC512(jwtProperties.getSECRET().getBytes()))
                         .build()
                         .verify(token.replace(jwtProperties.getTOKEN_PREFIX(), ""))
                         .getSubject();
-    //            Search in the DB if we find the user by Token Subject (username)
-    //            if so then grab user details and create Spring Auth token using username, pass, authorities / roles
+//            Search in the DB if we find the user by Token Subject (username)
+//            if so then grab user details and create Spring Auth token using username, pass, authorities / roles
                 if(userName != null) {
-                    User user = userRepository.findByUsername(userName);
+                    User user = userRepository.findByUsername(userName).get();
+//                    Optional<User> user = userService.findByUsername(currentUserName);
                     UserPrincipal principal = new UserPrincipal(user);
                     UsernamePasswordAuthenticationToken authenticationToken = new
                             UsernamePasswordAuthenticationToken(userName, null, principal.getAuthorities());

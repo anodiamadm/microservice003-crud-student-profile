@@ -1,5 +1,6 @@
 package com.anodiam.CRUDStudentProfile.model;
 
+import com.anodiam.CRUDStudentProfile.model.common.MessageResponse;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.LazyCollection;
@@ -51,11 +52,22 @@ public class User {
     @JoinColumn(name="student_profile_id")
     private StudentProfile studentProfile;
 
+    @Transient
+    private MessageResponse messageResponse;
+
     public User(String username, String password) {
         this.username = username;
         this.password = password;
         this.active=1;
         this.dateCreated = new Date();
+    }
+
+    public MessageResponse getMessageResponse() {
+        return messageResponse;
+    }
+
+    public void setMessageResponse(MessageResponse messageResponse) {
+        this.messageResponse = messageResponse;
     }
 
     public void setUserId(BigInteger userId) {

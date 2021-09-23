@@ -1,5 +1,6 @@
 package com.anodiam.CRUDStudentProfile.model.address;
 
+import com.anodiam.CRUDStudentProfile.model.common.MessageResponse;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -33,11 +34,22 @@ public class Suburb {
 	@JsonIgnore
 	private Town town;
 
+	@Transient
+	private MessageResponse messageResponse;
+
 	public Suburb(String suburbName) {
 		this.suburbName = suburbName;
 	}
 
 	public Suburb() {
+	}
+
+	public MessageResponse getMessageResponse() {
+		return messageResponse;
+	}
+
+	public void setMessageResponse(MessageResponse messageResponse) {
+		this.messageResponse = messageResponse;
 	}
 
 	@JsonBackReference

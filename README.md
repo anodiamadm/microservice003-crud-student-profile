@@ -2,10 +2,11 @@
 ## API End Points
 
 ### GET :: /api/user/
-	profile :: List Profile Info of the Current Logged-in User: state the name of fields here....
+	/profile :: List Profile Info of the Current Logged-in User
 
 ### POST :: /api/user/
-	profile :: Save Updated Profile Info of the Current Logged-in User
+	/save-profile :: Save Profile Info of the Current Logged-in User
+	/modify-profile :: Save Updated Profile Info of the Current Logged-in User
 
 ### GET :: /api/master-data/
 	boards :: List all boards - to populate dropdowns in the frontend

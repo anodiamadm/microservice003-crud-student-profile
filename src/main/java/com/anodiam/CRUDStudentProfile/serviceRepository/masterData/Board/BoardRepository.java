@@ -1,4 +1,4 @@
-package com.anodiam.CRUDStudentProfile.db.repository.masterData;
+package com.anodiam.CRUDStudentProfile.serviceRepository.masterData.Board;
 
 import com.anodiam.CRUDStudentProfile.model.masterData.Board;
 import org.springframework.data.jpa.repository.JpaRepository;

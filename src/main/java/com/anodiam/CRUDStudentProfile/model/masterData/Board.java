@@ -1,5 +1,6 @@
 package com.anodiam.CRUDStudentProfile.model.masterData;
 
+import com.anodiam.CRUDStudentProfile.model.common.MessageResponse;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -25,12 +26,23 @@ public class Board {
 	@Column(name = "board_short_name", nullable = false, updatable = false, length = 15)
 	private String boardCode;
 
+	@Transient
+	private MessageResponse messageResponse;
+
 	public Board(String boardName, String boardCode) {
 		this.boardName = boardName;
 		this.boardCode = boardCode;
 	}
 
 	public Board() {
+	}
+
+	public MessageResponse getMessageResponse() {
+		return messageResponse;
+	}
+
+	public void setMessageResponse(MessageResponse messageResponse) {
+		this.messageResponse = messageResponse;
 	}
 
 	public void setBoardId(BigInteger boardId) {

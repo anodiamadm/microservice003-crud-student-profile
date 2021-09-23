@@ -1,6 +1,6 @@
 package com.anodiam.CRUDStudentProfile.security;
 
-import com.anodiam.CRUDStudentProfile.db.repository.UserRepository;
+import com.anodiam.CRUDStudentProfile.serviceRepository.userProfile.user.UserRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

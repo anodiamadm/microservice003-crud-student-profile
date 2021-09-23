@@ -4,6 +4,7 @@ import com.anodiam.CRUDStudentProfile.model.address.Country;
 import com.anodiam.CRUDStudentProfile.model.address.State;
 import com.anodiam.CRUDStudentProfile.model.address.Suburb;
 import com.anodiam.CRUDStudentProfile.model.address.Town;
+import com.anodiam.CRUDStudentProfile.model.common.MessageResponse;
 import com.anodiam.CRUDStudentProfile.model.masterData.Board;
 import com.anodiam.CRUDStudentProfile.model.masterData.Level;
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -99,7 +100,18 @@ public class StudentProfile {
     @JsonIgnore
     private Suburb suburb;
 
-    protected StudentProfile(){}
+    @Transient
+    private MessageResponse messageResponse;
+
+    public StudentProfile(){}
+
+    public MessageResponse getMessageResponse() {
+        return messageResponse;
+    }
+
+    public void setMessageResponse(MessageResponse messageResponse) {
+        this.messageResponse = messageResponse;
+    }
 
     public BigInteger getStudentProfileId() {
         return studentProfileId;
