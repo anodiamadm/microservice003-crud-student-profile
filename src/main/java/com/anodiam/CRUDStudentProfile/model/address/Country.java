@@ -6,55 +6,46 @@ import javax.persistence.*;
 import java.math.BigInteger;
 
 @Entity
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-@Table(name = "mst_country",
-		uniqueConstraints={@UniqueConstraint(name="uk_country_name", columnNames="country_name"),
-							@UniqueConstraint(name="uk_country_code", columnNames="country_code")},
-		indexes={@Index(name="idx_country_name", columnList="country_name"),
-					@Index(name="idx_country_code", columnList="country_code")})
+@Table(name = "mst_country")
 public class Country {
 
 	@Id
-	@Column(name = "country_id", nullable = false, updatable = false)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private BigInteger countryId;
+	private BigInteger country_id;
 
-	@Column(name = "country_name", nullable = false, updatable = false, length = 255)
-	private String countryName;
+	private String country_code;
 
-	@Column(name = "country_code", nullable = false, updatable = false, length = 15)
-	private String countryCode;
+	private String country_name;
 
-	public Country(String countryName, String countryCode) {
-		this.countryName = countryName;
-		this.countryCode = countryCode;
+	public Country() {}
+
+	public Country(BigInteger country_id,String country_code, String country_name) {
+		this.country_id=country_id;
+		this.country_code = country_code;
+		this.country_name = country_name;
 	}
 
-	public Country() {
+	public BigInteger getCountry_id() {
+		return country_id;
 	}
 
-	public void setCountryId(BigInteger countryId) {
-		this.countryId = countryId;
+	public void setCountry_id(BigInteger country_id) {
+		this.country_id = country_id;
 	}
 
-	public BigInteger getCountryId() {
-		return countryId;
+	public String getCountry_code() {
+		return country_code;
 	}
 
-	public String getCountryName() {
-		return countryName;
+	public void setCountry_code(String country_code) {
+		this.country_code = country_code;
 	}
 
-	public void setCountryName(String countryName) {
-		this.countryName = countryName;
+	public String getCountry_name() {
+		return country_name;
 	}
 
-	public String getCountryCode() {
-		return countryCode;
+	public void setCountry_name(String country_name) {
+		this.country_name = country_name;
 	}
-
-	public void setCountryCode(String countryCode) {
-		this.countryCode = countryCode;
-	}
-
 }
