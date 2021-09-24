@@ -1,29 +1,20 @@
 package com.anodiam.CRUDStudentProfile.model.masterData;
 
 import com.anodiam.CRUDStudentProfile.model.common.MessageResponse;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.math.BigInteger;
 
 @Entity
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-@Table(name = "mst_level",
-		uniqueConstraints={@UniqueConstraint(name="uk_level_name", columnNames="level_name"),
-							@UniqueConstraint(name="uk_level_code", columnNames="level_code")},
-		indexes={@Index(name="idx_level_name", columnList="level_name"),
-					@Index(name="idx_level_code", columnList="level_code")})
+@Table(name = "mst_level")
 public class Level {
 
 	@Id
-	@Column(name = "level_id", nullable = false, updatable = false)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private BigInteger levelId;
 
-	@Column(name = "level_name", nullable = false, updatable = false, length = 63)
 	private String levelName;
 
-	@Column(name = "level_code", nullable = false, updatable = false, length = 15)
 	private String levelCode;
 
 	@Transient

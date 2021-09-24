@@ -1,37 +1,28 @@
 package com.anodiam.CRUDStudentProfile.model.masterData;
 
 import com.anodiam.CRUDStudentProfile.model.common.MessageResponse;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.math.BigInteger;
 
 @Entity
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-@Table(name = "mst_board",
-		uniqueConstraints={@UniqueConstraint(name="uk_board_name", columnNames="board_name"),
-							@UniqueConstraint(name="uk_board_short_name", columnNames="board_short_name")},
-		indexes={@Index(name="idx_board_name", columnList="board_name"),
-					@Index(name="idx_board_short_name", columnList="board_short_name")})
+@Table(name = "mst_board")
 public class Board {
 
 	@Id
-	@Column(name = "board_id", nullable = false, updatable = false)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private BigInteger boardId;
 
-	@Column(name = "board_name", nullable = false, updatable = false, length = 255)
 	private String boardName;
 
-	@Column(name = "board_short_name", nullable = false, updatable = false, length = 15)
-	private String boardCode;
+	private String boardShortName;
 
 	@Transient
 	private MessageResponse messageResponse;
 
-	public Board(String boardName, String boardCode) {
+	public Board(String boardName, String boardShortName) {
 		this.boardName = boardName;
-		this.boardCode = boardCode;
+		this.boardShortName = boardShortName;
 	}
 
 	public Board() {
@@ -61,11 +52,11 @@ public class Board {
 		this.boardName = boardName;
 	}
 
-	public String getBoardCode() {
-		return boardCode;
+	public String getBoardShortName() {
+		return boardShortName;
 	}
 
-	public void setBoardCode(String boardCode) {
-		this.boardCode = boardCode;
+	public void setBoardShortName(String boardShortName) {
+		this.boardShortName = boardShortName;
 	}
 }

@@ -2,31 +2,23 @@ package com.anodiam.CRUDStudentProfile.model.address;
 
 import com.anodiam.CRUDStudentProfile.model.common.MessageResponse;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.math.BigInteger;
 
 @Entity
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-@Table(name = "mst_town",
-		uniqueConstraints={@UniqueConstraint(name="uk_town_name", columnNames="town_name")},
-		indexes={@Index(name="idx_town_name", columnList="town_name")})
+@Table(name = "mst_town")
 public class Town {
 
 	@Id
-	@Column(name = "town_id", nullable = false, updatable = false)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private BigInteger townId;
 
-	@Column(name = "town_name", nullable = false, updatable = false, length = 255)
 	private String townName;
 
 	@ManyToOne
 	@JoinColumn(name = "state_id")
 	@JsonBackReference
-	@JsonIgnore
 	private State state;
 
 	@Transient
@@ -48,7 +40,6 @@ public class Town {
 	}
 
 	@JsonBackReference
-	@JsonIgnore
 	public State getState() {
 		return state;
 	}

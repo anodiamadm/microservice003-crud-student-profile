@@ -17,10 +17,10 @@ public class Country
 
 	private String country_name;
 
-	public Country() {}
-
 	@Transient
 	private MessageResponse messageResponse;
+
+	public Country() {}
 
 	public Country(BigInteger country_id,String country_code, String country_name) {
 		this.country_id=country_id;
