@@ -23,7 +23,7 @@ class StateServiceDal extends StateServiceImpl {
     @Override
     public List<State> findByCountry(BigInteger countryId) {
         try {
-            Country country = countryRepository.getById(countryId);
+            Country country = countryRepository.findById(countryId).get();
             List<State> states = stateRepository.findByCountry(country);
             if(!states.isEmpty()) {
                 return states;

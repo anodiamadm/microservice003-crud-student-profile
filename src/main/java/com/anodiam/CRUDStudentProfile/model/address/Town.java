@@ -1,7 +1,6 @@
 package com.anodiam.CRUDStudentProfile.model.address;
 
 import com.anodiam.CRUDStudentProfile.model.common.MessageResponse;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
 import java.math.BigInteger;
@@ -18,7 +17,6 @@ public class Town {
 
 	@ManyToOne
 	@JoinColumn(name = "state_id")
-	@JsonBackReference
 	private State state;
 
 	@Transient
@@ -39,7 +37,6 @@ public class Town {
 		this.messageResponse = messageResponse;
 	}
 
-	@JsonBackReference
 	public State getState() {
 		return state;
 	}

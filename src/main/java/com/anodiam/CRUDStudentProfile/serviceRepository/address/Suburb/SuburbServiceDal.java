@@ -24,7 +24,7 @@ class SuburbServiceDal extends SuburbServiceImpl {
     @Override
     public List<Suburb> findByTown(BigInteger townId) {
         try {
-            Town town = townRepository.getById(townId);
+            Town town = townRepository.findById(townId).get();
             List<Suburb> suburbs = suburbRepository.findByTown(town);
             if(!suburbs.isEmpty()) {
                 return suburbs;

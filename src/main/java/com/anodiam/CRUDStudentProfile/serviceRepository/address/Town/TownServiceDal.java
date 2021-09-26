@@ -26,7 +26,7 @@ class TownServiceDal extends TownServiceImpl {
     @Override
     public List<Town> findByState(BigInteger stateId) {
         try {
-            State state = stateRepository.getById(stateId);
+            State state = stateRepository.findById(stateId).get();
             List<Town> towns = townRepository.findByState(state);
             if(!towns.isEmpty()) {
                 return towns;

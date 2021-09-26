@@ -1,9 +1,6 @@
 package com.anodiam.CRUDStudentProfile.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.anodiam.CRUDStudentProfile.model.common.MessageResponse;
 
 import javax.persistence.*;
 import java.math.BigInteger;
@@ -11,30 +8,34 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 @Entity
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-@Table(name = "mst_role",
-		uniqueConstraints={@UniqueConstraint(name="uk_role_name", columnNames="role_name")},
-		indexes={@Index(name="idx_role_name", columnList="role_name")})
+@Table(name = "mst_role")
 public class Role {
 
 	@Id
-	@Column(name = "role_id", nullable = false, updatable = false)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private BigInteger roleId;
 
-	@Column(name = "role_name", nullable = false, updatable = false, length = 255)
 	private String roleName;
 
 	@ManyToMany(mappedBy = "roleList")
-	@JsonBackReference
-	@JsonIgnore
 	private Collection<User> userList = new ArrayList<>();
+
+	@Transient
+	private MessageResponse messageResponse;
 
 	public Role(String roleName) {
 		this.roleName = roleName;
 	}
 
 	public Role() {
+	}
+
+	public MessageResponse getMessageResponse() {
+		return messageResponse;
+	}
+
+	public void setMessageResponse(MessageResponse messageResponse) {
+		this.messageResponse = messageResponse;
 	}
 
 	public void setRoleId(BigInteger roleId) {
@@ -53,8 +54,6 @@ public class Role {
 		this.roleName = roleName;
 	}
 
-	@JsonBackReference
-	@JsonIgnore
 	public Collection<User> getUserList() {
 		return userList;
 	}

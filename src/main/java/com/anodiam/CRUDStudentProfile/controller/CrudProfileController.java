@@ -4,6 +4,7 @@ import com.anodiam.CRUDStudentProfile.model.StudentProfile;
 import com.anodiam.CRUDStudentProfile.model.User;
 import com.anodiam.CRUDStudentProfile.model.common.MessageResponse;
 import com.anodiam.CRUDStudentProfile.model.common.ResponseCode;
+import com.anodiam.CRUDStudentProfile.model.masterData.Board;
 import com.anodiam.CRUDStudentProfile.serviceRepository.userProfile.studentProfile.StudentProfileService;
 import com.anodiam.CRUDStudentProfile.serviceRepository.userProfile.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("api/user")
@@ -24,85 +24,43 @@ public class CrudProfileController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private StudentProfileService studentProfileService;
-
     //  @GetMapping("/profile") :: List Profile Info of the Current Logged-in User:
     @GetMapping("/profile")
     @ResponseBody
-    public StudentProfile getStudentProfileInfo() throws Exception {
+    public User getStudentProfileInfo() throws Exception {
+        User user = new User();
         MessageResponse messageResponse = new MessageResponse();
         try {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             if (!(auth instanceof AnonymousAuthenticationToken)) {
                 String currentUserName = auth.getName();
                 if(currentUserName!=null) {
-                    Optional<User> optionalUser = userService.findByUsername(currentUserName);
-                    if(optionalUser.isPresent() && optionalUser.get().getStudentProfile().getStudentProfileId()!=null) {
-                        StudentProfile returnedStudentProfile = optionalUser.get().getStudentProfile();
-                        messageResponse = new MessageResponse(ResponseCode.SUCCESS.getID(),
-                                "Required Student Profile Found!");
-                        returnedStudentProfile.setMessageResponse(messageResponse);
-                        return returnedStudentProfile;
-                    }
+                    User returnedUser = userService.findByUsername(currentUserName).get();
+                    return returnedUser;
                 }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            messageResponse = new MessageResponse(ResponseCode.FAILURE.getID(), exception.getMessage());
+            user.setMessageResponse(messageResponse);
         }
-        StudentProfile studentProfile = new StudentProfile();
-        messageResponse = new MessageResponse(ResponseCode.FAILURE.getID(),
-                "Student Profile Not Found!");
-        studentProfile.setMessageResponse(messageResponse);
-        return studentProfile;
+        return user;
     }
 
     //  @PostMapping("/save-profile") :: Save Profile Info of the Current Logged-in User
     @PostMapping("/save-profile")
     @ResponseBody
-    public ResponseEntity<?> saveStudentProfileInfo(@Valid @RequestBody StudentProfile studentProfile)
+    public ResponseEntity<?> saveStudentProfileInfo(@Valid @RequestBody User user)
             throws Exception {
         MessageResponse messageResponse = new MessageResponse();
-        messageResponse.setMessage("Student Profile not saved!");
         try {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             if (!(auth instanceof AnonymousAuthenticationToken)) {
                 String currentUserName = auth.getName();
                 if(currentUserName!=null) {
-                    Optional<User> optionalUser = userService.findByUsername(currentUserName);
-                    if(optionalUser.isPresent()) {
-                        StudentProfile savedStudentProfile = studentProfileService.save(studentProfile, optionalUser.get());
-                        return ResponseEntity.ok(new MessageResponse(savedStudentProfile.getMessageResponse().getCode(),
-                                savedStudentProfile.getMessageResponse().getMessage()));
-                    }
-                }
-            }
-        } catch (Exception exception) {
-            exception.printStackTrace();
-            messageResponse.setMessage(exception.getMessage());
-        }
-        return ResponseEntity.ok(new MessageResponse(ResponseCode.FAILURE.getID(),
-                messageResponse.getMessage()));
-    }
-
-    //  @PostMapping("/modify-profile") :: Save Updated Profile Info of the Current Logged-in User
-    @PostMapping("/modify-profile")
-    @ResponseBody
-    public ResponseEntity<?> modifyStudentProfileInfo(@Valid @RequestBody StudentProfile studentProfile)
-            throws Exception {
-        MessageResponse messageResponse = new MessageResponse();
-        messageResponse.setMessage("Student Profile not modified!");
-        try {
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            if (!(auth instanceof AnonymousAuthenticationToken)) {
-                String currentUserName = auth.getName();
-                if(currentUserName!=null) {
-                    Optional<User> optionalUser = userService.findByUsername(currentUserName);
-                    if(optionalUser.isPresent() && studentProfileService.findById(studentProfile.getStudentProfileId())!=null) {
-                        StudentProfile savedStudentProfile = studentProfileService.modify(studentProfile, optionalUser.get());
-                        return ResponseEntity.ok(new MessageResponse(savedStudentProfile.getMessageResponse().getCode(),
-                                savedStudentProfile.getMessageResponse().getMessage()));
-                    }
+                    User savedUser = userService.save(user);
+                    return ResponseEntity.ok(new MessageResponse(ResponseCode.SUCCESS.getID(),
+                            "User SAVED!"));
                 }
             }
         } catch (Exception exception) {

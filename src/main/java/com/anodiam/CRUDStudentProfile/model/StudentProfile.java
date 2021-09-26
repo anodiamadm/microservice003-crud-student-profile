@@ -7,97 +7,47 @@ import com.anodiam.CRUDStudentProfile.model.address.Town;
 import com.anodiam.CRUDStudentProfile.model.common.MessageResponse;
 import com.anodiam.CRUDStudentProfile.model.masterData.Board;
 import com.anodiam.CRUDStudentProfile.model.masterData.Level;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.math.BigInteger;
 
 @Entity
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-@Table(name = "student_profile",
-        uniqueConstraints={@UniqueConstraint(name="uk_email", columnNames="email")},
-        indexes={@Index(name="idx_first_name", columnList="first_name"),
-                @Index(name="idx_middle_name", columnList="middle_name"),
-                @Index(name="idx_last_name", columnList="last_name"),
-                @Index(name="idx_email", columnList="email"),
-                @Index(name="idx_phone_number", columnList="phone_number"),
-                @Index(name="idx_guardians_email", columnList="guardians_email"),
-                @Index(name="idx_guardians_phone_number", columnList="guardians_phone_number"),
-                @Index(name="idx_board_id", columnList="board_id"),
-                @Index(name="idx_level_id", columnList="level_id"),
-                @Index(name="idx_address", columnList="country_id,state_id,town_id,suburb_id")})
+@Table(name = "student_profile")
 public class StudentProfile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "student_profile_id", nullable = false)
     private BigInteger studentProfileId;
 
-    @Column(name = "first_name", nullable = true, length = 255)
     private String firstName;
 
-    @Column(name = "middle_name", nullable = true, length = 255)
     private String middleName;
 
-    @Column(name = "last_name", nullable = true, length = 255)
     private String lastName;
 
-    @Column(name = "email", nullable = true, length = 255)
     private String email;
 
-    @Column(name = "phone_number", nullable = true, length = 255)
     private String phoneNumber;
 
-    @Column(name = "guardians_first_name", nullable = true, length = 255)
     private String guardiansFirstName;
 
-    @Column(name = "guardians_last_name", nullable = true, length = 255)
     private String guardiansLastName;
 
-    @Column(name = "guardians_email", nullable = true, length = 255)
     private String guardiansEmail;
 
-    @Column(name = "guardians_phone_number", nullable = true, length = 255)
     private String guardiansPhoneNumber;
 
-    @Column(name = "profile_image_link", nullable = true, length = 1023)
     private String profileImageLink;
 
     @ManyToOne
     @JoinColumn(name = "board_id")
-    @JsonBackReference
-    @JsonIgnore
     private Board board;
 
     @ManyToOne
     @JoinColumn(name = "level_id")
-    @JsonBackReference
-    @JsonIgnore
     private Level level;
 
     @ManyToOne
-    @JoinColumn(name = "country_id")
-    @JsonBackReference
-    @JsonIgnore
-    private Country country;
-
-    @ManyToOne
-    @JoinColumn(name = "state_id")
-    @JsonBackReference
-    @JsonIgnore
-    private State state;
-
-    @ManyToOne
-    @JoinColumn(name = "town_id")
-    @JsonBackReference
-    @JsonIgnore
-    private Town town;
-
-    @ManyToOne
     @JoinColumn(name = "suburb_id")
-    @JsonBackReference
-    @JsonIgnore
     private Suburb suburb;
 
     @Transient
@@ -201,8 +151,6 @@ public class StudentProfile {
         this.guardiansPhoneNumber = guardiansPhoneNumber;
     }
 
-    @JsonBackReference
-    @JsonIgnore
     public Board getBoard() {
         return board;
     }
@@ -211,8 +159,6 @@ public class StudentProfile {
         this.board = board;
     }
 
-    @JsonBackReference
-    @JsonIgnore
     public Level getLevel() {
         return level;
     }
@@ -221,38 +167,6 @@ public class StudentProfile {
         this.level = level;
     }
 
-    @JsonBackReference
-    @JsonIgnore
-    public Country getCountry() {
-        return country;
-    }
-
-    public void setCountry(Country country) {
-        this.country = country;
-    }
-
-    @JsonBackReference
-    @JsonIgnore
-    public State getState() {
-        return state;
-    }
-
-    public void setState(State state) {
-        this.state = state;
-    }
-
-    @JsonBackReference
-    @JsonIgnore
-    public Town getTown() {
-        return town;
-    }
-
-    public void setTown(Town town) {
-        this.town = town;
-    }
-
-    @JsonBackReference
-    @JsonIgnore
     public Suburb getSuburb() {
         return suburb;
     }

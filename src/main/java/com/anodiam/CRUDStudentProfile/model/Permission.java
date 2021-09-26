@@ -1,8 +1,6 @@
 package com.anodiam.CRUDStudentProfile.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.anodiam.CRUDStudentProfile.model.common.MessageResponse;
 
 import javax.persistence.*;
 import java.math.BigInteger;
@@ -10,30 +8,34 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 @Entity
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-@Table(name = "mst_permission",
-		uniqueConstraints={@UniqueConstraint(name="uk_permission_name", columnNames="permission_name")},
-		indexes={@Index(name="idx_permission_name", columnList="permission_name")})
+@Table(name = "mst_permission")
 public class Permission {
 
 	@Id
-	@Column(name = "permission_id", nullable = false, updatable = false)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private BigInteger permissionId;
 
-	@Column(name = "permission_name", nullable = false, updatable = false, length = 255)
 	private String permissionName;
 
 	@ManyToMany(mappedBy = "permissionList")
-	@JsonBackReference
-	@JsonIgnore
 	private Collection<User> userList = new ArrayList<>();
+
+	@Transient
+	private MessageResponse messageResponse;
 
 	public Permission(String permissionName) {
 		this.permissionName = permissionName;
 	}
 
 	public Permission() {
+	}
+
+	public MessageResponse getMessageResponse() {
+		return messageResponse;
+	}
+
+	public void setMessageResponse(MessageResponse messageResponse) {
+		this.messageResponse = messageResponse;
 	}
 
 	public void setPermissionId(BigInteger permissionId) {
@@ -52,8 +54,6 @@ public class Permission {
 		this.permissionName = permissionName;
 	}
 
-	@JsonBackReference
-	@JsonIgnore
 	public Collection<User> getUserList() {
 		return userList;
 	}
