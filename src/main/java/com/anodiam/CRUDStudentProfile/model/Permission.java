@@ -1,6 +1,8 @@
 package com.anodiam.CRUDStudentProfile.model;
 
 import com.anodiam.CRUDStudentProfile.model.common.MessageResponse;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.math.BigInteger;
@@ -18,6 +20,8 @@ public class Permission {
 	private String permissionName;
 
 	@ManyToMany(mappedBy = "permissionList")
+	@JsonBackReference
+	@JsonIgnore
 	private Collection<User> userList = new ArrayList<>();
 
 	@Transient
@@ -54,6 +58,8 @@ public class Permission {
 		this.permissionName = permissionName;
 	}
 
+	@JsonBackReference
+	@JsonIgnore
 	public Collection<User> getUserList() {
 		return userList;
 	}

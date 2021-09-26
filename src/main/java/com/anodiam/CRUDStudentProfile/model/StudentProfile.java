@@ -1,9 +1,6 @@
 package com.anodiam.CRUDStudentProfile.model;
 
-import com.anodiam.CRUDStudentProfile.model.address.Country;
-import com.anodiam.CRUDStudentProfile.model.address.State;
 import com.anodiam.CRUDStudentProfile.model.address.Suburb;
-import com.anodiam.CRUDStudentProfile.model.address.Town;
 import com.anodiam.CRUDStudentProfile.model.common.MessageResponse;
 import com.anodiam.CRUDStudentProfile.model.masterData.Board;
 import com.anodiam.CRUDStudentProfile.model.masterData.Level;
