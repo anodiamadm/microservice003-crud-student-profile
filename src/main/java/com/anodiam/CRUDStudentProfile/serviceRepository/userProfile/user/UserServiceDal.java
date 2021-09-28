@@ -1,6 +1,8 @@
 package com.anodiam.CRUDStudentProfile.serviceRepository.userProfile.user;
 
 import com.anodiam.CRUDStudentProfile.model.User;
+import com.anodiam.CRUDStudentProfile.model.common.MessageResponse;
+import com.anodiam.CRUDStudentProfile.model.common.ResponseCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,11 +32,13 @@ class UserServiceDal extends UserServiceImpl {
     @Override
     public User save(User user) {
         try {
-            userRepository.save(user);
-            return user;
+            User userToSave = userRepository.save(user);
+            userToSave.setMessageResponse(new MessageResponse(ResponseCode.SUCCESS.getID(), "User Saved Successfully!"));
+            return userToSave;
         } catch (Exception exception) {
             exception.printStackTrace();
+            user.setMessageResponse(new MessageResponse(ResponseCode.FAILURE.getID(), exception.getMessage()));
+            return user;
         }
-        return null;
     }
 }
