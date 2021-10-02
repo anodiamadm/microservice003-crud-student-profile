@@ -7,6 +7,8 @@ import com.anodiam.CRUDStudentProfile.model.common.ResponseCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
+
 @Service
 class StudentProfileServiceDal extends StudentProfileServiceImpl {
 
@@ -26,5 +28,21 @@ class StudentProfileServiceDal extends StudentProfileServiceImpl {
             studentProfile.setMessageResponse(new MessageResponse(ResponseCode.FAILURE.getID(), exception.getMessage()));
             return studentProfile;
         }
+    }
+
+    @Override
+    public MessageResponse removeOne(BigInteger studentProfileId)
+    {
+        MessageResponse messageResponse = new MessageResponse();
+        try
+        {
+            studentProfileRepository.deleteById(studentProfileId);
+            messageResponse = new MessageResponse(ResponseCode.SUCCESS.getID(), "Student Profile deleted successfully!");
+        }catch(Exception exception)
+        {
+            exception.printStackTrace();
+            messageResponse = new MessageResponse(ResponseCode.FAILURE.getID(),"Failed to delete Student Profile");
+        }
+        return messageResponse;
     }
 }

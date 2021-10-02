@@ -13,6 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.math.BigInteger;
 
@@ -53,58 +54,61 @@ public class CrudProfileController {
     //  @PostMapping("/save-profile") :: Save Profile Info of the Current Logged-in User
     @PostMapping("/save-profile")
     @ResponseBody
-    public ResponseEntity<?> saveStudentProfileInfo(@Valid @RequestBody User user)
-            throws Exception {
+    @Transactional
+    public ResponseEntity<?> saveStudentProfileInfo(@Valid @RequestBody User user) throws Exception {
         MessageResponse messageResponse = new MessageResponse();
-        messageResponse.setMessage("Invalid User: Student profile already exists!");
         try {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             if (!(auth instanceof AnonymousAuthenticationToken)) {
                 String currentUserName = auth.getName();
                 User currentUser = userService.findByUsername(currentUserName).get();
-                if(currentUserName!=null && currentUser.getStudentProfile()==null) {
-                    StudentProfile savedStudentProfile = studentProfileService.save(user.getStudentProfile());
-                    currentUser.setStudentProfile(savedStudentProfile);
-                    userService.save(currentUser);
-                    return ResponseEntity.ok(new MessageResponse(ResponseCode.SUCCESS.getID(),
-                            "User SAVED!"));
-                }
-            }
+                if(currentUser!=null && currentUser.getStudentProfile()==null && user.getStudentProfile()!=null) {
+                    StudentProfile studentProfileToSave = studentProfileService.save(user.getStudentProfile());
+                    if(studentProfileToSave.getMessageResponse().getCode()==ResponseCode.SUCCESS.getID()) {
+                        currentUser.setStudentProfile(studentProfileToSave);
+                        userService.save(currentUser);
+                        return ResponseEntity.ok(new MessageResponse(ResponseCode.SUCCESS.getID(), "User Profile SAVED!"));
+                    } else { messageResponse.setMessage(studentProfileToSave.getMessageResponse().getMessage());}
+                } else { messageResponse.setMessage("Invalid User or StudentProfile!"); }
+            } else { messageResponse.setMessage("Invalid Authentication Token!"); }
         } catch (Exception exception) {
             exception.printStackTrace();
             messageResponse.setMessage(exception.getMessage());
         }
-        return ResponseEntity.ok(new MessageResponse(ResponseCode.FAILURE.getID(),
-                messageResponse.getMessage()));
+        return ResponseEntity.ok(new MessageResponse(ResponseCode.FAILURE.getID(), messageResponse.getMessage()));
     }
 
     //  @PostMapping("/save-profile") :: Modify Profile Info of the Current Logged-in User
     @PostMapping("/modify-profile")
     @ResponseBody
-    public ResponseEntity<?> modifyStudentProfileInfo(@Valid @RequestBody User user)
-            throws Exception {
+    @Transactional
+    public ResponseEntity<?> modifyStudentProfileInfo(@Valid @RequestBody User user) throws Exception {
         MessageResponse messageResponse = new MessageResponse();
-        messageResponse.setMessage("Invalid User: Student profile Does Not exists!");
         try {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             if (!(auth instanceof AnonymousAuthenticationToken)) {
                 String currentUserName = auth.getName();
                 User currentUser = userService.findByUsername(currentUserName).get();
-
-//                BUG HERE
-                if(currentUserName!=null && currentUser.getStudentProfile()!=null) {
-                    StudentProfile savedStudentProfile = studentProfileService.save(user.getStudentProfile());
-                    currentUser.setStudentProfile(savedStudentProfile);
-                    userService.save(currentUser);
-                    return ResponseEntity.ok(new MessageResponse(ResponseCode.SUCCESS.getID(),
-                            "User MODIFIED!"));
-                }
-            }
+                if(currentUser!=null && currentUser.getStudentProfile()!=null && user.getStudentProfile()!=null) {
+                    BigInteger studentProfileIDToBeUpdated = currentUser.getStudentProfile().getStudentProfileId();
+                    currentUser.setStudentProfile(null);
+                    User userToModify = userService.save(currentUser);
+                    if(userToModify.getMessageResponse().getCode()==ResponseCode.SUCCESS.getID()) {
+                        messageResponse = studentProfileService.removeOne(studentProfileIDToBeUpdated);
+                        if (messageResponse.getCode() == ResponseCode.SUCCESS.getID()) {
+                            StudentProfile studentProfileToSave = studentProfileService.save(user.getStudentProfile());
+                            if(studentProfileToSave.getMessageResponse().getCode()==ResponseCode.SUCCESS.getID()) {
+                                currentUser.setStudentProfile(studentProfileToSave);
+                                userService.save(currentUser);
+                                return ResponseEntity.ok(new MessageResponse(ResponseCode.SUCCESS.getID(), "User Profile Updated!"));
+                            } else { messageResponse.setMessage(studentProfileToSave.getMessageResponse().getMessage());}                        }
+                    } else { messageResponse.setMessage(userToModify.getMessageResponse().getMessage()); }
+                } else { messageResponse.setMessage("Invalid User or StudentProfile!"); }
+            } else { messageResponse.setMessage("Invalid Authentication Token!"); }
         } catch (Exception exception) {
             exception.printStackTrace();
             messageResponse.setMessage(exception.getMessage());
         }
-        return ResponseEntity.ok(new MessageResponse(ResponseCode.FAILURE.getID(),
-                messageResponse.getMessage()));
+        return ResponseEntity.ok(new MessageResponse(ResponseCode.FAILURE.getID(), messageResponse.getMessage()));
     }
 }
