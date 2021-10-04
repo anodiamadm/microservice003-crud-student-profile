@@ -78,7 +78,7 @@ public class CrudProfileController {
         return ResponseEntity.ok(new MessageResponse(ResponseCode.FAILURE.getID(), messageResponse.getMessage()));
     }
 
-    //  @PostMapping("/save-profile") :: Modify Profile Info of the Current Logged-in User
+    //  @PostMapping("/modify-profile") :: Modify Profile Info of the Current Logged-in User
     @PostMapping("/modify-profile")
     @ResponseBody
     @Transactional
