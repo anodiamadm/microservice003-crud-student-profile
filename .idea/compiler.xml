@@ -8,6 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="CRUDStudentProfile" />
         <module name="bootsecurity" />
+        <module name="microservice003-crud-student-profile" />
       </profile>
     </annotationProcessing>
   </component>
@@ -15,6 +16,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="CRUDStudentProfile" options="-parameters" />
       <module name="bootsecurity" options="-parameters" />
+      <module name="microservice003-crud-student-profile" options="-parameters" />
     </option>
   </component>
 </project>
