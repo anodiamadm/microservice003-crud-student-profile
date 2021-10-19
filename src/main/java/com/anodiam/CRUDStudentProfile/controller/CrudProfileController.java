@@ -51,7 +51,7 @@ public class CrudProfileController {
         return user;
     }
 
-    //  @PostMapping("/save-profile") :: Save Profile Info of the Current Logged-in User
+   /* //  @PostMapping("/save-profile") :: Save Profile Info of the Current Logged-in User
     @PostMapping("/save-profile")
     @ResponseBody
     @Transactional
@@ -76,9 +76,9 @@ public class CrudProfileController {
             messageResponse.setMessage(exception.getMessage());
         }
         return ResponseEntity.ok(new MessageResponse(ResponseCode.FAILURE.getID(), messageResponse.getMessage()));
-    }
+    }*/
 
-    //  @PostMapping("/modify-profile") :: Modify Profile Info of the Current Logged-in User
+    /*//  @PostMapping("/modify-profile") :: Modify Profile Info of the Current Logged-in User
     @PostMapping("/modify-profile")
     @ResponseBody
     @Transactional
@@ -110,5 +110,5 @@ public class CrudProfileController {
             messageResponse.setMessage(exception.getMessage());
         }
         return ResponseEntity.ok(new MessageResponse(ResponseCode.FAILURE.getID(), messageResponse.getMessage()));
-    }
+    }*/
 }

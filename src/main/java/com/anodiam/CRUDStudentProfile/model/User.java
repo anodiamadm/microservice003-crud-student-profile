@@ -35,11 +35,6 @@ public class User {
     @JoinTable(name = "user_permission", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "permission_id"))
     private List<Permission> permissionList = new ArrayList<>();
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @JoinColumn(name="student_profile_id")
-    private StudentProfile studentProfile;
-
     @Transient
     private MessageResponse messageResponse;
 
@@ -116,11 +111,4 @@ public class User {
         this.permissionList = permissionList;
     }
 
-    public StudentProfile getStudentProfile() {
-        return studentProfile;
-    }
-
-    public void setStudentProfile(StudentProfile studentProfile) {
-        this.studentProfile = studentProfile;
-    }
 }

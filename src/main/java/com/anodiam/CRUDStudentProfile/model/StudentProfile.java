@@ -47,6 +47,10 @@ public class StudentProfile {
     @JoinColumn(name = "suburb_id")
     private Suburb suburb;
 
+    @OneToOne(cascade = CascadeType.DETACH)
+    @JoinColumn(name = "user_id", referencedColumnName = "userId")
+    private User user;
+
     @Transient
     private MessageResponse messageResponse;
 
@@ -170,5 +174,13 @@ public class StudentProfile {
 
     public void setSuburb(Suburb suburb) {
         this.suburb = suburb;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
