@@ -1,4 +1,4 @@
-package com.anodiam.CRUDStudentProfile.serviceRepository.common;
+package com.anodiam.CRUDStudentProfile.serviceRepository.errorHandling;
 
 import com.anodiam.CRUDStudentProfile.model.common.MessageResponse;
 import com.anodiam.CRUDStudentProfile.model.common.ResponseCode;
@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-class ErrorHandlingDAL extends ErrorHandlingImpl {
+class ErrorHandlingDal extends ErrorHandlingImpl {
 
     class ErrorHandling
     {
@@ -29,7 +29,7 @@ class ErrorHandlingDAL extends ErrorHandlingImpl {
     @Override
     public MessageResponse GetErrorMessage(String errorMessage)
     {
-        System.out.println("Inside ErrorDAL: " + errorMessage);
+//        System.out.println("Inside ErrorDAL: " + errorMessage);
         List<ErrorHandling> lstErrorHandle=populateErrorHandlers();
         for(int i=0;i<lstErrorHandle.size();i++)
         {
