@@ -1,6 +1,7 @@
 package com.anodiam.CRUDStudentProfile.serviceRepository.userProfile.studentProfile;
 
 import com.anodiam.CRUDStudentProfile.model.StudentProfile;
+import com.anodiam.CRUDStudentProfile.model.User;
 import com.anodiam.CRUDStudentProfile.model.common.MessageResponse;
 import com.anodiam.CRUDStudentProfile.model.common.ResponseCode;
 import com.anodiam.CRUDStudentProfile.serviceRepository.errorHandling.ErrorHandlingService;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
+import java.util.Optional;
 
 @Service
 class StudentProfileServiceDal extends StudentProfileServiceImpl {
@@ -21,6 +23,20 @@ class StudentProfileServiceDal extends StudentProfileServiceImpl {
     public StudentProfileServiceDal(){}
 
     @Override
+    public Optional<StudentProfile> findByUser(User user)
+    {
+        try
+        {
+            return studentProfileRepository.findByUser(user);
+        }catch(Exception exception)
+        {
+            exception.printStackTrace();
+            return null;
+        }
+    }
+
+
+    @Override
     public StudentProfile save(StudentProfile studentProfile) {
         try {
             StudentProfile studentProfileToSave = studentProfileRepository.save(studentProfile);
@@ -32,30 +48,6 @@ class StudentProfileServiceDal extends StudentProfileServiceImpl {
             return studentProfile;
         }
     }
-
-    /*@Override
-    public MessageResponse modify(Designation designation)
-    {
-        MessageResponse msgResp = new MessageResponse();
-        try
-        {
-            Designation designationToModify= desigRep.findById(designation.getDesignation_id()).get();
-            if(designationToModify!=null)
-            {
-                designationToModify.setDesignation_name(designation.getDesignation_name());
-                desigRep.save(designationToModify);
-                msgResp = new MessageResponse(CodeConstants.SUCCESS.getID(),
-                        "Designation details modified successfully!");
-                return msgResp;
-            }
-            msgResp = new MessageResponse(CodeConstants.FAILURE.getID(),
-                    "Designation details not found to modify");
-            return msgResp;
-        }catch(Exception ex)
-        {
-            return errorService.GetErrorMessage(ex.getMessage());
-        }
-    }*/
 
     @Override
     public StudentProfile modify(StudentProfile studentProfile) {

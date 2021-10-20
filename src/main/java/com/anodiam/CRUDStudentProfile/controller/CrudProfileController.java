@@ -7,15 +7,12 @@ import com.anodiam.CRUDStudentProfile.model.common.ResponseCode;
 import com.anodiam.CRUDStudentProfile.serviceRepository.userProfile.studentProfile.StudentProfileService;
 import com.anodiam.CRUDStudentProfile.serviceRepository.userProfile.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.transaction.Transactional;
-import javax.validation.Valid;
-import java.math.BigInteger;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/user")
@@ -31,7 +28,7 @@ public class CrudProfileController {
     //  @GetMapping("/profile") :: List Profile Info of the Current Logged-in User:
     @GetMapping("/profile")
     @ResponseBody
-    public User getStudentProfileInfo() throws Exception {
+    public Optional<StudentProfile> getStudentProfileInfo() throws Exception {
         User user = new User();
         MessageResponse messageResponse = new MessageResponse();
         try {
@@ -40,7 +37,9 @@ public class CrudProfileController {
                 String currentUserName = auth.getName();
                 if(currentUserName!=null) {
                     User returnedUser = userService.findByUsername(currentUserName).get();
-                    return returnedUser;
+                    Optional<StudentProfile> returnedStudentProfile =
+                            studentProfileService.findByUser(returnedUser);
+                    return returnedStudentProfile;
                 }
             }
         } catch (Exception exception) {
@@ -48,7 +47,7 @@ public class CrudProfileController {
             messageResponse = new MessageResponse(ResponseCode.FAILURE.getID(), exception.getMessage());
             user.setMessageResponse(messageResponse);
         }
-        return user;
+        return null;
     }
 
    /* //  @PostMapping("/save-profile") :: Save Profile Info of the Current Logged-in User
