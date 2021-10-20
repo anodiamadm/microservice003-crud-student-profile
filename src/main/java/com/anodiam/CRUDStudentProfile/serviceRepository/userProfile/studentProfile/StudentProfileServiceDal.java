@@ -25,14 +25,18 @@ class StudentProfileServiceDal extends StudentProfileServiceImpl {
     @Override
     public Optional<StudentProfile> findByUser(User user)
     {
+        Optional<StudentProfile> optionalStudentProfile;
         try
         {
-            return studentProfileRepository.findByUser(user);
+            optionalStudentProfile = studentProfileRepository.findByUser(user);
         }catch(Exception exception)
         {
             exception.printStackTrace();
-            return null;
+            StudentProfile errorStudentProfile = new StudentProfile();
+            errorStudentProfile.setMessageResponse(new MessageResponse(ResponseCode.FAILURE.getID(), "Student Profile could not be retrieved!"));
+            optionalStudentProfile = Optional.of(errorStudentProfile);
         }
+        return optionalStudentProfile;
     }
 
 

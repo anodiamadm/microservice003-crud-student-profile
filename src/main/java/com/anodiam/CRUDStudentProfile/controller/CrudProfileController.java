@@ -7,11 +7,13 @@ import com.anodiam.CRUDStudentProfile.model.common.ResponseCode;
 import com.anodiam.CRUDStudentProfile.serviceRepository.userProfile.studentProfile.StudentProfileService;
 import com.anodiam.CRUDStudentProfile.serviceRepository.userProfile.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Optional;
 
 @RestController
@@ -50,32 +52,30 @@ public class CrudProfileController {
         return null;
     }
 
-   /* //  @PostMapping("/save-profile") :: Save Profile Info of the Current Logged-in User
+   //  @PostMapping("/save-profile") :: Save Profile Info of the Current Logged-in User
     @PostMapping("/save-profile")
     @ResponseBody
-    @Transactional
-    public ResponseEntity<?> saveStudentProfileInfo(@Valid @RequestBody User user) throws Exception {
+    public ResponseEntity<?> saveStudentProfileInfo(@Valid @RequestBody StudentProfile studentProfile) throws Exception {
         MessageResponse messageResponse = new MessageResponse();
         try {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            if (!(auth instanceof AnonymousAuthenticationToken)) {
+            if (!(auth instanceof AnonymousAuthenticationToken))
+            {
                 String currentUserName = auth.getName();
                 User currentUser = userService.findByUsername(currentUserName).get();
-                if(currentUser!=null && currentUser.getStudentProfile()==null && user.getStudentProfile()!=null) {
-                    StudentProfile studentProfileToSave = studentProfileService.save(user.getStudentProfile());
-                    if(studentProfileToSave.getMessageResponse().getCode()==ResponseCode.SUCCESS.getID()) {
-                        currentUser.setStudentProfile(studentProfileToSave);
-                        userService.save(currentUser);
-                        return ResponseEntity.ok(new MessageResponse(ResponseCode.SUCCESS.getID(), "User Profile SAVED!"));
-                    } else { messageResponse.setMessage(studentProfileToSave.getMessageResponse().getMessage());}
-                } else { messageResponse.setMessage("Invalid User or StudentProfile!"); }
+                if(currentUser!=null )
+                {
+                    studentProfile.setUser(currentUser);
+                    StudentProfile studentProfileToSave = studentProfileService.save(studentProfile);
+                    return ResponseEntity.ok(studentProfileToSave.getMessageResponse());
+                }
             } else { messageResponse.setMessage("Invalid Authentication Token!"); }
         } catch (Exception exception) {
             exception.printStackTrace();
             messageResponse.setMessage(exception.getMessage());
         }
         return ResponseEntity.ok(new MessageResponse(ResponseCode.FAILURE.getID(), messageResponse.getMessage()));
-    }*/
+    }
 
     /*//  @PostMapping("/modify-profile") :: Modify Profile Info of the Current Logged-in User
     @PostMapping("/modify-profile")
