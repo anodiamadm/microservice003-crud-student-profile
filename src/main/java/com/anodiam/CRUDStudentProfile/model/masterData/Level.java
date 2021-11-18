@@ -11,10 +11,13 @@ public class Level {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="level_id")
 	private BigInteger levelId;
 
+	@Column(name="level_name")
 	private String levelName;
 
+	@Column(name="level_code")
 	private String levelCode;
 
 	@Transient

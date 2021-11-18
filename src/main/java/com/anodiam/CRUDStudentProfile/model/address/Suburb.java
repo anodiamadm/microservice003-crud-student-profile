@@ -11,14 +11,17 @@ public class Suburb {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="suburb_id")
 	private BigInteger suburbId;
 
+	@Column(name="suburb_name")
 	private String suburbName;
 
+	@Column(name="zip_code")
 	private String zipCode;
 
-	@ManyToOne
-	@JoinColumn(name = "town_id")
+	@OneToOne(cascade = CascadeType.DETACH)
+	@JoinColumn(name = "townId", referencedColumnName = "town_id")
 	private Town town;
 
 	@Transient

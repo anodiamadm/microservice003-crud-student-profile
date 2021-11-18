@@ -11,12 +11,14 @@ public class Town {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="town_id")
 	private BigInteger townId;
 
+	@Column(name="town_name")
 	private String townName;
 
-	@ManyToOne
-	@JoinColumn(name = "state_id")
+	@OneToOne(cascade = CascadeType.DETACH)
+	@JoinColumn(name = "stateId", referencedColumnName = "state_id")
 	private State state;
 
 	@Transient

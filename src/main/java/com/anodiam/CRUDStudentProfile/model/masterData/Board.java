@@ -11,10 +11,13 @@ public class Board {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="board_id")
 	private BigInteger boardId;
 
+	@Column(name="board_name")
 	private String boardName;
 
+	@Column(name="board_short_name")
 	private String boardShortName;
 
 	@Transient

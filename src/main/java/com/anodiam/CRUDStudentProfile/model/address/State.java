@@ -11,14 +11,17 @@ public class State {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="state_id")
 	private BigInteger stateId;
 
+	@Column(name="state_name")
 	private String stateName;
 
+	@Column(name="state_code")
 	private String stateCode;
 
-	@ManyToOne
-	@JoinColumn(name = "country_id")
+	@OneToOne(cascade = CascadeType.DETACH)
+	@JoinColumn(name = "country_id", referencedColumnName = "country_id")
 	private Country country;
 
 	@Transient

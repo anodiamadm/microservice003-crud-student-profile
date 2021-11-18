@@ -19,7 +19,7 @@ public class CRUDStudentProfileApplication {
 		SpringApplication.run(CRUDStudentProfileApplication.class, args);
 	}
 
-	@Bean
+	/*@Bean
 	public ServletWebServerFactory servletContainer() {
 //		 Enable SSL Trafic
 		TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory() {
@@ -48,5 +48,5 @@ public class CRUDStudentProfileApplication {
 		connector.setSecure(false);
 		connector.setRedirectPort(8446);
 		return connector;
-	}
+	}*/
 }

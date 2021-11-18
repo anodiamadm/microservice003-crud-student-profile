@@ -3,6 +3,7 @@ package com.anodiam.CRUDStudentProfile.model;
 import com.anodiam.CRUDStudentProfile.model.address.Suburb;
 import com.anodiam.CRUDStudentProfile.model.common.MessageResponse;
 import com.anodiam.CRUDStudentProfile.model.masterData.Board;
+import com.anodiam.CRUDStudentProfile.model.masterData.Language;
 import com.anodiam.CRUDStudentProfile.model.masterData.Level;
 
 import javax.persistence.*;
@@ -13,43 +14,58 @@ import java.math.BigInteger;
 public class StudentProfile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+    @Column(name="student_profile_id")
     private BigInteger studentProfileId;
 
+    @Column(name="first_name")
     private String firstName;
 
+    @Column(name="middle_name")
     private String middleName;
 
+    @Column(name="last_name")
     private String lastName;
 
     private String email;
 
+    @Column(name="phone_number")
     private String phoneNumber;
 
+    @Column(name="guardians_first_name")
     private String guardiansFirstName;
 
+    @Column(name="guardians_last_name")
     private String guardiansLastName;
 
+    @Column(name="guardians_email")
     private String guardiansEmail;
 
+    @Column(name="guardians_phone_number")
     private String guardiansPhoneNumber;
 
+    @Column(name="profile_image_link")
     private String profileImageLink;
 
-    @ManyToOne
-    @JoinColumn(name = "board_id")
+    @OneToOne(cascade = CascadeType.DETACH)
+    @JoinColumn(name = "boardId", referencedColumnName = "board_id")
     private Board board;
 
-    @ManyToOne
-    @JoinColumn(name = "level_id")
+    @OneToOne(cascade = CascadeType.DETACH)
+    @JoinColumn(name = "levelId", referencedColumnName = "level_id")
     private Level level;
 
-    @ManyToOne
-    @JoinColumn(name = "suburb_id")
+    @OneToOne(cascade = CascadeType.DETACH)
+    @JoinColumn(name = "suburbId", referencedColumnName = "suburb_id")
     private Suburb suburb;
 
     @OneToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "user_id", referencedColumnName = "userId")
     private User user;
+
+    @OneToOne(cascade = CascadeType.DETACH)
+    @JoinColumn(name = "language_id", referencedColumnName = "language_id")
+    private Language language;
 
     @Transient
     private MessageResponse messageResponse;
@@ -182,5 +198,13 @@ public class StudentProfile {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Language getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(Language language) {
+        this.language = language;
     }
 }
