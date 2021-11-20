@@ -12,11 +12,11 @@ import java.math.BigInteger;
 @Entity
 @Table(name = "student_profile")
 public class StudentProfile {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     @Column(name="student_profile_id")
-    private BigInteger studentProfileId;
+    private BigInteger student_profile_id;
 
     @Column(name="first_name")
     private String firstName;
@@ -80,12 +80,12 @@ public class StudentProfile {
         this.messageResponse = messageResponse;
     }
 
-    public BigInteger getStudentProfileId() {
-        return studentProfileId;
+    public BigInteger getStudent_profile_id() {
+        return student_profile_id;
     }
 
-    public void setStudentProfileId(BigInteger studentProfileId) {
-        studentProfileId = studentProfileId;
+    public void setStudent_profile_id(BigInteger student_profile_id) {
+        this.student_profile_id = student_profile_id;
     }
 
     public String getFirstName() {

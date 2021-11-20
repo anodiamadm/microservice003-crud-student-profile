@@ -57,7 +57,7 @@ class StudentProfileServiceDal extends StudentProfileServiceImpl {
     public StudentProfile modify(StudentProfile studentProfile) {
         try
         {
-            StudentProfile studentProfileToModify= studentProfileRepository.findById(studentProfile.getStudentProfileId()).get();
+            StudentProfile studentProfileToModify= studentProfileRepository.findById(studentProfile.getStudent_profile_id()).get();
             if(studentProfileToModify!=null)
             {
                 studentProfileToModify.setFirstName(studentProfile.getFirstName());
@@ -74,16 +74,17 @@ class StudentProfileServiceDal extends StudentProfileServiceImpl {
                 studentProfileToModify.setSuburb(studentProfile.getSuburb());
                 studentProfileToModify.setProfileImageLink(studentProfile.getProfileImageLink());
                 studentProfileToModify.setUser(studentProfile.getUser());
-
+                studentProfileToModify.setLanguage(studentProfile.getLanguage());
+                StudentProfile student = studentProfileRepository.save(studentProfileToModify);
                 studentProfileToModify.setMessageResponse(new MessageResponse(ResponseCode.SUCCESS.getID(), "Student Profile Saved Successfully!"));
-                return studentProfileToModify;
+                return student;
             }
             studentProfileToModify.setMessageResponse(new MessageResponse(ResponseCode.FAILURE.getID(), "Student Profile Failed to Modify!"));
-            return studentProfileToModify;
+            return null;
         } catch (Exception exception) {
             exception.printStackTrace();
             studentProfile.setMessageResponse(errorService.GetErrorMessage(exception.getMessage()));
-            return studentProfile;
+            return null;
         }
     }
 
