@@ -15,7 +15,9 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 public class CRUDStudentProfileApplication {
 
-	public static void main(String[] args) {
+	public static int languageId = 1;
+	public static void main(String[] args)
+	{
 		SpringApplication.run(CRUDStudentProfileApplication.class, args);
 	}
 
