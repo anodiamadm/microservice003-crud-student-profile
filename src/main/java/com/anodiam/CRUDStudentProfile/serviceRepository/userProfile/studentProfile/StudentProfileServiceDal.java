@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 @Service
 class StudentProfileServiceDal extends StudentProfileServiceImpl {
@@ -127,15 +128,80 @@ class StudentProfileServiceDal extends StudentProfileServiceImpl {
             {
                 return messageService.showMessage(language_Id,"STUDENT_PROFILE_ID_BLANK");
             }
-            if(studentProfile.getFirstName().trim().length()==0)
+        }
+        if(methodName=="modify")
+        {
+            if(studentProfile.getStudent_profile_id().intValue()<=0)
             {
-                return messageService.showMessage(language_Id,"STUDENT_FIRST_NAME_BLANK");
-            }
-            if(studentProfile.getLastName().trim().length()==0)
-            {
-                return messageService.showMessage(language_Id,"STUDENT_LAST_NAME_BLANK");
+                return messageService.showMessage(language_Id,"STUDENT_PROFILE_ID_INVALID");
             }
         }
+        if(studentProfile.getFirstName().trim().length()==0)
+        {
+            return messageService.showMessage(language_Id,"STUDENT_FIRST_NAME_BLANK");
+        }
+        if(studentProfile.getLastName().trim().length()==0)
+        {
+            return messageService.showMessage(language_Id,"STUDENT_LAST_NAME_BLANK");
+        }
+        if(isValidEmail(studentProfile.getEmail()))
+        {
+            return messageService.showMessage(language_Id,"STUDENT_PROFILE_INVALID_EMAIL_ADDRESS");
+        }
+        if(studentProfile.getPhoneNumber().trim().length()==0)
+        {
+            return messageService.showMessage(language_Id,"STUDENT_PHONE_NUMBER_BLANK");
+        }
+
+        if(studentProfile.getGuardiansFirstName().trim().length()==0)
+        {
+            return messageService.showMessage(language_Id,"GUARDIAN_FIRST_NAME_BLANK");
+        }
+        if(studentProfile.getGuardiansLastName().trim().length()==0)
+        {
+            return messageService.showMessage(language_Id,"GUARDIAN_LAST_NAME_BLANK");
+        }
+        if(isValidEmail(studentProfile.getGuardiansEmail()))
+        {
+            return messageService.showMessage(language_Id,"GUARDIAN_INVALID_EMAIL_ADDRESS");
+        }
+        if(studentProfile.getGuardiansPhoneNumber().trim().length()==0)
+        {
+            return messageService.showMessage(language_Id,"GUARDIAN_PHONE_NUMBER_BLANK");
+        }
+        if(studentProfile.getBoard().getBoardId().intValue()==0)
+        {
+            return messageService.showMessage(language_Id,"STUDENT_BOARD_ID_BLANK");
+        }
+        if(studentProfile.getLevel().getLevelId().intValue()==0)
+        {
+            return messageService.showMessage(language_Id,"STUDENT_LEVEL_ID_BLANK");
+        }
+        if(studentProfile.getSuburb().getSuburbId().intValue()==0)
+        {
+            return messageService.showMessage(language_Id,"STUDENT_SUBURB_ID_BLANK");
+        }
+        if(studentProfile.getUser().getUserId().intValue()==0)
+        {
+            return messageService.showMessage(language_Id,"STUDENT_USER_ID_BLANK");
+        }
+        if(studentProfile.getLanguage().getLanguage_id().intValue()==0)
+        {
+            return messageService.showMessage(language_Id,"STUDENT_LANGUAGE_ID_BLANK");
+        }
         return "";
+    }
+
+    private static boolean isValidEmail(String email)
+    {
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\."+
+                "[a-zA-Z0-9_+&*-]+)*@" +
+                "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
+                "A-Z]{2,7}$";
+
+        Pattern pat = Pattern.compile(emailRegex);
+        if (email == null)
+            return false;
+        return pat.matcher(email).matches();
     }
 }

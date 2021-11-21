@@ -20,6 +20,7 @@ class MessageServiceDal extends MessageServiceImpl {
     {
         try
         {
+            System.out.println(message_code);
             List<Message> allMessages = messageRepository.findAll()
                     .stream().filter(a->a.getLanguage().getLanguage_id() == language_id
                             && a.getMessage_code().equals(message_code))

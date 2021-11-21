@@ -29,7 +29,7 @@ class ErrorHandlingDal extends ErrorHandlingImpl {
     @Override
     public MessageResponse GetErrorMessage(String errorMessage)
     {
-//        System.out.println("Inside ErrorDAL: " + errorMessage);
+        System.out.println("Inside ErrorDAL: " + errorMessage);
         List<ErrorHandling> lstErrorHandle=populateErrorHandlers();
         for(int i=0;i<lstErrorHandle.size();i++)
         {
