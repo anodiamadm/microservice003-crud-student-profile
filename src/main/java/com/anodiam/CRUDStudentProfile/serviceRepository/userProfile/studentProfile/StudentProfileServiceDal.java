@@ -53,7 +53,7 @@ class StudentProfileServiceDal extends StudentProfileServiceImpl {
         try
         {
             String returnMessage=ValidateBeforeSave(studentProfile,"save");
-            if(returnMessage.length()==0)
+            if(returnMessage.length() > 0)
             {
                 studentProfile.setMessageResponse(new MessageResponse(ResponseCode.FAILURE.getID(),returnMessage));
                 return studentProfile;
@@ -76,13 +76,9 @@ class StudentProfileServiceDal extends StudentProfileServiceImpl {
             StudentProfile studentProfileToModify= studentProfileRepository.findById(studentProfile.getStudent_profile_id()).get();
             if(studentProfileToModify!=null)
             {
-                studentProfileToModify.setFirstName(studentProfile.getFirstName());
-                studentProfileToModify.setMiddleName(studentProfile.getMiddleName());
-                studentProfileToModify.setLastName(studentProfile.getLastName());
-                studentProfileToModify.setEmail(studentProfile.getEmail());
+                studentProfileToModify.setFullName(studentProfile.getFullName());
                 studentProfileToModify.setPhoneNumber(studentProfile.getPhoneNumber());
-                studentProfileToModify.setGuardiansFirstName(studentProfile.getGuardiansFirstName());
-                studentProfileToModify.setGuardiansLastName(studentProfile.getGuardiansLastName());
+                studentProfileToModify.setGuardiansName(studentProfile.getGuardiansName());
                 studentProfileToModify.setGuardiansEmail(studentProfile.getGuardiansEmail());
                 studentProfileToModify.setGuardiansPhoneNumber(studentProfile.getGuardiansPhoneNumber());
                 studentProfileToModify.setBoard(studentProfile.getBoard());
@@ -126,6 +122,7 @@ class StudentProfileServiceDal extends StudentProfileServiceImpl {
         {
             if(studentProfile.getStudent_profile_id().intValue()!=0)
             {
+                System.out.println(studentProfile.getStudent_profile_id().intValue());
                 return messageService.showMessage(language_Id,"STUDENT_PROFILE_ID_BLANK");
             }
         }
@@ -136,56 +133,16 @@ class StudentProfileServiceDal extends StudentProfileServiceImpl {
                 return messageService.showMessage(language_Id,"STUDENT_PROFILE_ID_INVALID");
             }
         }
-        if(studentProfile.getFirstName().trim().length()==0)
-        {
-            return messageService.showMessage(language_Id,"STUDENT_FIRST_NAME_BLANK");
-        }
-        if(studentProfile.getLastName().trim().length()==0)
-        {
-            return messageService.showMessage(language_Id,"STUDENT_LAST_NAME_BLANK");
-        }
-        if(isValidEmail(studentProfile.getEmail()))
-        {
-            return messageService.showMessage(language_Id,"STUDENT_PROFILE_INVALID_EMAIL_ADDRESS");
-        }
-        if(studentProfile.getPhoneNumber().trim().length()==0)
-        {
-            return messageService.showMessage(language_Id,"STUDENT_PHONE_NUMBER_BLANK");
-        }
 
-        if(studentProfile.getGuardiansFirstName().trim().length()==0)
-        {
-            return messageService.showMessage(language_Id,"GUARDIAN_FIRST_NAME_BLANK");
-        }
-        if(studentProfile.getGuardiansLastName().trim().length()==0)
-        {
-            return messageService.showMessage(language_Id,"GUARDIAN_LAST_NAME_BLANK");
-        }
-        if(isValidEmail(studentProfile.getGuardiansEmail()))
+        if(studentProfile.getGuardiansEmail().trim().length() > 0 &&  !isValidEmail(studentProfile.getGuardiansEmail()))
         {
             return messageService.showMessage(language_Id,"GUARDIAN_INVALID_EMAIL_ADDRESS");
         }
-        if(studentProfile.getGuardiansPhoneNumber().trim().length()==0)
-        {
-            return messageService.showMessage(language_Id,"GUARDIAN_PHONE_NUMBER_BLANK");
-        }
-        if(studentProfile.getBoard().getBoardId().intValue()==0)
-        {
-            return messageService.showMessage(language_Id,"STUDENT_BOARD_ID_BLANK");
-        }
-        if(studentProfile.getLevel().getLevelId().intValue()==0)
-        {
-            return messageService.showMessage(language_Id,"STUDENT_LEVEL_ID_BLANK");
-        }
-        if(studentProfile.getSuburb().getSuburbId().intValue()==0)
-        {
-            return messageService.showMessage(language_Id,"STUDENT_SUBURB_ID_BLANK");
-        }
-        if(studentProfile.getUser().getUserId().intValue()==0)
+        if(studentProfile.getUser() == null || studentProfile.getUser().getUserId() == null)
         {
             return messageService.showMessage(language_Id,"STUDENT_USER_ID_BLANK");
         }
-        if(studentProfile.getLanguage().getLanguage_id().intValue()==0)
+        if(studentProfile.getLanguage() == null || studentProfile.getLanguage().getLanguage_id() == null)
         {
             return messageService.showMessage(language_Id,"STUDENT_LANGUAGE_ID_BLANK");
         }

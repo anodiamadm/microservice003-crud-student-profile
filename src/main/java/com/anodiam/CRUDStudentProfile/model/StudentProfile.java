@@ -18,25 +18,14 @@ public class StudentProfile {
     @Column(name="student_profile_id")
     private BigInteger student_profile_id;
 
-    @Column(name="first_name")
-    private String firstName;
-
-    @Column(name="middle_name")
-    private String middleName;
-
-    @Column(name="last_name")
-    private String lastName;
-
-    private String email;
+    @Column(name="full_name")
+    private String fullName;
 
     @Column(name="phone_number")
     private String phoneNumber;
 
-    @Column(name="guardians_first_name")
-    private String guardiansFirstName;
-
-    @Column(name="guardians_last_name")
-    private String guardiansLastName;
+    @Column(name="guardians_name")
+    private String guardiansName;
 
     @Column(name="guardians_email")
     private String guardiansEmail;
@@ -88,16 +77,12 @@ public class StudentProfile {
         this.student_profile_id = student_profile_id;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getMiddleName() {
-        return middleName;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public String getProfileImageLink() {
@@ -108,26 +93,6 @@ public class StudentProfile {
         this.profileImageLink = profileImageLink;
     }
 
-    public void setMiddleName(String middleName) {
-        this.middleName = middleName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public String getPhoneNumber() {
         return phoneNumber;
     }
@@ -136,20 +101,12 @@ public class StudentProfile {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getGuardiansFirstName() {
-        return guardiansFirstName;
+    public String getGuardiansName() {
+        return guardiansName;
     }
 
-    public void setGuardiansFirstName(String guardiansFirstName) {
-        this.guardiansFirstName = guardiansFirstName;
-    }
-
-    public String getGuardiansLastName() {
-        return guardiansLastName;
-    }
-
-    public void setGuardiansLastName(String guardiansLastName) {
-        this.guardiansLastName = guardiansLastName;
+    public void setGuardiansName(String guardiansName) {
+        this.guardiansName = guardiansName;
     }
 
     public String getGuardiansEmail() {
