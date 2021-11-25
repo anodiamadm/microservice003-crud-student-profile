@@ -84,6 +84,9 @@ class StudentProfileServiceDal extends StudentProfileServiceImpl {
             {
                 studentProfileToModify.setFullName(studentProfile.getFullName());
                 studentProfileToModify.setPhoneNumber(studentProfile.getPhoneNumber());
+                studentProfileToModify.setAddress(studentProfile.getAddress());
+                studentProfileToModify.setLatitude(studentProfile.getLatitude());
+                studentProfileToModify.setLongitude(studentProfile.getLongitude());
                 studentProfileToModify.setGuardiansName(studentProfile.getGuardiansName());
                 studentProfileToModify.setGuardiansEmail(studentProfile.getGuardiansEmail());
                 studentProfileToModify.setGuardiansPhoneNumber(studentProfile.getGuardiansPhoneNumber());
