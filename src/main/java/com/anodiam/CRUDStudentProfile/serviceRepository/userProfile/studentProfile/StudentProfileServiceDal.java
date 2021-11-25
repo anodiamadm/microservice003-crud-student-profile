@@ -73,6 +73,12 @@ class StudentProfileServiceDal extends StudentProfileServiceImpl {
     public StudentProfile modify(StudentProfile studentProfile) {
         try
         {
+            String returnMessage=ValidateBeforeSave(studentProfile,"modify");
+            if(returnMessage.length() > 0)
+            {
+                studentProfile.setMessageResponse(new MessageResponse(ResponseCode.FAILURE.getID(),returnMessage));
+                return studentProfile;
+            }
             StudentProfile studentProfileToModify= studentProfileRepository.findById(studentProfile.getStudent_profile_id()).get();
             if(studentProfileToModify!=null)
             {
@@ -88,11 +94,13 @@ class StudentProfileServiceDal extends StudentProfileServiceImpl {
                 studentProfileToModify.setUser(studentProfile.getUser());
                 studentProfileToModify.setLanguage(studentProfile.getLanguage());
                 StudentProfile student = studentProfileRepository.save(studentProfileToModify);
-                studentProfileToModify.setMessageResponse(new MessageResponse(ResponseCode.SUCCESS.getID(), "Student Profile Saved Successfully!"));
+                returnMessage=messageService.showMessage(language_Id,"STUDENT_PROFILE_MODIFY_SUCCESS");
+                studentProfileToModify.setMessageResponse(new MessageResponse(ResponseCode.SUCCESS.getID(), returnMessage));
                 return student;
             }
-            studentProfileToModify.setMessageResponse(new MessageResponse(ResponseCode.FAILURE.getID(), "Student Profile Failed to Modify!"));
-            return null;
+            returnMessage=messageService.showMessage(language_Id,"STUDENT_PROFILE_MODIFY_FAILURE");
+            studentProfileToModify.setMessageResponse(new MessageResponse(ResponseCode.FAILURE.getID(), returnMessage));
+            return studentProfileToModify;
         } catch (Exception exception) {
             exception.printStackTrace();
             studentProfile.setMessageResponse(errorService.GetErrorMessage(exception.getMessage()));
@@ -103,15 +111,18 @@ class StudentProfileServiceDal extends StudentProfileServiceImpl {
     @Override
     public MessageResponse removeOne(BigInteger studentProfileId)
     {
+        String returnMessage="";
         MessageResponse messageResponse = new MessageResponse();
         try
         {
+            returnMessage=messageService.showMessage(language_Id,"STUDENT_PROFILE_DELETE_SUCCESS");
             studentProfileRepository.deleteById(studentProfileId);
-            messageResponse = new MessageResponse(ResponseCode.SUCCESS.getID(), "Student Profile deleted successfully!");
+            messageResponse = new MessageResponse(ResponseCode.SUCCESS.getID(), returnMessage);
         }catch(Exception exception)
         {
             exception.printStackTrace();
-            messageResponse = new MessageResponse(ResponseCode.FAILURE.getID(),"Failed to delete Student Profile");
+            returnMessage=messageService.showMessage(language_Id,"STUDENT_PROFILE_DELETE_FAILURE");
+            messageResponse = new MessageResponse(ResponseCode.FAILURE.getID(),returnMessage);
         }
         return messageResponse;
     }
@@ -122,9 +133,14 @@ class StudentProfileServiceDal extends StudentProfileServiceImpl {
         {
             if(studentProfile.getStudent_profile_id().intValue()!=0)
             {
-                System.out.println(studentProfile.getStudent_profile_id().intValue());
                 return messageService.showMessage(language_Id,"STUDENT_PROFILE_ID_BLANK");
             }
+            Optional<StudentProfile> optStudentProfile= studentProfileRepository.findByUser(studentProfile.getUser());
+            if(optStudentProfile.isPresent())
+            {
+                return messageService.showMessage(language_Id,"STUDENT_USER_ID_PRESENT");
+            }
+
         }
         if(methodName=="modify")
         {
@@ -132,16 +148,18 @@ class StudentProfileServiceDal extends StudentProfileServiceImpl {
             {
                 return messageService.showMessage(language_Id,"STUDENT_PROFILE_ID_INVALID");
             }
+            Optional<StudentProfile> optStudentProfile= studentProfileRepository.findByUser(studentProfile.getUser());
+            if(!optStudentProfile.isPresent())
+            {
+                return messageService.showMessage(language_Id,"STUDENT_USER_ID_NOT_PRESENT");
+            }
         }
 
         if(studentProfile.getGuardiansEmail().trim().length() > 0 &&  !isValidEmail(studentProfile.getGuardiansEmail()))
         {
             return messageService.showMessage(language_Id,"GUARDIAN_INVALID_EMAIL_ADDRESS");
         }
-        if(studentProfile.getUser() == null || studentProfile.getUser().getUserId() == null)
-        {
-            return messageService.showMessage(language_Id,"STUDENT_USER_ID_BLANK");
-        }
+
         if(studentProfile.getLanguage() == null || studentProfile.getLanguage().getLanguage_id() == null)
         {
             return messageService.showMessage(language_Id,"STUDENT_LANGUAGE_ID_BLANK");
