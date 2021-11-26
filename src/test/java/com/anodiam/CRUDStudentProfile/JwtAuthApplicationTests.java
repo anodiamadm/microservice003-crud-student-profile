@@ -1,7 +1,8 @@
 package com.anodiam.CRUDStudentProfile;
 
-import com.anodiam.CRUDStudentProfile.model.address.Country;
-import com.anodiam.CRUDStudentProfile.serviceRepository.address.Country.CountryService;
+import com.anodiam.CRUDStudentProfile.model.StudentProfile;
+import com.anodiam.CRUDStudentProfile.serviceRepository.Message.MessageService;
+import com.anodiam.CRUDStudentProfile.serviceRepository.userProfile.studentProfile.StudentProfileService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,25 +18,28 @@ import static org.junit.Assert.*;
 class JwtAuthApplicationTests {
 
 	@Autowired
-	private CountryService countryService;
+	private StudentProfileService studentProfileService;
+
+	@Autowired
+	private MessageService messageService;
+
+	int language_Id=CRUDStudentProfileApplication.languageId;
 
 	@Test
 	void contextLoads() {
 	}
 
+	//	Use Case 1.1: If username < 8 chars, I should NOT be able to register. I should get the message
+	//	"Student registration failure! Username should be 8 or more characters long.".
 	@Test
-	public void testString() throws Exception {
-		String expectedValue="HELLOWORLD";
-		String actualValue="HELLOWORLD";
-		assertEquals(expectedValue, actualValue);
+	public void testNegativeStudentProfileIDLessThanZero() throws Exception
+	{
+		StudentProfile testStudentProfile=new StudentProfile();
+		testStudentProfile.setStudent_profile_id(BigInteger.valueOf(-1));
+		testStudentProfile.setFullName("Vicky");
+		StudentProfile newStudentProfile=studentProfileService.save(testStudentProfile);
+		String returnMessage=messageService.showMessage(language_Id,"STUDENT_PROFILE_ID_BLANK");
+		assertEquals(newStudentProfile.getMessageResponse().getMessage(),returnMessage);
 	}
 
-	@Test
-	public void testCountryName() throws Exception {
-		List<Country> actualValue=countryService.findAll();
-		List<Country> expectedValue=new ArrayList<Country>();
-		BigInteger big_integer = BigInteger.valueOf(1);
-		expectedValue.add(new Country(big_integer,"AU","Australia"));
-		assertEquals(expectedValue.get(0).getCountry_name(), actualValue.get(0).getCountry_name());
-	}
 }

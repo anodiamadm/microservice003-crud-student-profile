@@ -107,7 +107,7 @@ class StudentProfileServiceDal extends StudentProfileServiceImpl {
         } catch (Exception exception) {
             exception.printStackTrace();
             studentProfile.setMessageResponse(errorService.GetErrorMessage(exception.getMessage()));
-            return null;
+            return studentProfile;
         }
     }
 
