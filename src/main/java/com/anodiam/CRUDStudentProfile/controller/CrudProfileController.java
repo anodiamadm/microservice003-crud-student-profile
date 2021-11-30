@@ -35,8 +35,7 @@ public class CrudProfileController {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             if (!(auth instanceof AnonymousAuthenticationToken))
             {
-                System.out.println("User name: " + auth.getName());
-                return userService.findByUsername(auth.getName()).get();
+               return userService.findByUsername(auth.getName()).get();
             }
         } catch (Exception exception)
         {

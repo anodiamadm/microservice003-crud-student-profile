@@ -32,7 +32,7 @@ class JwtAuthApplicationTests {
 	//	Use Case 1.1: If username < 8 chars, I should NOT be able to register. I should get the message
 	//	"Student registration failure! Username should be 8 or more characters long.".
 	@Test
-	public void testNegativeStudentProfileIDLessThanZero() throws Exception
+	public void testNegativeNewStudentProfileIDNotZero() throws Exception
 	{
 		StudentProfile testStudentProfile=new StudentProfile();
 		testStudentProfile.setStudent_profile_id(BigInteger.valueOf(-1));
