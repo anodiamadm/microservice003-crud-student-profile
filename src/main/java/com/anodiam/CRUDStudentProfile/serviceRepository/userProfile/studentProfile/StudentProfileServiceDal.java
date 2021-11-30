@@ -37,6 +37,13 @@ class StudentProfileServiceDal extends StudentProfileServiceImpl {
         try
         {
             optionalStudentProfile = studentProfileRepository.findByUser(user);
+            if(optionalStudentProfile.isPresent())
+            {
+                GeneralEncoderDecoder generalEncoderDecoder=new GeneralEncoderDecoder();
+                StudentProfile studentProfile= optionalStudentProfile.get();
+                studentProfile=DencryptValues(studentProfile);
+                return  Optional.of(studentProfile);
+            }
         }catch(Exception exception)
         {
             exception.printStackTrace();
@@ -58,6 +65,7 @@ class StudentProfileServiceDal extends StudentProfileServiceImpl {
                 studentProfile.setMessageResponse(new MessageResponse(ResponseCode.FAILURE.getID(),returnMessage));
                 return studentProfile;
             }
+            studentProfile=EncryptValues(studentProfile);
             StudentProfile studentProfileToSave = studentProfileRepository.save(studentProfile);
             returnMessage=messageService.showMessage(language_Id,"STUDENT_PROFILE_SAVE_SUCCESS");
             studentProfileToSave.setMessageResponse(new MessageResponse(ResponseCode.SUCCESS.getID(),returnMessage));
@@ -96,6 +104,7 @@ class StudentProfileServiceDal extends StudentProfileServiceImpl {
                 studentProfileToModify.setProfileImageLink(studentProfile.getProfileImageLink());
                 studentProfileToModify.setUser(studentProfile.getUser());
                 studentProfileToModify.setLanguage(studentProfile.getLanguage());
+                studentProfileToModify=EncryptValues(studentProfileToModify);
                 StudentProfile student = studentProfileRepository.save(studentProfileToModify);
                 returnMessage=messageService.showMessage(language_Id,"STUDENT_PROFILE_MODIFY_SUCCESS");
                 studentProfileToModify.setMessageResponse(new MessageResponse(ResponseCode.SUCCESS.getID(), returnMessage));
@@ -158,7 +167,9 @@ class StudentProfileServiceDal extends StudentProfileServiceImpl {
             }
         }
 
-        if(studentProfile.getGuardiansEmail().trim().length() > 0 &&  !isValidEmail(studentProfile.getGuardiansEmail()))
+        if(studentProfile.getGuardiansEmail()!=null &&
+                studentProfile.getGuardiansEmail().trim().length() > 0 &&
+                !isValidEmail(studentProfile.getGuardiansEmail()))
         {
             return messageService.showMessage(language_Id,"GUARDIAN_INVALID_EMAIL_ADDRESS");
         }
@@ -181,5 +192,41 @@ class StudentProfileServiceDal extends StudentProfileServiceImpl {
         if (email == null)
             return false;
         return pat.matcher(email).matches();
+    }
+
+    private StudentProfile EncryptValues(StudentProfile studentProfile)
+    {
+        try
+        {
+            GeneralEncoderDecoder encoderDecoder = new GeneralEncoderDecoder();
+            studentProfile.setFullName(encoderDecoder.encrypt(studentProfile.getFullName()));
+            studentProfile.setPhoneNumber(encoderDecoder.encrypt(studentProfile.getPhoneNumber()));
+            studentProfile.setAddress(encoderDecoder.encrypt(studentProfile.getAddress()));
+            studentProfile.setGuardiansName(encoderDecoder.encrypt(studentProfile.getGuardiansName()));
+            studentProfile.setGuardiansEmail(encoderDecoder.encrypt(studentProfile.getGuardiansEmail()));
+            studentProfile.setGuardiansPhoneNumber(encoderDecoder.encrypt(studentProfile.getGuardiansPhoneNumber()));
+        }catch(Exception exception)
+        {
+            exception.printStackTrace();
+        }
+        return studentProfile;
+    }
+
+    private StudentProfile DencryptValues(StudentProfile studentProfile)
+    {
+        try
+        {
+            GeneralEncoderDecoder encoderDecoder = new GeneralEncoderDecoder();
+            studentProfile.setFullName(encoderDecoder.decrypt(studentProfile.getFullName()));
+            studentProfile.setPhoneNumber(encoderDecoder.decrypt(studentProfile.getPhoneNumber()));
+            studentProfile.setAddress(encoderDecoder.decrypt(studentProfile.getAddress()));
+            studentProfile.setGuardiansName(encoderDecoder.decrypt(studentProfile.getGuardiansName()));
+            studentProfile.setGuardiansEmail(encoderDecoder.decrypt(studentProfile.getGuardiansEmail()));
+            studentProfile.setGuardiansPhoneNumber(encoderDecoder.decrypt(studentProfile.getGuardiansPhoneNumber()));
+        }catch(Exception exception)
+        {
+            exception.printStackTrace();
+        }
+        return studentProfile;
     }
 }
