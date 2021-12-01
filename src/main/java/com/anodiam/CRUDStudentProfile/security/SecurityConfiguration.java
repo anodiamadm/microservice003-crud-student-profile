@@ -56,6 +56,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
+                .cors()
+                .and()
 //                Add JWT Auth filters in proper order >> 1. JwtAuthenticationFilter >> 2. JwtAuthorizationFilter
                 .addFilter(new JwtAuthenticationFilter(authenticationManager(),
                            new JwtProperties(SECRET, Integer.parseInt(EXPIRATION_TIME),
