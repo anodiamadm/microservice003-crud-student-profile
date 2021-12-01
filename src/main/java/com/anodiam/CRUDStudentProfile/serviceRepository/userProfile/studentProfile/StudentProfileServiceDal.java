@@ -202,6 +202,8 @@ class StudentProfileServiceDal extends StudentProfileServiceImpl {
             studentProfile.setFullName(encoderDecoder.encrypt(studentProfile.getFullName()));
             studentProfile.setPhoneNumber(encoderDecoder.encrypt(studentProfile.getPhoneNumber()));
             studentProfile.setAddress(encoderDecoder.encrypt(studentProfile.getAddress()));
+            studentProfile.setLatitude(encoderDecoder.encrypt(studentProfile.getLatitude()));
+            studentProfile.setLongitude(encoderDecoder.encrypt(studentProfile.getLongitude()));
             studentProfile.setGuardiansName(encoderDecoder.encrypt(studentProfile.getGuardiansName()));
             studentProfile.setGuardiansEmail(encoderDecoder.encrypt(studentProfile.getGuardiansEmail()));
             studentProfile.setGuardiansPhoneNumber(encoderDecoder.encrypt(studentProfile.getGuardiansPhoneNumber()));
@@ -220,6 +222,8 @@ class StudentProfileServiceDal extends StudentProfileServiceImpl {
             studentProfile.setFullName(encoderDecoder.decrypt(studentProfile.getFullName()));
             studentProfile.setPhoneNumber(encoderDecoder.decrypt(studentProfile.getPhoneNumber()));
             studentProfile.setAddress(encoderDecoder.decrypt(studentProfile.getAddress()));
+            studentProfile.setLatitude(encoderDecoder.decrypt(studentProfile.getLatitude()));
+            studentProfile.setLongitude(encoderDecoder.decrypt(studentProfile.getLongitude()));
             studentProfile.setGuardiansName(encoderDecoder.decrypt(studentProfile.getGuardiansName()));
             studentProfile.setGuardiansEmail(encoderDecoder.decrypt(studentProfile.getGuardiansEmail()));
             studentProfile.setGuardiansPhoneNumber(encoderDecoder.decrypt(studentProfile.getGuardiansPhoneNumber()));
