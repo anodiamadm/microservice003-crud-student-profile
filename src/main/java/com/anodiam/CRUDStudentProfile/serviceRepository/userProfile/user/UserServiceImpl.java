@@ -15,4 +15,9 @@ abstract class UserServiceImpl implements UserService {
     public User save(User user) {
         return new UserServiceDal().save(user);
     }
+
+    @Override
+    public User GetSingleUser() {
+        return new UserServiceDal().GetSingleUser();
+    }
 }

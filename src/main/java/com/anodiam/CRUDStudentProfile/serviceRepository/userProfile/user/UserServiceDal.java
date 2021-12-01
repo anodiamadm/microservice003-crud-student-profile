@@ -6,6 +6,7 @@ import com.anodiam.CRUDStudentProfile.model.common.ResponseCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -41,4 +42,17 @@ class UserServiceDal extends UserServiceImpl {
             return user;
         }
     }
+
+    public User GetSingleUser()
+    {
+        try
+        {
+             return userRepository.findAll().get(0);
+        } catch (Exception exception)
+        {
+            exception.printStackTrace();
+            return null;
+        }
+    }
+
 }
