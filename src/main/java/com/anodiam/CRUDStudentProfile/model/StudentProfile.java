@@ -51,10 +51,6 @@ public class StudentProfile {
     private Level level;
 
     @OneToOne(cascade = CascadeType.DETACH)
-    @JoinColumn(name = "suburbId", referencedColumnName = "suburb_id")
-    private Suburb suburb;
-
-    @OneToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "user_id", referencedColumnName = "userId")
     private User user;
 
@@ -169,14 +165,6 @@ public class StudentProfile {
 
     public void setLevel(Level level) {
         this.level = level;
-    }
-
-    public Suburb getSuburb() {
-        return suburb;
-    }
-
-    public void setSuburb(Suburb suburb) {
-        this.suburb = suburb;
     }
 
     public User getUser() {

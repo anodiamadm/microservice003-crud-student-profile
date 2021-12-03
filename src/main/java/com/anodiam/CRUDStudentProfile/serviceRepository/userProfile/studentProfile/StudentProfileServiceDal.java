@@ -59,6 +59,7 @@ class StudentProfileServiceDal extends StudentProfileServiceImpl {
     public StudentProfile save(StudentProfile studentProfile) {
         try
         {
+            studentProfile.setStudent_profile_id(BigInteger.valueOf(0));
             String returnMessage=ValidateBeforeSave(studentProfile,"save");
             if(returnMessage.length() > 0)
             {
@@ -78,7 +79,8 @@ class StudentProfileServiceDal extends StudentProfileServiceImpl {
     }
 
     @Override
-    public StudentProfile modify(StudentProfile studentProfile) {
+    public StudentProfile modify(StudentProfile studentProfile)
+    {
         try
         {
             String returnMessage=ValidateBeforeSave(studentProfile,"modify");
@@ -100,8 +102,11 @@ class StudentProfileServiceDal extends StudentProfileServiceImpl {
                 studentProfileToModify.setGuardiansPhoneNumber(studentProfile.getGuardiansPhoneNumber());
                 studentProfileToModify.setBoard(studentProfile.getBoard());
                 studentProfileToModify.setLevel(studentProfile.getLevel());
-                studentProfileToModify.setSuburb(studentProfile.getSuburb());
-                studentProfileToModify.setProfileImageLink(studentProfile.getProfileImageLink());
+                if(studentProfile.getProfileImageLink()!=null &&
+                        studentProfile.getProfileImageLink().trim().length() > 0)
+                {
+                    studentProfileToModify.setProfileImageLink(studentProfile.getProfileImageLink());
+                }
                 studentProfileToModify.setUser(studentProfile.getUser());
                 studentProfileToModify.setLanguage(studentProfile.getLanguage());
                 studentProfileToModify=EncryptValues(studentProfileToModify);
