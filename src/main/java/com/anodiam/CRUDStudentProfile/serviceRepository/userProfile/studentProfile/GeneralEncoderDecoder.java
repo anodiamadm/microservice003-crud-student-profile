@@ -49,6 +49,10 @@ public class GeneralEncoderDecoder
 
 
     public String decrypt(String encryptedString) {
+        if(encryptedString == null || encryptedString.trim().length()==0)
+        {
+            return null;
+        }
         String decryptedText=null;
         try {
             cipher.init(Cipher.DECRYPT_MODE, key);

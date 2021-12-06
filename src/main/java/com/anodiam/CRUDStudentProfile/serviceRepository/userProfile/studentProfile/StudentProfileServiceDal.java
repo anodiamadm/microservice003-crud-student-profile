@@ -119,7 +119,6 @@ class StudentProfileServiceDal extends StudentProfileServiceImpl {
             studentProfileToModify.setMessageResponse(new MessageResponse(ResponseCode.FAILURE.getID(), returnMessage));
             return studentProfileToModify;
         } catch (Exception exception) {
-            exception.printStackTrace();
             studentProfile.setMessageResponse(errorService.GetErrorMessage(exception.getMessage()));
             return studentProfile;
         }
@@ -179,7 +178,7 @@ class StudentProfileServiceDal extends StudentProfileServiceImpl {
             return messageService.showMessage(language_Id,"GUARDIAN_INVALID_EMAIL_ADDRESS");
         }
 
-        if(studentProfile.getLanguage() == null || studentProfile.getLanguage().getLanguage_id() == null)
+        if(studentProfile.getLanguage() == null || studentProfile.getLanguage().getLanguageId() == null)
         {
             return messageService.showMessage(language_Id,"STUDENT_LANGUAGE_ID_BLANK");
         }
