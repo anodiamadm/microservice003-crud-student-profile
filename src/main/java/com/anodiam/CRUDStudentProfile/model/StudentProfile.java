@@ -15,7 +15,7 @@ public class StudentProfile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="student_profile_id")
-    private BigInteger student_profile_id;
+    private BigInteger studentProfileId;
 
     @Column(name="full_name")
     private String fullName;
@@ -70,12 +70,12 @@ public class StudentProfile {
         this.messageResponse = messageResponse;
     }
 
-    public BigInteger getStudent_profile_id() {
-        return student_profile_id;
+    public BigInteger getStudentProfileId() {
+        return studentProfileId;
     }
 
-    public void setStudent_profile_id(BigInteger student_profile_id) {
-        this.student_profile_id = student_profile_id;
+    public void setStudentProfileId(BigInteger studentProfileId) {
+        this.studentProfileId = studentProfileId;
     }
 
     public String getFullName() {

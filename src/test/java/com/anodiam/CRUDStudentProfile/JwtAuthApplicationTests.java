@@ -39,7 +39,7 @@ class JwtAuthApplicationTests {
 	public void testNegativeNewStudentProfileIDNotZero() throws Exception
 	{
 		StudentProfile testStudentProfile=new StudentProfile();
-		testStudentProfile.setStudent_profile_id(BigInteger.valueOf(-1));
+		testStudentProfile.setStudentProfileId(BigInteger.valueOf(-1));
 		testStudentProfile.setFullName("Vicky");
 		StudentProfile newStudentProfile=studentProfileService.save(testStudentProfile);
 		String returnMessage=messageService.showMessage(language_Id,"STUDENT_PROFILE_ID_BLANK");
@@ -51,7 +51,7 @@ class JwtAuthApplicationTests {
 	public void testNegativeExistingStudentProfileIDZeroOrLessThanZero() throws Exception
 	{
 		StudentProfile testStudentProfile=new StudentProfile();
-		testStudentProfile.setStudent_profile_id(BigInteger.valueOf(0));
+		testStudentProfile.setStudentProfileId(BigInteger.valueOf(0));
 		testStudentProfile.setFullName("Vicky");
 		StudentProfile newStudentProfile=studentProfileService.modify(testStudentProfile);
 		String returnMessage=messageService.showMessage(language_Id,"STUDENT_PROFILE_ID_INVALID");
@@ -63,7 +63,7 @@ class JwtAuthApplicationTests {
 	public void testNegativeLanguageNullInAddMode() throws Exception
 	{
 		StudentProfile testStudentProfile=new StudentProfile();
-		testStudentProfile.setStudent_profile_id(BigInteger.valueOf(0));
+		testStudentProfile.setStudentProfileId(BigInteger.valueOf(0));
 		testStudentProfile.setFullName("Vicky");
 		StudentProfile newStudentProfile=studentProfileService.save(testStudentProfile);
 		String returnMessage=messageService.showMessage(language_Id,"STUDENT_LANGUAGE_ID_BLANK");
@@ -75,7 +75,7 @@ class JwtAuthApplicationTests {
 	public void testNegativeLanguageNullInModifyMode() throws Exception
 	{
 		StudentProfile testStudentProfile=new StudentProfile();
-		testStudentProfile.setStudent_profile_id(BigInteger.valueOf(1));
+		testStudentProfile.setStudentProfileId(BigInteger.valueOf(1));
 		testStudentProfile.setFullName("Vicky");
 		User existingUser=userService.GetSingleUser();
 		testStudentProfile.setUser(existingUser);
@@ -96,7 +96,7 @@ class JwtAuthApplicationTests {
 	public void testNegativeInvalidGurdianEmail1() throws Exception
 	{
 		StudentProfile testStudentProfile=new StudentProfile();
-		testStudentProfile.setStudent_profile_id(BigInteger.valueOf(0));
+		testStudentProfile.setStudentProfileId(BigInteger.valueOf(0));
 		testStudentProfile.setFullName("Vicky");
 		testStudentProfile.setGuardiansEmail("vicky.ghosh695gmail.com");
 		StudentProfile newStudentProfile=studentProfileService.save(testStudentProfile);
@@ -108,7 +108,7 @@ class JwtAuthApplicationTests {
 	public void testNegativeInvalidGurdianEmail2() throws Exception
 	{
 		StudentProfile testStudentProfile=new StudentProfile();
-		testStudentProfile.setStudent_profile_id(BigInteger.valueOf(0));
+		testStudentProfile.setStudentProfileId(BigInteger.valueOf(0));
 		testStudentProfile.setFullName("Vicky");
 		testStudentProfile.setGuardiansEmail("rani.ghosh695@");
 		StudentProfile newStudentProfile=studentProfileService.save(testStudentProfile);
@@ -120,7 +120,7 @@ class JwtAuthApplicationTests {
 	public void testNegativeInvalidEmail3() throws Exception
 	{
 		StudentProfile testStudentProfile=new StudentProfile();
-		testStudentProfile.setStudent_profile_id(BigInteger.valueOf(0));
+		testStudentProfile.setStudentProfileId(BigInteger.valueOf(0));
 		testStudentProfile.setFullName("Vicky");
 		testStudentProfile.setGuardiansEmail("@gmail.com");
 		StudentProfile newStudentProfile=studentProfileService.save(testStudentProfile);
@@ -132,7 +132,7 @@ class JwtAuthApplicationTests {
 	public void testNegativeInvalidEmail4() throws Exception
 	{
 		StudentProfile testStudentProfile=new StudentProfile();
-		testStudentProfile.setStudent_profile_id(BigInteger.valueOf(0));
+		testStudentProfile.setStudentProfileId(BigInteger.valueOf(0));
 		testStudentProfile.setFullName("Vicky");
 		testStudentProfile.setGuardiansEmail("vicky.ghosh695@gmail");
 		StudentProfile newStudentProfile=studentProfileService.save(testStudentProfile);

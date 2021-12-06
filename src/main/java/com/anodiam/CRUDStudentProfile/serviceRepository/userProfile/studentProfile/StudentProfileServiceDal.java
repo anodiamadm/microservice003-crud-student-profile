@@ -59,7 +59,7 @@ class StudentProfileServiceDal extends StudentProfileServiceImpl {
     public StudentProfile save(StudentProfile studentProfile) {
         try
         {
-            studentProfile.setStudent_profile_id(BigInteger.valueOf(0));
+            studentProfile.setStudentProfileId(BigInteger.valueOf(0));
             String returnMessage=ValidateBeforeSave(studentProfile,"save");
             if(returnMessage.length() > 0)
             {
@@ -89,7 +89,7 @@ class StudentProfileServiceDal extends StudentProfileServiceImpl {
                 studentProfile.setMessageResponse(new MessageResponse(ResponseCode.FAILURE.getID(),returnMessage));
                 return studentProfile;
             }
-            StudentProfile studentProfileToModify= studentProfileRepository.findById(studentProfile.getStudent_profile_id()).get();
+            StudentProfile studentProfileToModify= studentProfileRepository.findById(studentProfile.getStudentProfileId()).get();
             if(studentProfileToModify!=null)
             {
                 studentProfileToModify.setFullName(studentProfile.getFullName());
@@ -148,7 +148,7 @@ class StudentProfileServiceDal extends StudentProfileServiceImpl {
     {
         if(methodName=="save")
         {
-            if(studentProfile.getStudent_profile_id().intValue()!=0)
+            if(studentProfile.getStudentProfileId().intValue()!=0)
             {
                 return messageService.showMessage(language_Id,"STUDENT_PROFILE_ID_BLANK");
             }
@@ -161,7 +161,7 @@ class StudentProfileServiceDal extends StudentProfileServiceImpl {
         }
         if(methodName=="modify")
         {
-            if(studentProfile.getStudent_profile_id().intValue()<=0)
+            if(studentProfile.getStudentProfileId().intValue()<=0)
             {
                 return messageService.showMessage(language_Id,"STUDENT_PROFILE_ID_INVALID");
             }
