@@ -11,6 +11,5 @@ public interface StudentProfileService {
 
     Optional<StudentProfile> findByUser(User user);
     StudentProfile save(StudentProfile studentProfile);
-    StudentProfile modify(StudentProfile studentProfile);
     MessageResponse removeOne(BigInteger studentProfileId);
 }

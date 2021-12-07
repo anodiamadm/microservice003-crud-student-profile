@@ -74,20 +74,4 @@ public class CrudProfileController {
             return ResponseEntity.ok(new MessageResponse(ResponseCode.FAILURE.getID(),exception.getMessage()));
         }
     }
-
-//  @PostMapping("/modify-profile") :: Modify Profile Info of the Current Logged-in User
-    @PostMapping("/modify-profile")
-    @ResponseBody
-    public ResponseEntity<?> modifyStudentProfileInfo(@Valid @RequestBody StudentProfile studentProfile) throws Exception
-    {
-        try
-        {
-            studentProfile.setUser(getCurrentUser());
-            StudentProfile studentProfileToSave = studentProfileService.modify(studentProfile);
-            return ResponseEntity.ok(studentProfileToSave.getMessageResponse());
-        } catch (Exception exception) {
-            exception.printStackTrace();
-            return ResponseEntity.ok(new MessageResponse(ResponseCode.FAILURE.getID(),exception.getMessage()));
-        }
-    }
 }

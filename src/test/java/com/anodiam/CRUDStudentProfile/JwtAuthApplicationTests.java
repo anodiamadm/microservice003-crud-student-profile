@@ -47,7 +47,7 @@ class JwtAuthApplicationTests {
 	}
 
 	//	Use Case 1.2: If Student Profile Id not zero, then new student profile won't be added.
-	@Test
+	/*@Test
 	public void testNegativeExistingStudentProfileIDZeroOrLessThanZero() throws Exception
 	{
 		StudentProfile testStudentProfile=new StudentProfile();
@@ -56,7 +56,7 @@ class JwtAuthApplicationTests {
 		StudentProfile newStudentProfile=studentProfileService.modify(testStudentProfile);
 		String returnMessage=messageService.showMessage(language_Id,"STUDENT_PROFILE_ID_INVALID");
 		assertEquals(newStudentProfile.getMessageResponse().getMessage(),returnMessage);
-	}
+	}*/
 
 	//	Use Case 1.3: If Language is null, then new student profile won't be added.
 	@Test
@@ -71,7 +71,7 @@ class JwtAuthApplicationTests {
 	}
 
 	//	Use Case 1.4: If Language is null, then existing student profile won't be modified.
-	@Test
+	/*@Test
 	public void testNegativeLanguageNullInModifyMode() throws Exception
 	{
 		StudentProfile testStudentProfile=new StudentProfile();
@@ -82,7 +82,7 @@ class JwtAuthApplicationTests {
 		StudentProfile newStudentProfile=studentProfileService.modify(testStudentProfile);
 		String returnMessage=messageService.showMessage(language_Id,"STUDENT_LANGUAGE_ID_BLANK");
 		assertEquals(newStudentProfile.getMessageResponse().getMessage(),returnMessage);
-	}
+	}*/
 
 	//	Use Case 3.4.1: If email is invalid, =>
 	//1. Does not contain exactly one '@' character.

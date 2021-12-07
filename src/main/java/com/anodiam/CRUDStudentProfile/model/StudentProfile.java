@@ -60,6 +60,15 @@ public class StudentProfile {
     @Transient
     private MessageResponse messageResponse;
 
+    @Transient
+    private BigInteger boardId;
+
+    @Transient
+    private BigInteger levelId;
+
+    @Transient
+    private Integer languageId;
+
     public StudentProfile(){}
 
     public MessageResponse getMessageResponse() {
@@ -68,6 +77,30 @@ public class StudentProfile {
 
     public void setMessageResponse(MessageResponse messageResponse) {
         this.messageResponse = messageResponse;
+    }
+
+    public BigInteger getBoardId() {
+        return boardId;
+    }
+
+    public void setBoardId(BigInteger boardId) {
+        this.boardId = boardId;
+    }
+
+    public BigInteger getLevelId() {
+        return levelId;
+    }
+
+    public void setLevelId(BigInteger levelId) {
+        this.levelId = levelId;
+    }
+
+    public Integer getLanguageId() {
+        return languageId;
+    }
+
+    public void setLanguageId(Integer languageId) {
+        this.languageId = languageId;
     }
 
     public BigInteger getStudentProfileId() {
@@ -181,4 +214,5 @@ public class StudentProfile {
     public void setLanguage(Language language) {
         this.language = language;
     }
+
 }

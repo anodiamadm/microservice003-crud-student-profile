@@ -7,18 +7,31 @@ import com.anodiam.CRUDStudentProfile.model.common.MessageResponse;
 import com.anodiam.CRUDStudentProfile.model.common.ResponseCode;
 import com.anodiam.CRUDStudentProfile.serviceRepository.Message.MessageService;
 import com.anodiam.CRUDStudentProfile.serviceRepository.errorHandling.ErrorHandlingService;
+import com.anodiam.CRUDStudentProfile.serviceRepository.masterData.Board.BoardRepository;
+import com.anodiam.CRUDStudentProfile.serviceRepository.masterData.Language.LanguageRepository;
+import com.anodiam.CRUDStudentProfile.serviceRepository.masterData.Level.LevelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
 import java.util.Optional;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Service
 class StudentProfileServiceDal extends StudentProfileServiceImpl {
 
     @Autowired
     private StudentProfileRepository studentProfileRepository;
+
+    @Autowired
+    private BoardRepository boardRepository;
+
+    @Autowired
+    private LevelRepository levelRepository;
+
+    @Autowired
+    private LanguageRepository languageRepository;
 
     @Autowired
     private ErrorHandlingService errorService;
@@ -42,6 +55,7 @@ class StudentProfileServiceDal extends StudentProfileServiceImpl {
                 GeneralEncoderDecoder generalEncoderDecoder=new GeneralEncoderDecoder();
                 StudentProfile studentProfile= optionalStudentProfile.get();
                 studentProfile=DencryptValues(studentProfile);
+                studentProfile.setStudentProfileId(null);
                 return  Optional.of(studentProfile);
             }
         }catch(Exception exception)
@@ -56,10 +70,39 @@ class StudentProfileServiceDal extends StudentProfileServiceImpl {
 
 
     @Override
-    public StudentProfile save(StudentProfile studentProfile) {
+    public StudentProfile save(StudentProfile studentProfile)
+    {
+        Optional<StudentProfile> optionalStudentProfile = studentProfileRepository.findByUser(studentProfile.getUser());
+        if(!optionalStudentProfile.isPresent())
+        {
+            return addStudentProfile(studentProfile);
+        }
+        else
+        {
+            StudentProfile existingStudentProfile= optionalStudentProfile.get();
+            studentProfile.setStudentProfileId(existingStudentProfile.getStudentProfileId());
+            return modifyStudentProfile(studentProfile);
+        }
+    }
+
+
+    private StudentProfile addStudentProfile(StudentProfile studentProfile)
+    {
         try
         {
             studentProfile.setStudentProfileId(BigInteger.valueOf(0));
+            if(studentProfile.getBoardId()!=null)
+            {
+                studentProfile.setBoard(boardRepository.findById(studentProfile.getBoardId()).get());
+            }
+            if(studentProfile.getLevelId()!=null)
+            {
+                studentProfile.setLevel(levelRepository.findById(studentProfile.getLevelId()).get());
+            }
+            if(studentProfile.getLanguageId()!=null)
+            {
+                studentProfile.setLanguage(languageRepository.findById(studentProfile.getLanguageId()).get());
+            }
             String returnMessage=ValidateBeforeSave(studentProfile,"save");
             if(returnMessage.length() > 0)
             {
@@ -78,11 +121,23 @@ class StudentProfileServiceDal extends StudentProfileServiceImpl {
         }
     }
 
-    @Override
-    public StudentProfile modify(StudentProfile studentProfile)
+
+    private StudentProfile modifyStudentProfile(StudentProfile studentProfile)
     {
         try
         {
+            if(studentProfile.getBoardId()!=null)
+            {
+                studentProfile.setBoard(boardRepository.findById(studentProfile.getBoardId()).get());
+            }
+            if(studentProfile.getLevelId()!=null)
+            {
+                studentProfile.setLevel(levelRepository.findById(studentProfile.getLevelId()).get());
+            }
+            if(studentProfile.getLanguageId()!=null)
+            {
+                studentProfile.setLanguage(languageRepository.findById(studentProfile.getLanguageId()).get());
+            }
             String returnMessage=ValidateBeforeSave(studentProfile,"modify");
             if(returnMessage.length() > 0)
             {
