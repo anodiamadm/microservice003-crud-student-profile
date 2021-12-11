@@ -2,6 +2,7 @@ package com.anodiam.CRUDStudentProfile;
 
 import com.anodiam.CRUDStudentProfile.model.StudentProfile;
 import com.anodiam.CRUDStudentProfile.model.User;
+import com.anodiam.CRUDStudentProfile.model.masterData.Language;
 import com.anodiam.CRUDStudentProfile.serviceRepository.Message.MessageService;
 import com.anodiam.CRUDStudentProfile.serviceRepository.userProfile.studentProfile.StudentProfileService;
 import com.anodiam.CRUDStudentProfile.serviceRepository.userProfile.user.UserService;
@@ -35,16 +36,19 @@ class JwtAuthApplicationTests {
 	}
 
 	//	Use Case 1.1: If Student Profile Id not zero, then new student profile won't be added.
-	@Test
+	/*@Test
 	public void testNegativeNewStudentProfileIDNotZero() throws Exception
 	{
 		StudentProfile testStudentProfile=new StudentProfile();
-		testStudentProfile.setStudentProfileId(BigInteger.valueOf(-1));
+		testStudentProfile.setStudentProfileId(BigInteger.valueOf(14));
 		testStudentProfile.setFullName("Vicky");
+		Language lng=new Language();
+		lng.setLanguageId(language_Id);
+		testStudentProfile.setLanguage(lng);
 		StudentProfile newStudentProfile=studentProfileService.save(testStudentProfile);
 		String returnMessage=messageService.showMessage(language_Id,"STUDENT_PROFILE_ID_BLANK");
 		assertEquals(newStudentProfile.getMessageResponse().getMessage(),returnMessage);
-	}
+	}*/
 
 	//	Use Case 1.2: If Student Profile Id not zero, then new student profile won't be added.
 	/*@Test

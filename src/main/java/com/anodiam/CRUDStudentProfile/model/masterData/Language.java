@@ -26,7 +26,7 @@ public class Language {
         this.languageDesc=languageDesc;
     }
 
-    protected Language(){}
+    public Language(){}
 
     public MessageResponse getMessageResponse() {
         return messageResponse;
