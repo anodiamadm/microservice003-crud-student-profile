@@ -1,9 +1,7 @@
 package com.anodiam.CRUDStudentProfile;
 
 import com.anodiam.CRUDStudentProfile.model.StudentProfile;
-import com.anodiam.CRUDStudentProfile.model.User;
-import com.anodiam.CRUDStudentProfile.model.masterData.Language;
-import com.anodiam.CRUDStudentProfile.serviceRepository.Message.MessageService;
+import com.anodiam.CRUDStudentProfile.model.common.ResponseCode;
 import com.anodiam.CRUDStudentProfile.serviceRepository.userProfile.studentProfile.StudentProfileService;
 import com.anodiam.CRUDStudentProfile.serviceRepository.userProfile.user.UserService;
 import org.junit.jupiter.api.Test;
@@ -11,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -24,12 +20,7 @@ class JwtAuthApplicationTests {
 	private StudentProfileService studentProfileService;
 
 	@Autowired
-	private MessageService messageService;
-
-	@Autowired
 	private UserService userService;
-
-	int language_Id=CRUDStudentProfileApplication.languageId;
 
 	@Test
 	void contextLoads() {
@@ -62,18 +53,6 @@ class JwtAuthApplicationTests {
 		assertEquals(newStudentProfile.getMessageResponse().getMessage(),returnMessage);
 	}*/
 
-	//	Use Case 1.3: If Language is null, then new student profile won't be added.
-	@Test
-	public void testNegativeLanguageNullInAddMode() throws Exception
-	{
-		StudentProfile testStudentProfile=new StudentProfile();
-		testStudentProfile.setStudentProfileId(BigInteger.valueOf(0));
-		testStudentProfile.setFullName("Vicky");
-		StudentProfile newStudentProfile=studentProfileService.save(testStudentProfile);
-		String returnMessage=messageService.showMessage(language_Id,"STUDENT_LANGUAGE_ID_BLANK");
-		assertEquals(newStudentProfile.getMessageResponse().getMessage(),returnMessage);
-	}
-
 	//	Use Case 1.4: If Language is null, then existing student profile won't be modified.
 	/*@Test
 	public void testNegativeLanguageNullInModifyMode() throws Exception
@@ -104,7 +83,7 @@ class JwtAuthApplicationTests {
 		testStudentProfile.setFullName("Vicky");
 		testStudentProfile.setGuardiansEmail("vicky.ghosh695gmail.com");
 		StudentProfile newStudentProfile=studentProfileService.save(testStudentProfile);
-		String returnMessage = messageService.showMessage(language_Id, "GUARDIAN_INVALID_EMAIL_ADDRESS");
+		String returnMessage = ResponseCode.EMAIL_INVALID.getMessage();
 		assertEquals(testStudentProfile.getMessageResponse().getMessage(),returnMessage);
 	}
 
@@ -116,7 +95,7 @@ class JwtAuthApplicationTests {
 		testStudentProfile.setFullName("Vicky");
 		testStudentProfile.setGuardiansEmail("rani.ghosh695@");
 		StudentProfile newStudentProfile=studentProfileService.save(testStudentProfile);
-		String returnMessage = messageService.showMessage(language_Id, "GUARDIAN_INVALID_EMAIL_ADDRESS");
+		String returnMessage = ResponseCode.EMAIL_INVALID.getMessage();
 		assertEquals(testStudentProfile.getMessageResponse().getMessage(),returnMessage);
 	}
 
@@ -128,7 +107,7 @@ class JwtAuthApplicationTests {
 		testStudentProfile.setFullName("Vicky");
 		testStudentProfile.setGuardiansEmail("@gmail.com");
 		StudentProfile newStudentProfile=studentProfileService.save(testStudentProfile);
-		String returnMessage = messageService.showMessage(language_Id, "GUARDIAN_INVALID_EMAIL_ADDRESS");
+		String returnMessage = ResponseCode.EMAIL_INVALID.getMessage();
 		assertEquals(testStudentProfile.getMessageResponse().getMessage(),returnMessage);
 	}
 
@@ -140,7 +119,7 @@ class JwtAuthApplicationTests {
 		testStudentProfile.setFullName("Vicky");
 		testStudentProfile.setGuardiansEmail("vicky.ghosh695@gmail");
 		StudentProfile newStudentProfile=studentProfileService.save(testStudentProfile);
-		String returnMessage = messageService.showMessage(language_Id, "GUARDIAN_INVALID_EMAIL_ADDRESS");
+		String returnMessage = ResponseCode.EMAIL_INVALID.getMessage();
 		assertEquals(testStudentProfile.getMessageResponse().getMessage(),returnMessage);
 	}
 }

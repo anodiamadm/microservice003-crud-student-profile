@@ -1,14 +1,10 @@
 package com.anodiam.CRUDStudentProfile.serviceRepository.userProfile.studentProfile;
 
-import com.anodiam.CRUDStudentProfile.CRUDStudentProfileApplication;
 import com.anodiam.CRUDStudentProfile.model.StudentProfile;
 import com.anodiam.CRUDStudentProfile.model.User;
 import com.anodiam.CRUDStudentProfile.model.common.MessageResponse;
 import com.anodiam.CRUDStudentProfile.model.common.ResponseCode;
-import com.anodiam.CRUDStudentProfile.serviceRepository.Message.MessageService;
-import com.anodiam.CRUDStudentProfile.serviceRepository.errorHandling.ErrorHandlingService;
 import com.anodiam.CRUDStudentProfile.serviceRepository.masterData.Board.BoardRepository;
-import com.anodiam.CRUDStudentProfile.serviceRepository.masterData.Language.LanguageRepository;
 import com.anodiam.CRUDStudentProfile.serviceRepository.masterData.Level.LevelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,7 +12,6 @@ import org.springframework.stereotype.Service;
 import java.math.BigInteger;
 import java.util.Optional;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 @Service
 class StudentProfileServiceDal extends StudentProfileServiceImpl {
@@ -30,18 +25,7 @@ class StudentProfileServiceDal extends StudentProfileServiceImpl {
     @Autowired
     private LevelRepository levelRepository;
 
-    @Autowired
-    private LanguageRepository languageRepository;
-
-    @Autowired
-    private ErrorHandlingService errorService;
-
-    @Autowired
-    private MessageService messageService;
-
     public StudentProfileServiceDal(){}
-
-    int language_Id= CRUDStudentProfileApplication.languageId;
 
     @Override
     public Optional<StudentProfile> findByUser(User user)
@@ -99,10 +83,6 @@ class StudentProfileServiceDal extends StudentProfileServiceImpl {
             {
                 studentProfile.setLevel(levelRepository.findById(studentProfile.getLevelId()).get());
             }
-            if(studentProfile.getLanguageId()!=null)
-            {
-                studentProfile.setLanguage(languageRepository.findById(studentProfile.getLanguageId()).get());
-            }
             String returnMessage=ValidateBeforeSave(studentProfile,"save");
             if(returnMessage.length() > 0)
             {
@@ -111,12 +91,10 @@ class StudentProfileServiceDal extends StudentProfileServiceImpl {
             }
             studentProfile=EncryptValues(studentProfile);
             StudentProfile studentProfileToSave = studentProfileRepository.save(studentProfile);
-            returnMessage=messageService.showMessage(language_Id,"STUDENT_PROFILE_SAVE_SUCCESS");
             studentProfileToSave.setMessageResponse(new MessageResponse(ResponseCode.SUCCESS.getID(),returnMessage));
             return studentProfileToSave;
         } catch (Exception exception) {
-            exception.printStackTrace();
-            studentProfile.setMessageResponse(errorService.GetErrorMessage(exception.getMessage()));
+            studentProfile.setMessageResponse(new MessageResponse(ResponseCode.SUCCESS.getID(),exception.getMessage()));
             return studentProfile;
         }
     }
@@ -133,10 +111,6 @@ class StudentProfileServiceDal extends StudentProfileServiceImpl {
             if(studentProfile.getLevelId()!=null)
             {
                 studentProfile.setLevel(levelRepository.findById(studentProfile.getLevelId()).get());
-            }
-            if(studentProfile.getLanguageId()!=null)
-            {
-                studentProfile.setLanguage(languageRepository.findById(studentProfile.getLanguageId()).get());
             }
             String returnMessage=ValidateBeforeSave(studentProfile,"modify");
             if(returnMessage.length() > 0)
@@ -163,18 +137,15 @@ class StudentProfileServiceDal extends StudentProfileServiceImpl {
                     studentProfileToModify.setProfileImageLink(studentProfile.getProfileImageLink());
                 }
                 studentProfileToModify.setUser(studentProfile.getUser());
-                studentProfileToModify.setLanguage(studentProfile.getLanguage());
                 studentProfileToModify=EncryptValues(studentProfileToModify);
                 StudentProfile student = studentProfileRepository.save(studentProfileToModify);
-                returnMessage=messageService.showMessage(language_Id,"STUDENT_PROFILE_MODIFY_SUCCESS");
                 studentProfileToModify.setMessageResponse(new MessageResponse(ResponseCode.SUCCESS.getID(), returnMessage));
                 return student;
             }
-            returnMessage=messageService.showMessage(language_Id,"STUDENT_PROFILE_MODIFY_FAILURE");
             studentProfileToModify.setMessageResponse(new MessageResponse(ResponseCode.FAILURE.getID(), returnMessage));
             return studentProfileToModify;
         } catch (Exception exception) {
-            studentProfile.setMessageResponse(errorService.GetErrorMessage(exception.getMessage()));
+            studentProfile.setMessageResponse(new MessageResponse(ResponseCode.SUCCESS.getID(),exception.getMessage()));
             return studentProfile;
         }
     }
@@ -182,18 +153,15 @@ class StudentProfileServiceDal extends StudentProfileServiceImpl {
     @Override
     public MessageResponse removeOne(BigInteger studentProfileId)
     {
-        String returnMessage="";
         MessageResponse messageResponse = new MessageResponse();
         try
         {
-            returnMessage=messageService.showMessage(language_Id,"STUDENT_PROFILE_DELETE_SUCCESS");
             studentProfileRepository.deleteById(studentProfileId);
-            messageResponse = new MessageResponse(ResponseCode.SUCCESS.getID(), returnMessage);
+            messageResponse = new MessageResponse(ResponseCode.SUCCESS.getID(), ResponseCode.SUCCESS.getMessage());
         }catch(Exception exception)
         {
             exception.printStackTrace();
-            returnMessage=messageService.showMessage(language_Id,"STUDENT_PROFILE_DELETE_FAILURE");
-            messageResponse = new MessageResponse(ResponseCode.FAILURE.getID(),returnMessage);
+            messageResponse = new MessageResponse(ResponseCode.FAILURE.getID(), ResponseCode.FAILURE.getMessage());
         }
         return messageResponse;
     }
@@ -204,12 +172,12 @@ class StudentProfileServiceDal extends StudentProfileServiceImpl {
         {
             if(studentProfile.getStudentProfileId().intValue()!=0)
             {
-                return messageService.showMessage(language_Id,"STUDENT_PROFILE_ID_BLANK");
+                return ResponseCode.BLANK_ID.getMessage();
             }
             Optional<StudentProfile> optStudentProfile= studentProfileRepository.findByUser(studentProfile.getUser());
             if(optStudentProfile.isPresent())
             {
-                return messageService.showMessage(language_Id,"STUDENT_USER_ID_PRESENT");
+                return ResponseCode.USER_ALREADY_EXISTS.getMessage();
             }
 
         }
@@ -217,12 +185,12 @@ class StudentProfileServiceDal extends StudentProfileServiceImpl {
         {
             if(studentProfile.getStudentProfileId().intValue()<=0)
             {
-                return messageService.showMessage(language_Id,"STUDENT_PROFILE_ID_INVALID");
+                return ResponseCode.PROFILE_INVALID.getMessage();
             }
             Optional<StudentProfile> optStudentProfile= studentProfileRepository.findByUser(studentProfile.getUser());
             if(!optStudentProfile.isPresent())
             {
-                return messageService.showMessage(language_Id,"STUDENT_USER_ID_NOT_PRESENT");
+                return ResponseCode.USER_ID_ABSENT.getMessage();
             }
         }
 
@@ -230,13 +198,9 @@ class StudentProfileServiceDal extends StudentProfileServiceImpl {
                 studentProfile.getGuardiansEmail().trim().length() > 0 &&
                 !isValidEmail(studentProfile.getGuardiansEmail()))
         {
-            return messageService.showMessage(language_Id,"GUARDIAN_INVALID_EMAIL_ADDRESS");
+            return ResponseCode.EMAIL_INVALID.getMessage();
         }
 
-        if(studentProfile.getLanguage() == null || studentProfile.getLanguage().getLanguageId() == null)
-        {
-            return messageService.showMessage(language_Id,"STUDENT_LANGUAGE_ID_BLANK");
-        }
         return "";
     }
 

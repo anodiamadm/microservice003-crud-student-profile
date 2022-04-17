@@ -62,7 +62,6 @@ public class CrudProfileController {
     // @PostMapping("/save-profile") :: Save Profile Info of the Current Logged-in User
     @PostMapping("/save-profile")
     @ResponseBody
-//    public ResponseEntity<?> saveStudentProfileInfo(@Valid @RequestBody StudentProfile studentProfile) throws Exception
     public ResponseEntity<?> saveStudentProfileInfo(@RequestBody StudentProfile studentProfile) throws Exception
     {
         try

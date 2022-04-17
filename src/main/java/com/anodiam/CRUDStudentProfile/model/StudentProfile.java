@@ -2,7 +2,6 @@ package com.anodiam.CRUDStudentProfile.model;
 
 import com.anodiam.CRUDStudentProfile.model.common.MessageResponse;
 import com.anodiam.CRUDStudentProfile.model.masterData.Board;
-import com.anodiam.CRUDStudentProfile.model.masterData.Language;
 import com.anodiam.CRUDStudentProfile.model.masterData.Level;
 
 import javax.persistence.*;
@@ -52,10 +51,6 @@ public class StudentProfile {
     @OneToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "user_id", referencedColumnName = "userId")
     private User user;
-
-    @OneToOne(cascade = CascadeType.DETACH)
-    @JoinColumn(name = "language_id", referencedColumnName = "language_id")
-    private Language language;
 
     @Transient
     private MessageResponse messageResponse;
@@ -206,13 +201,4 @@ public class StudentProfile {
     public void setUser(User user) {
         this.user = user;
     }
-
-    public Language getLanguage() {
-        return language;
-    }
-
-    public void setLanguage(Language language) {
-        this.language = language;
-    }
-
 }

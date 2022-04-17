@@ -17,15 +17,15 @@ public class Board {
 	@Column(name="board_name")
 	private String boardName;
 
-	@Column(name="board_short_name")
-	private String boardShortName;
+	@Column(name="board_code")
+	private String boardCode;
 
 	@Transient
 	private MessageResponse messageResponse;
 
 	public Board(String boardName, String boardShortName) {
 		this.boardName = boardName;
-		this.boardShortName = boardShortName;
+		this.boardCode = boardCode;
 	}
 
 	public Board() {
@@ -55,11 +55,11 @@ public class Board {
 		this.boardName = boardName;
 	}
 
-	public String getBoardShortName() {
-		return boardShortName;
+	public String getBoardCode() {
+		return boardCode;
 	}
 
-	public void setBoardShortName(String boardShortName) {
-		this.boardShortName = boardShortName;
+	public void setBoardCode(String boardCode) {
+		this.boardCode = boardCode;
 	}
 }

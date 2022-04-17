@@ -1,7 +1,6 @@
 package com.anodiam.CRUDStudentProfile.model;
 
 import com.anodiam.CRUDStudentProfile.model.common.MessageResponse;
-import com.anodiam.CRUDStudentProfile.model.masterData.Language;
 
 import javax.persistence.*;
 
@@ -13,10 +12,6 @@ public class Message {
     @Column(name="message_id")
     private Integer messageId;
 
-    @OneToOne(cascade = CascadeType.DETACH)
-    @JoinColumn(name = "language_id", referencedColumnName = "language_id")
-    private Language language;
-
     @Column(name="message_code")
     private String messageCode;
 
@@ -26,9 +21,8 @@ public class Message {
     @Transient
     private MessageResponse messageResponse;
 
-    public Message(Integer messageId,Language language,String messageCode,String messageDesc) {
+    public Message(Integer messageId,String messageCode,String messageDesc) {
         this.messageId = messageId;
-        this.language = language;
         this.messageCode = messageCode;
         this.messageDesc=messageDesc;
     }
@@ -41,14 +35,6 @@ public class Message {
 
     public void setMessageResponse(MessageResponse messageResponse) {
         this.messageResponse = messageResponse;
-    }
-
-    public Language getLanguage() {
-        return language;
-    }
-
-    public void setLanguage(Language language) {
-        this.language = language;
     }
 
     public Integer getMessageId() {
