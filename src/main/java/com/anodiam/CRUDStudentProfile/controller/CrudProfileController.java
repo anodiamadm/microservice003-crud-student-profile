@@ -13,9 +13,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-//import javax.validation.Valid;
-import java.util.Optional;
-
 @RestController
 @RequestMapping("api/user")
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -44,34 +41,49 @@ public class CrudProfileController {
         return null;
     }
 
-    //  @GetMapping("/profile") :: List Profile Info of the Current Logged-in User:
-    @GetMapping("/profile")
+    // @PostMapping("/save-profile") :: Create / Update Profile Info of the Current Logged-in User
+    @PostMapping("/save-profile")
     @ResponseBody
-    public Optional<StudentProfile> getStudentProfileInfo() throws Exception
+    public ResponseEntity<?> createStudentProfile(@RequestBody StudentProfile studentProfile) throws Exception {
+        try {
+            studentProfile.setUser(getCurrentUser());
+            StudentProfile studentProfileSaved = studentProfileService.save(studentProfile);
+            return ResponseEntity.ok(new MessageResponse(studentProfileSaved.getMessageResponse().getCode(),
+                    studentProfileSaved.getMessageResponse().getMessage()));
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseEntity.ok(new MessageResponse(ResponseCode.FAILURE.getID(),
+                    exception.getMessage()));
+        }
+    }
+
+    // @GetMapping("/read-profile") :: Read Profile Info of the Current Logged-in User
+    @GetMapping("/read-profile")
+    @ResponseBody
+    public StudentProfile readStudentProfile() throws Exception
     {
-        try
-        {
-            return studentProfileService.findByUser(getCurrentUser());
-        } catch (Exception exception)
-        {
+        try {
+            User currentUser = getCurrentUser();
+            return studentProfileService.findByUserId(currentUser.getUserId()).get();
+        } catch (Exception exception) {
             exception.printStackTrace();
             return null;
         }
      }
 
-    // @PostMapping("/save-profile") :: Save Profile Info of the Current Logged-in User
-    @PostMapping("/save-profile")
+    // @PostMapping("/delete-profile") :: Delete Profile Info of the Current Logged-in User
+    @PostMapping("/delete-profile")
     @ResponseBody
-    public ResponseEntity<?> saveStudentProfileInfo(@RequestBody StudentProfile studentProfile) throws Exception
-    {
-        try
-        {
-            studentProfile.setUser(getCurrentUser());
-            StudentProfile studentProfileToSave = studentProfileService.save(studentProfile);
-            return ResponseEntity.ok(studentProfileToSave.getMessageResponse());
+    public ResponseEntity<?> deleteStudentProfile(@RequestBody StudentProfile studentProfile) throws Exception {
+        try {
+            StudentProfile currentStudentProfile = studentProfileService.findByUserId(getCurrentUser().getUserId()).get();
+            MessageResponse responseToProfileDelete = studentProfileService.removeOne(currentStudentProfile.getStudentProfileId());
+            return ResponseEntity.ok(new MessageResponse(responseToProfileDelete.getCode(),
+                    responseToProfileDelete.getMessage()));
         } catch (Exception exception) {
             exception.printStackTrace();
-            return ResponseEntity.ok(new MessageResponse(ResponseCode.FAILURE.getID(),exception.getMessage()));
+            return ResponseEntity.ok(new MessageResponse(ResponseCode.FAILURE.getID(),
+                    exception.getMessage()));
         }
     }
 }

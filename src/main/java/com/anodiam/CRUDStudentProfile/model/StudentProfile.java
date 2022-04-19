@@ -19,27 +19,6 @@ public class StudentProfile {
     @Column(name="full_name")
     private String fullName;
 
-    @Column(name="phone_number")
-    private String phoneNumber;
-
-    private String address;
-
-    private String latitude;
-
-    private String longitude;
-
-    @Column(name="guardians_name")
-    private String guardiansName;
-
-    @Column(name="guardians_email")
-    private String guardiansEmail;
-
-    @Column(name="guardians_phone_number")
-    private String guardiansPhoneNumber;
-
-    @Column(name="profile_image_link")
-    private String profileImageLink;
-
     @OneToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "boardId", referencedColumnName = "board_id")
     private Board board;
@@ -60,9 +39,6 @@ public class StudentProfile {
 
     @Transient
     private BigInteger levelId;
-
-    @Transient
-    private Integer languageId;
 
     public StudentProfile(){}
 
@@ -90,14 +66,6 @@ public class StudentProfile {
         this.levelId = levelId;
     }
 
-    public Integer getLanguageId() {
-        return languageId;
-    }
-
-    public void setLanguageId(Integer languageId) {
-        this.languageId = languageId;
-    }
-
     public BigInteger getStudentProfileId() {
         return studentProfileId;
     }
@@ -112,70 +80,6 @@ public class StudentProfile {
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
-    }
-
-    public String getProfileImageLink() {
-        return profileImageLink;
-    }
-
-    public void setProfileImageLink(String profileImageLink) {
-        this.profileImageLink = profileImageLink;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(String latitude) {
-        this.latitude = latitude;
-    }
-
-    public String getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(String longitude) {
-        this.longitude = longitude;
-    }
-
-    public String getGuardiansName() {
-        return guardiansName;
-    }
-
-    public void setGuardiansName(String guardiansName) {
-        this.guardiansName = guardiansName;
-    }
-
-    public String getGuardiansEmail() {
-        return guardiansEmail;
-    }
-
-    public void setGuardiansEmail(String guardiansEmail) {
-        this.guardiansEmail = guardiansEmail;
-    }
-
-    public String getGuardiansPhoneNumber() {
-        return guardiansPhoneNumber;
-    }
-
-    public void setGuardiansPhoneNumber(String guardiansPhoneNumber) {
-        this.guardiansPhoneNumber = guardiansPhoneNumber;
     }
 
     public Board getBoard() {

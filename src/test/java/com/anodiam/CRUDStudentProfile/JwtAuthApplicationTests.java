@@ -22,9 +22,21 @@ class JwtAuthApplicationTests {
 	@Autowired
 	private UserService userService;
 
-	@Test
-	void contextLoads() {
-	}
+////	If Student Profile does not Exist then Response Code should say "STUDENT_PROFILE_DOES_NOT_EXIST"
+//	@Test
+//	public void testNegativeStudentProfileAbsent() throws Exception
+//	{
+//		StudentProfile testStudentProfile=new StudentProfile();
+//		testStudentProfile.setStudentProfileId(BigInteger.valueOf(14));
+//		testStudentProfile.setFullName("Vicky");
+//		StudentProfile newStudentProfile=studentProfileService.save(testStudentProfile);
+//		assertEquals(newStudentProfile.getMessageResponse().getMessage(),returnMessage);
+//	}
+//
+////	If Student Profile Exists then Student profile will be fetched
+//	@Test
+//	public void testPositiveStudentProfileExists() throws Exception {
+//	}
 
 	//	Use Case 1.1: If Student Profile Id not zero, then new student profile won't be added.
 	/*@Test
@@ -75,51 +87,5 @@ class JwtAuthApplicationTests {
 	//5. Does not contain any alphabet (a-z, A-Z) after the last '.' character.
 	// I should NOT be able to register. with the following message:
 	//	"Student registration failure! Invalid email address."
-	@Test
-	public void testNegativeInvalidGurdianEmail1() throws Exception
-	{
-		StudentProfile testStudentProfile=new StudentProfile();
-		testStudentProfile.setStudentProfileId(BigInteger.valueOf(0));
-		testStudentProfile.setFullName("Vicky");
-		testStudentProfile.setGuardiansEmail("vicky.ghosh695gmail.com");
-		StudentProfile newStudentProfile=studentProfileService.save(testStudentProfile);
-		String returnMessage = ResponseCode.EMAIL_INVALID.getMessage();
-		assertEquals(testStudentProfile.getMessageResponse().getMessage(),returnMessage);
-	}
 
-	@Test
-	public void testNegativeInvalidGurdianEmail2() throws Exception
-	{
-		StudentProfile testStudentProfile=new StudentProfile();
-		testStudentProfile.setStudentProfileId(BigInteger.valueOf(0));
-		testStudentProfile.setFullName("Vicky");
-		testStudentProfile.setGuardiansEmail("rani.ghosh695@");
-		StudentProfile newStudentProfile=studentProfileService.save(testStudentProfile);
-		String returnMessage = ResponseCode.EMAIL_INVALID.getMessage();
-		assertEquals(testStudentProfile.getMessageResponse().getMessage(),returnMessage);
-	}
-
-	@Test
-	public void testNegativeInvalidEmail3() throws Exception
-	{
-		StudentProfile testStudentProfile=new StudentProfile();
-		testStudentProfile.setStudentProfileId(BigInteger.valueOf(0));
-		testStudentProfile.setFullName("Vicky");
-		testStudentProfile.setGuardiansEmail("@gmail.com");
-		StudentProfile newStudentProfile=studentProfileService.save(testStudentProfile);
-		String returnMessage = ResponseCode.EMAIL_INVALID.getMessage();
-		assertEquals(testStudentProfile.getMessageResponse().getMessage(),returnMessage);
-	}
-
-	@Test
-	public void testNegativeInvalidEmail4() throws Exception
-	{
-		StudentProfile testStudentProfile=new StudentProfile();
-		testStudentProfile.setStudentProfileId(BigInteger.valueOf(0));
-		testStudentProfile.setFullName("Vicky");
-		testStudentProfile.setGuardiansEmail("vicky.ghosh695@gmail");
-		StudentProfile newStudentProfile=studentProfileService.save(testStudentProfile);
-		String returnMessage = ResponseCode.EMAIL_INVALID.getMessage();
-		assertEquals(testStudentProfile.getMessageResponse().getMessage(),returnMessage);
-	}
 }
