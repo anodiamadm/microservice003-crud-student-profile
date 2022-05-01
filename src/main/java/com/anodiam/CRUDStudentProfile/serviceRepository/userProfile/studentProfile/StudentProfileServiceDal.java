@@ -23,20 +23,40 @@ class StudentProfileServiceDal extends StudentProfileServiceImpl {
     public StudentProfileServiceDal(){}
 
     @Override
-    public StudentProfile save(StudentProfile studentProfile) {
-        StudentProfile savedProfile = new StudentProfile();
+    public Optional<StudentProfile> findById(BigInteger studentProfileId) {
+        Optional<StudentProfile> studentProfileById = Optional.empty();
         try {
-            savedProfile = studentProfileService.save(studentProfile);
-            savedProfile.setMessageResponse(new MessageResponse(ResponseCode.SUCCESS.getID(),
-                    ResponseCode.SUCCESS.getMessage()));
-            return savedProfile;
-        } catch (Exception exception) {
+            studentProfileById = studentProfileService.findById(studentProfileId);
+            studentProfileById.get().setMessageResponse(new MessageResponse(ResponseCode.STUDENT_PROFILE_EXISTS.getID(),
+                    ResponseCode.STUDENT_PROFILE_EXISTS.getMessage()));
+        } catch(Exception exception) {
             exception.printStackTrace();
-            savedProfile.setMessageResponse(new MessageResponse(ResponseCode.FAILURE.getID(),
-                    ResponseCode.FAILURE.getMessage() + exception.getMessage()));
-            return savedProfile;
+            studentProfileById.get().setMessageResponse(new MessageResponse(ResponseCode.FAILURE.getID(),
+                    ResponseCode.FAILURE.getMessage()));
         }
+        return studentProfileById;
     }
+
+//    @Override
+//    public MessageResponse save(StudentProfile studentProfile) {
+//        MessageResponse messageResponse = new MessageResponse();
+//        try {
+//            StudentProfile savedProfile = new StudentProfile();
+//            if(!studentProfileService.findById(studentProfile.getStudentProfileId()).isPresent()){
+//                savedProfile = studentProfileService.save(studentProfile);
+//            } else {
+//                savedProfile = studentProfileService.update(studentProfile);
+//            }
+//            messageResponse.setCode(savedProfile.getMessageResponse().getCode());
+//            messageResponse.setMessage(savedProfile.getMessageResponse().getMessage());
+//            return messageResponse;
+//        } catch(Exception exception) {
+//            exception.printStackTrace();
+//            messageResponse.setCode(ResponseCode.STUDENT_PROFILE_SAVE_FAILURE.getID());
+//            messageResponse.setMessage(ResponseCode.STUDENT_PROFILE_SAVE_FAILURE.getMessage() + exception.getMessage());
+//            return messageResponse;
+//        }
+//    }
 
     @Override
     public Optional<StudentProfile> findByUser(User user) {
@@ -68,6 +88,8 @@ class StudentProfileServiceDal extends StudentProfileServiceImpl {
 
     @Override
     public MessageResponse removeOne(BigInteger studentProfileId) {
+//        find out userId from studentProfile
+//        Try to delete
         MessageResponse messageResponse = new MessageResponse();
         studentProfileService.removeOne(studentProfileId);
         try{

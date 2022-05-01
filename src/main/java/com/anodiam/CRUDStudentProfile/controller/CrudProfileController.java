@@ -25,46 +25,41 @@ public class CrudProfileController {
     private StudentProfileService studentProfileService;
 
     // This method will retrieve Current User from token
-    private User getCurrentUser()
-    {
-        try
-        {
+    private User getCurrentUser() {
+        try {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            if (!(auth instanceof AnonymousAuthenticationToken))
-            {
+            if (!(auth instanceof AnonymousAuthenticationToken)) {
                return userService.findByUsername(auth.getName()).get();
             }
-        } catch (Exception exception)
-        {
+        } catch (Exception exception) {
             exception.printStackTrace();
         }
         return null;
     }
 
-    // @PostMapping("/save-profile") :: Create / Update Profile Info of the Current Logged-in User
-    @PostMapping("/save-profile")
-    @ResponseBody
-    public ResponseEntity<?> createStudentProfile(@RequestBody StudentProfile studentProfile) throws Exception {
-        try {
-            studentProfile.setUser(getCurrentUser());
-            StudentProfile studentProfileSaved = studentProfileService.save(studentProfile);
-            return ResponseEntity.ok(new MessageResponse(studentProfileSaved.getMessageResponse().getCode(),
-                    studentProfileSaved.getMessageResponse().getMessage()));
-        } catch (Exception exception) {
-            exception.printStackTrace();
-            return ResponseEntity.ok(new MessageResponse(ResponseCode.FAILURE.getID(),
-                    exception.getMessage()));
-        }
-    }
+//    // @PostMapping("/save-profile") :: Create / Update Profile Info of the Current Logged-in User
+//    @PostMapping("/save-profile")
+//    @ResponseBody
+//    public ResponseEntity<?> createStudentProfile(@RequestBody StudentProfile studentProfile) throws Exception {
+//        try {
+//            studentProfile.setUser(getCurrentUser());
+//            MessageResponse responseToProfileSave = studentProfileService.save(studentProfile);
+//            return ResponseEntity.ok(new MessageResponse(responseToProfileSave.getCode(),
+//                    responseToProfileSave.getMessage()));
+//        } catch (Exception exception) {
+//            exception.printStackTrace();
+//            return ResponseEntity.ok(new MessageResponse(ResponseCode.FAILURE.getID(),
+//                    exception.getMessage()));
+//        }
+//    }
 
     // @GetMapping("/read-profile") :: Read Profile Info of the Current Logged-in User
     @GetMapping("/read-profile")
     @ResponseBody
-    public StudentProfile readStudentProfile() throws Exception
-    {
+    public StudentProfile readStudentProfile() throws Exception {
         try {
             User currentUser = getCurrentUser();
-            return studentProfileService.findByUserId(currentUser.getUserId()).get();
+            return studentProfileService.findByUser(currentUser).get();
         } catch (Exception exception) {
             exception.printStackTrace();
             return null;
@@ -72,18 +67,18 @@ public class CrudProfileController {
      }
 
     // @PostMapping("/delete-profile") :: Delete Profile Info of the Current Logged-in User
-    @PostMapping("/delete-profile")
-    @ResponseBody
-    public ResponseEntity<?> deleteStudentProfile(@RequestBody StudentProfile studentProfile) throws Exception {
-        try {
-            StudentProfile currentStudentProfile = studentProfileService.findByUserId(getCurrentUser().getUserId()).get();
-            MessageResponse responseToProfileDelete = studentProfileService.removeOne(currentStudentProfile.getStudentProfileId());
-            return ResponseEntity.ok(new MessageResponse(responseToProfileDelete.getCode(),
-                    responseToProfileDelete.getMessage()));
-        } catch (Exception exception) {
-            exception.printStackTrace();
-            return ResponseEntity.ok(new MessageResponse(ResponseCode.FAILURE.getID(),
-                    exception.getMessage()));
-        }
-    }
+//    @PostMapping("/delete-profile")
+//    @ResponseBody
+//    public ResponseEntity<?> deleteStudentProfile() throws Exception {
+//        try {
+//            StudentProfile currentStudentProfile = studentProfileService.findByUser(getCurrentUser()).get();
+//            MessageResponse responseToProfileDelete = studentProfileService.removeOne(currentStudentProfile.getStudentProfileId());
+//            return ResponseEntity.ok(new MessageResponse(responseToProfileDelete.getCode(),
+//                    responseToProfileDelete.getMessage()));
+//        } catch (Exception exception) {
+//            exception.printStackTrace();
+//            return ResponseEntity.ok(new MessageResponse(ResponseCode.FAILURE.getID(),
+//                    exception.getMessage()));
+//        }
+//    }
 }

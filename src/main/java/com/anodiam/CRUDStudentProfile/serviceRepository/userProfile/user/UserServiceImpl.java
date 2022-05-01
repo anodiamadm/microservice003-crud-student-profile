@@ -10,14 +10,4 @@ abstract class UserServiceImpl implements UserService {
     public Optional<User> findByUsername(String username) {
         return new UserServiceDal().findByUsername(username);
     }
-
-    @Override
-    public User save(User user) {
-        return new UserServiceDal().save(user);
-    }
-
-    @Override
-    public User GetSingleUser() {
-        return new UserServiceDal().GetSingleUser();
-    }
 }

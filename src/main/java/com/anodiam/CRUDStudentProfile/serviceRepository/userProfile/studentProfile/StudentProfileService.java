@@ -10,6 +10,7 @@ import java.util.Optional;
 public interface StudentProfileService {
 
     Optional<StudentProfile> findByUser(User user);
-    StudentProfile save(StudentProfile studentProfile);
+    Optional<StudentProfile> findById(BigInteger studentProfileId);
+    MessageResponse save(StudentProfile studentProfile);
     MessageResponse removeOne(BigInteger studentProfileId);
 }

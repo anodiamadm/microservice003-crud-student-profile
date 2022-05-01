@@ -22,6 +22,7 @@ class UserServiceDal extends UserServiceImpl {
         try {
             Optional<User> optionalUser = userRepository.findByUsername(username);
             if(optionalUser.isPresent()) {
+                optionalUser.get().setMessageResponse(new MessageResponse(ResponseCode.SUCCESS.getID(), "User Saved Successfully!"));
                 return optionalUser;
             }
         } catch (Exception exception) {
@@ -29,30 +30,4 @@ class UserServiceDal extends UserServiceImpl {
         }
         return null;
     }
-
-    @Override
-    public User save(User user) {
-        try {
-            User userToSave = userRepository.save(user);
-            userToSave.setMessageResponse(new MessageResponse(ResponseCode.SUCCESS.getID(), "User Saved Successfully!"));
-            return userToSave;
-        } catch (Exception exception) {
-            exception.printStackTrace();
-            user.setMessageResponse(new MessageResponse(ResponseCode.FAILURE.getID(), exception.getMessage()));
-            return user;
-        }
-    }
-
-    public User GetSingleUser()
-    {
-        try
-        {
-             return userRepository.findAll().get(0);
-        } catch (Exception exception)
-        {
-            exception.printStackTrace();
-            return null;
-        }
-    }
-
 }
