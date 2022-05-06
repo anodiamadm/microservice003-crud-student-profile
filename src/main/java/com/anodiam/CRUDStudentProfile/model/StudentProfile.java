@@ -3,6 +3,8 @@ package com.anodiam.CRUDStudentProfile.model;
 import com.anodiam.CRUDStudentProfile.model.common.MessageResponse;
 import com.anodiam.CRUDStudentProfile.model.masterData.Board;
 import com.anodiam.CRUDStudentProfile.model.masterData.Level;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.math.BigInteger;
@@ -34,13 +36,13 @@ public class StudentProfile {
     @Transient
     private MessageResponse messageResponse;
 
-    @Transient
-    private BigInteger boardId;
-
-    @Transient
-    private BigInteger levelId;
-
     public StudentProfile(){}
+
+    public StudentProfile(String fullName, BigInteger boardId, BigInteger levelId) {
+        this.fullName = fullName;
+        this.board.setBoardId(boardId);
+        this.level.setLevelId(levelId);
+    }
 
     public MessageResponse getMessageResponse() {
         return messageResponse;
@@ -48,22 +50,6 @@ public class StudentProfile {
 
     public void setMessageResponse(MessageResponse messageResponse) {
         this.messageResponse = messageResponse;
-    }
-
-    public BigInteger getBoardId() {
-        return boardId;
-    }
-
-    public void setBoardId(BigInteger boardId) {
-        this.boardId = boardId;
-    }
-
-    public BigInteger getLevelId() {
-        return levelId;
-    }
-
-    public void setLevelId(BigInteger levelId) {
-        this.levelId = levelId;
     }
 
     public BigInteger getStudentProfileId() {

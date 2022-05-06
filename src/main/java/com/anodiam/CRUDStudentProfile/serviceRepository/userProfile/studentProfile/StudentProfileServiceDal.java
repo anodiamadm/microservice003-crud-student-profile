@@ -4,108 +4,120 @@ import com.anodiam.CRUDStudentProfile.model.StudentProfile;
 import com.anodiam.CRUDStudentProfile.model.User;
 import com.anodiam.CRUDStudentProfile.model.common.MessageResponse;
 import com.anodiam.CRUDStudentProfile.model.common.ResponseCode;
-import com.anodiam.CRUDStudentProfile.serviceRepository.userProfile.user.UserService;
+import com.anodiam.CRUDStudentProfile.serviceRepository.masterData.Board.BoardService;
+import com.anodiam.CRUDStudentProfile.serviceRepository.masterData.Level.LevelService;
+import com.anodiam.CRUDStudentProfile.serviceRepository.userProfile.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigInteger;
 import java.util.Optional;
 
 @Service
 class StudentProfileServiceDal extends StudentProfileServiceImpl {
 
     @Autowired
-    private StudentProfileService studentProfileService;
+    private StudentProfileRepository studentProfileRepository;
 
     @Autowired
-    private UserService userService;
+    private UserRepository userRepository;
+
+    @Autowired
+    private BoardService boardService;
+
+    @Autowired
+    private LevelService levelService;
 
     public StudentProfileServiceDal(){}
 
     @Override
-    public Optional<StudentProfile> findById(BigInteger studentProfileId) {
-        Optional<StudentProfile> studentProfileById = Optional.empty();
-        try {
-            studentProfileById = studentProfileService.findById(studentProfileId);
-            studentProfileById.get().setMessageResponse(new MessageResponse(ResponseCode.STUDENT_PROFILE_EXISTS.getID(),
-                    ResponseCode.STUDENT_PROFILE_EXISTS.getMessage()));
-        } catch(Exception exception) {
-            exception.printStackTrace();
-            studentProfileById.get().setMessageResponse(new MessageResponse(ResponseCode.FAILURE.getID(),
-                    ResponseCode.FAILURE.getMessage()));
-        }
-        return studentProfileById;
-    }
-
-//    @Override
-//    public MessageResponse save(StudentProfile studentProfile) {
-//        MessageResponse messageResponse = new MessageResponse();
-//        try {
-//            StudentProfile savedProfile = new StudentProfile();
-//            if(!studentProfileService.findById(studentProfile.getStudentProfileId()).isPresent()){
-//                savedProfile = studentProfileService.save(studentProfile);
-//            } else {
-//                savedProfile = studentProfileService.update(studentProfile);
-//            }
-//            messageResponse.setCode(savedProfile.getMessageResponse().getCode());
-//            messageResponse.setMessage(savedProfile.getMessageResponse().getMessage());
-//            return messageResponse;
-//        } catch(Exception exception) {
-//            exception.printStackTrace();
-//            messageResponse.setCode(ResponseCode.STUDENT_PROFILE_SAVE_FAILURE.getID());
-//            messageResponse.setMessage(ResponseCode.STUDENT_PROFILE_SAVE_FAILURE.getMessage() + exception.getMessage());
-//            return messageResponse;
-//        }
-//    }
-
-    @Override
     public Optional<StudentProfile> findByUser(User user) {
-        Optional<StudentProfile> studentProfileByUser = Optional.empty();
+        StudentProfile studentProfileByUser = new StudentProfile();
         try {
-            Optional<User> optionalUser = userService.findByUsername(user.getUsername());
-            if(!optionalUser.isPresent()) {
-                studentProfileByUser.get().setMessageResponse(new MessageResponse(ResponseCode.USER_ABSENT.getID(),
-                        ResponseCode.USER_ABSENT.getMessage()));
-                return  studentProfileByUser;
-            }
-            studentProfileByUser = studentProfileService.findByUser(user);
-            if(studentProfileByUser.isPresent())
-            {
-                studentProfileByUser.get().setMessageResponse(new MessageResponse(ResponseCode.SUCCESS.getID(),
-                        ResponseCode.SUCCESS.getMessage()));
-                return  studentProfileByUser;
+            if(studentProfileRepository.findByUser(user).isPresent()) {
+                studentProfileByUser = studentProfileRepository.findByUser(user).get();
+                studentProfileByUser.setMessageResponse(new
+                        MessageResponse(ResponseCode.STUDENT_PROFILE_READ_SUCCESS.getID(),
+                        ResponseCode.STUDENT_PROFILE_READ_SUCCESS.getMessage()));
             } else {
-                studentProfileByUser.get().setMessageResponse(new MessageResponse(ResponseCode.PROFILE_DOES_NOT_EXIST.getID(),
-                        ResponseCode.PROFILE_DOES_NOT_EXIST.getMessage()));
+                studentProfileByUser.setMessageResponse(new
+                        MessageResponse(ResponseCode.USER_EXISTS_PROFILE_ABSENT.getID(),
+                        ResponseCode.USER_EXISTS_PROFILE_ABSENT.getMessage() + user.getUsername()));
             }
         } catch(Exception exception) {
             exception.printStackTrace();
-            studentProfileByUser.get().setMessageResponse(new MessageResponse(ResponseCode.FAILURE.getID(),
-                    ResponseCode.FAILURE.getMessage()));
+            studentProfileByUser.setMessageResponse(new
+                    MessageResponse(ResponseCode.STUDENT_PROFILE_READ_FAILURE.getID(),
+                    ResponseCode.STUDENT_PROFILE_READ_FAILURE.getMessage() + exception.getMessage()));
         }
-        return studentProfileByUser;
+        return Optional.of(studentProfileByUser);
     }
 
     @Override
-    public MessageResponse removeOne(BigInteger studentProfileId) {
-//        find out userId from studentProfile
-//        Try to delete
-        MessageResponse messageResponse = new MessageResponse();
-        studentProfileService.removeOne(studentProfileId);
+    public MessageResponse deleteByUser(User user) {
+        StudentProfile studentProfileDeleted = new StudentProfile();
         try{
-            if(studentProfileId==null) {
-                messageResponse.setCode(ResponseCode.INVALID_PROFILE_DELETE_FAILED.getID());
-                messageResponse.setMessage(ResponseCode.INVALID_PROFILE_DELETE_FAILED.getMessage());
+            if (studentProfileRepository.findByUser(user).isPresent()) {
+                if(studentProfileRepository.deleteByUser(user)==1) {
+                    studentProfileDeleted.setMessageResponse(new
+                            MessageResponse(ResponseCode.STUDENT_PROFILE_DELETE_SUCCESS.getID(),
+                            ResponseCode.STUDENT_PROFILE_DELETE_SUCCESS.getMessage()));
+                } else {
+                    studentProfileDeleted.setMessageResponse(new
+                            MessageResponse(ResponseCode.STUDENT_PROFILE_DELETE_FAILURE.getID(),
+                            ResponseCode.STUDENT_PROFILE_DELETE_FAILURE.getMessage()));
+                }
             } else {
-                messageResponse = studentProfileService.removeOne(studentProfileId);
-                messageResponse.setCode(ResponseCode.STUDENT_PROFILE_DELETE_SUCCESS.getID());
-                messageResponse.setMessage(ResponseCode.STUDENT_PROFILE_DELETE_SUCCESS.getMessage());
-            } return messageResponse;
+                studentProfileDeleted.setMessageResponse(new
+                        MessageResponse(ResponseCode.USER_EXISTS_PROFILE_ABSENT.getID(),
+                        ResponseCode.USER_EXISTS_PROFILE_ABSENT.getMessage() + user.getUsername()));
+            }
         } catch(Exception exception) {
             exception.printStackTrace();
-            messageResponse.setCode(ResponseCode.PROFILE_DELETE_FAILED.getID());
-            messageResponse.setMessage(ResponseCode.PROFILE_DELETE_FAILED.getMessage() + exception.getMessage());
-            return messageResponse;
+            studentProfileDeleted.setMessageResponse(new
+                    MessageResponse(ResponseCode.STUDENT_PROFILE_DELETE_FAILURE.getID(),
+                    ResponseCode.STUDENT_PROFILE_DELETE_FAILURE.getMessage() + exception.getMessage()));
         }
+        return studentProfileDeleted.getMessageResponse();
+    }
+
+    @Override
+    public MessageResponse save(StudentProfile studentProfile) {
+        StudentProfile studentProfileResponded = new StudentProfile();
+        try{
+            Optional<StudentProfile> existingStudentProfileByUser =
+                    studentProfileRepository.findByUser(studentProfile.getUser());
+            if(studentProfile.getFullName().length() < 3) {
+                return new MessageResponse(ResponseCode.STUDENT_PROFILE_SAVE_FAIL_FULL_NAME_SHORT.getID(),
+                        ResponseCode.STUDENT_PROFILE_SAVE_FAIL_FULL_NAME_SHORT.getMessage()
+                                + studentProfile.getFullName());
+            } else if (levelService.findById(studentProfile.getLevel().getLevelId())
+                    .get().getMessageResponse().getCode() == ResponseCode.LEVEL_ID_NOT_FOUND.getID()) {
+                return new MessageResponse(ResponseCode.STUDENT_PROFILE_SAVE_FAIL_LEVEL_INVALID.getID(),
+                        ResponseCode.STUDENT_PROFILE_SAVE_FAIL_LEVEL_INVALID.getMessage()
+                                + studentProfile.getLevel().getLevelId());
+            } else if (boardService.findById(studentProfile.getBoard().getBoardId())
+                    .get().getMessageResponse().getCode() == ResponseCode.BOARD_ID_NOT_FOUND.getID()) {
+                return new MessageResponse(ResponseCode.STUDENT_PROFILE_SAVE_FAIL_BOARD_INVALID.getID(),
+                        ResponseCode.STUDENT_PROFILE_SAVE_FAIL_BOARD_INVALID.getMessage()
+                                + studentProfile.getBoard().getBoardId());
+            } else if (existingStudentProfileByUser.isPresent()) {
+                studentProfile.setStudentProfileId(existingStudentProfileByUser.get().getStudentProfileId());
+                studentProfileResponded = studentProfileRepository.save(studentProfile);
+                studentProfileResponded.setMessageResponse(new
+                        MessageResponse(ResponseCode.STUDENT_PROFILE_UPDATE_SUCCESS.getID(),
+                        ResponseCode.STUDENT_PROFILE_UPDATE_SUCCESS.getMessage()));
+            } else {
+                studentProfileResponded = studentProfileRepository.save(studentProfile);
+                studentProfileResponded.setMessageResponse(new
+                        MessageResponse(ResponseCode.STUDENT_PROFILE_CREATE_SUCCESS.getID(),
+                        ResponseCode.STUDENT_PROFILE_CREATE_SUCCESS.getMessage()));
+            }
+        } catch(Exception exception) {
+            exception.printStackTrace();
+            studentProfileResponded.setMessageResponse(new
+                    MessageResponse(ResponseCode.STUDENT_PROFILE_SAVE_FAILURE.getID(),
+                    ResponseCode.STUDENT_PROFILE_SAVE_FAILURE.getMessage()));
+        }
+        return studentProfileResponded.getMessageResponse();
     }
 }

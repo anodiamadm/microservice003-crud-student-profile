@@ -27,10 +27,6 @@ public class Permission {
 	@Transient
 	private MessageResponse messageResponse;
 
-	public Permission(String permissionName) {
-		this.permissionName = permissionName;
-	}
-
 	public Permission() {
 	}
 

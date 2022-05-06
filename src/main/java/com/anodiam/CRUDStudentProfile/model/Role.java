@@ -27,10 +27,6 @@ public class Role {
 	@Transient
 	private MessageResponse messageResponse;
 
-	public Role(String roleName) {
-		this.roleName = roleName;
-	}
-
 	public Role() {
 	}
 

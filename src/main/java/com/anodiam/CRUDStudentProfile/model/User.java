@@ -1,6 +1,8 @@
 package com.anodiam.CRUDStudentProfile.model;
 
 import com.anodiam.CRUDStudentProfile.model.common.MessageResponse;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -19,23 +21,35 @@ public class User {
 
     private int active;
 
+    @JsonBackReference
+    @JsonIgnore
     private Date dateCreated;
 
+    @JsonBackReference
+    @JsonIgnore
     private String password;
 
+    @JsonBackReference
+    @JsonIgnore
     private String username;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @JsonBackReference
+    @JsonIgnore
     private List<Role> roleList = new ArrayList<>();
 
     @ManyToMany(cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(name = "user_permission", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "permission_id"))
+    @JsonBackReference
+    @JsonIgnore
     private List<Permission> permissionList = new ArrayList<>();
 
     @Transient
+    @JsonBackReference
+    @JsonIgnore
     private MessageResponse messageResponse;
 
     public User(){}
@@ -47,6 +61,8 @@ public class User {
         this.dateCreated = new Date();
     }
 
+    @JsonBackReference
+    @JsonIgnore
     public MessageResponse getMessageResponse() {
         return messageResponse;
     }
@@ -59,6 +75,8 @@ public class User {
         this.userId = userId;
     }
 
+    @JsonBackReference
+    @JsonIgnore
     public Date getDateCreated() {
         return dateCreated;
     }
@@ -71,6 +89,8 @@ public class User {
         return userId;
     }
 
+    @JsonBackReference
+    @JsonIgnore
     public String getUsername() {
         return username;
     }
@@ -79,6 +99,8 @@ public class User {
         this.username = username;
     }
 
+    @JsonBackReference
+    @JsonIgnore
     public String getPassword() {
         return password;
     }
@@ -87,6 +109,8 @@ public class User {
         this.password = password;
     }
 
+    @JsonBackReference
+    @JsonIgnore
     public int getActive() {
         return active;
     }
@@ -95,6 +119,8 @@ public class User {
         this.active = active;
     }
 
+    @JsonBackReference
+    @JsonIgnore
     public List<Role> getRoleList() {
         return roleList;
     }
@@ -103,6 +129,8 @@ public class User {
         this.roleList = roleList;
     }
 
+    @JsonBackReference
+    @JsonIgnore
     public List<Permission> getPermissionList() {
         return permissionList;
     }

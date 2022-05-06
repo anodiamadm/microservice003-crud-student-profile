@@ -1,8 +1,16 @@
 package com.anodiam.CRUDStudentProfile;
 
+import com.anodiam.CRUDStudentProfile.model.Permission;
+import com.anodiam.CRUDStudentProfile.model.Role;
 import com.anodiam.CRUDStudentProfile.model.StudentProfile;
 import com.anodiam.CRUDStudentProfile.model.User;
 import com.anodiam.CRUDStudentProfile.model.common.ResponseCode;
+import com.anodiam.CRUDStudentProfile.model.masterData.Board;
+import com.anodiam.CRUDStudentProfile.model.masterData.Level;
+import com.anodiam.CRUDStudentProfile.serviceRepository.masterData.Board.BoardService;
+import com.anodiam.CRUDStudentProfile.serviceRepository.masterData.Level.LevelService;
+import com.anodiam.CRUDStudentProfile.serviceRepository.userProfile.Permission.PermissionService;
+import com.anodiam.CRUDStudentProfile.serviceRepository.userProfile.Role.RoleService;
 import com.anodiam.CRUDStudentProfile.serviceRepository.userProfile.studentProfile.StudentProfileService;
 import com.anodiam.CRUDStudentProfile.serviceRepository.userProfile.user.UserService;
 import org.junit.jupiter.api.Test;
@@ -23,35 +31,150 @@ class JwtAuthApplicationTests {
 
 	@Autowired
 	private UserService userService;
-//	STUDENT_PROFILE_READ_FAILURE_USER_ABSENT(22, "ERR: Microsvc003: Student Profile: READ: FAILURE user absent!"),
-//	STUDENT_PROFILE_READ_FAILURE_PROFILE_ABSENT(23, "ERR: Microsvc003: Student Profile: READ: FAILURE profile does not exist!"),
-//	STUDENT_PROFILE_READ_SUCCESS(20, "SUCCESS: Microsvc003: Student Profile: READ: SUCCESS!"),
 
-//	STUDENT_PROFILE_UPDATE_FAILURE_USER_ABSENT(32, "ERR: Microsvc003: Student Profile: UPDATE: FAILURE user absent!"),
-//	STUDENT_PROFILE_UPDATE_FAILURE_PROFILE_ABSENT(33, "ERR: Microsvc003: Student Profile: UPDATE: FAILURE profile does not exist, try creating!"),
-//	STUDENT_PROFILE_UPDATE_SUCCESS(30, "SUCCESS: Microsvc003: Student Profile: UPDATE: SUCCESS!"),
+	@Autowired
+	private PermissionService permissionService;
 
-//	STUDENT_PROFILE_DELETE_FAILURE_USER_ABSENT(42, "ERR: Microsvc003: Student Profile: DELETE: FAILURE user absent!"),
-//	STUDENT_PROFILE_DELETE_FAILURE_PROFILE_ABSENT(43, "ERR: Microsvc003: Student Profile: DELETE: FAILURE profile does not exist!");
-//	STUDENT_PROFILE_DELETE_SUCCESS(40, "SUCCESS: Microsvc003: Student Profile: DELETE: SUCCESS!"),
-	private String actualMessage = "", expectedMessage = "";
-	private Optional<StudentProfile> optionalStudentProfile = Optional.empty();
-	private Optional<User> optionalUser = Optional.empty();
+	@Autowired
+	private RoleService roleService;
+
+	@Autowired
+	private BoardService boardService;
+
+	@Autowired
+	private LevelService levelService;
+
+	//	Role should not be fetched against invalid Role Name
+	@Test
+	public void testNegativeFindRoleByInvalidRoleName() throws Exception
+	{
+		String roleName="INVALID_ROLE";
+		Role role = roleService.findByRoleName(roleName).get();
+		assertEquals(ResponseCode.ROLE_NAME_INVALID.getMessage() + roleName,
+				role.getMessageResponse().getMessage());
+	}
+
+	//	Correct Role should be fetched against valid Role Name
+	@Test
+	public void testPositiveFindRoleByValidRoleName() throws Exception
+	{
+		String roleName="USER";
+		Role role = roleService.findByRoleName(roleName).get();
+		assertEquals(ResponseCode.ROLE_NAME_EXISTS.getMessage() + role.getRoleName(),
+				role.getMessageResponse().getMessage());
+	}
+
+	//	Permission should not be fetched against invalid Permission Name
+	@Test
+	public void testNegativeFindPermissionByInvalidPermissionName() throws Exception
+	{
+		String permissionName="INVALID_ACCESS";
+		Permission permission = permissionService.findByPermissionName(permissionName).get();
+		assertEquals(ResponseCode.PERMISSION_NAME_INVALID.getMessage() + permissionName,
+				permission.getMessageResponse().getMessage());
+	}
+
+	//	Correct Permission should be fetched against valid Permission Name
+	@Test
+	public void testPositiveFindPermissionByValidPermissionName() throws Exception
+	{
+		String permissionName="STUDENT_ACCESS";
+		Permission permission = permissionService.findByPermissionName(permissionName).get();
+		assertEquals(ResponseCode.PERMISSION_NAME_EXISTS.getMessage()
+				+ permission.getPermissionName(), permission.getMessageResponse().getMessage());
+	}
+
+	//	User should NOT be fetched against invalid Email
+	@Test
+	public void testNegativeFindUserByWrongEmail() throws Exception
+	{
+		String email="invalidemail@gmail.com";
+		User foundUser = userService.findByUsername(email).get();
+		assertEquals(ResponseCode.USER_ABSENT.getMessage() + email,
+				foundUser.getMessageResponse().getMessage());
+	}
+
+	//	Correct User should be fetched against valid Email
+	@Test
+	public void testPositiveFindUserByCorrectEmail() throws Exception
+	{
+		String email="pinaki.sen@gmail.com";
+		User foundUser = userService.findByUsername(email).get();
+		assertEquals(ResponseCode.USER_EXISTS.getMessage() + foundUser.getUsername(),
+				foundUser.getMessageResponse().getMessage());
+	}
+
+	//	Get Board for invalid BoardId = 2000
+	@Test
+	public void testNegativeGetBoardByInvalidBoardId() throws Exception {
+		String response = "";
+		try {
+			Optional<Board> optBoard = boardService.findById(BigInteger.valueOf(2000));
+			if (optBoard.isPresent()) {
+				response = optBoard.get().getMessageResponse().getMessage();
+			}
+		} catch (Exception exception) {
+			response = exception.getMessage();
+		}
+		assertEquals(ResponseCode.BOARD_ID_NOT_FOUND.getMessage()
+				+ (BigInteger.valueOf(2000)).toString(), response);
+	}
+
+	//	Get Board for valid BoardId = 2
+	@Test
+	public void testPositiveGetBoardByValidBoardId() throws Exception
+	{
+		String response = "";
+		try {
+			Optional<Board> optBoard = boardService.findById(BigInteger.valueOf(2));
+			if(optBoard.isPresent()) {
+				response = optBoard.get().getMessageResponse().getMessage();
+			}
+		} catch (Exception exception) {
+			response = exception.getMessage();
+		}
+		assertEquals(ResponseCode.SUCCESS.getMessage()
+				+ boardService.findById(BigInteger.valueOf(2)).get().getBoardName(), response);
+	}
+
+	//	Get Level for invalid levelId = 2000
+	@Test
+	public void testNegativeGetLevelByInvalidLevelId() throws Exception
+	{
+		String response = "";
+		try {
+			Optional<Level> optLevel = levelService.findById(BigInteger.valueOf(2000));
+			if(optLevel.isPresent()) {
+				response = optLevel.get().getMessageResponse().getMessage();
+			}
+		} catch (Exception exception) {
+			response = exception.getMessage();
+		}
+		assertEquals(ResponseCode.LEVEL_ID_NOT_FOUND.getMessage()
+				+ (BigInteger.valueOf(2000)).toString(), response);
+	}
+
+	//	Get Level for valid LevelId = 2
+	@Test
+	public void testPositiveGetLevelByValidLevelId() throws Exception
+	{
+		String response = "";
+		try {
+			Optional<Level> optLevel = levelService.findById(BigInteger.valueOf(2));
+			if(optLevel.isPresent()) {
+				response = optLevel.get().getMessageResponse().getMessage();
+			}
+		} catch (Exception exception) {
+			response = exception.getMessage();
+		}
+		assertEquals(ResponseCode.SUCCESS.getMessage()
+				+ levelService.findById(BigInteger.valueOf(2)).get().getLevelName(), response);
+	}
 
 	//	CREATE: FAILURE: user absent
 	@Test
 	public void testNegativeCreateStudentProfileUserAbsent() throws Exception
 	{
-		optionalUser = userService.findByUsername("pinakisen");
-		if(!optionalUser.isPresent()) {
-
-		} else {
-
-		}
-		StudentProfile studentProfile = studentProfileService.findByUser(user).get();
-		assertEquals(ResponseCode.STUDENT_PROFILE_CREATE_FAILURE_USER_ABSENT.getMessage(),
-				studentProfile.getMessageResponse().getMessage());
-		assertEquals(expectedMessage, actualMessage);
 	}
 
 	//	CREATE: FAILURE: profile already exits
@@ -60,7 +183,7 @@ class JwtAuthApplicationTests {
 	{
 		User user = userService.findByUsername("pinaki.sen@gmail.com").get();
 		StudentProfile studentProfile = studentProfileService.findByUser(user).get();
-		assertEquals(ResponseCode.STUDENT_PROFILE_CREATE_FAILURE_PROFILE_EXISTS.getMessage(),
+		assertEquals(ResponseCode.STUDENT_PROFILE_CREATE_FAILURE.getMessage(),
 				studentProfile.getMessageResponse().getMessage());
 	}
 
@@ -75,17 +198,13 @@ class JwtAuthApplicationTests {
 	}
 
 	//	Read Student Profile Fail: If Student Profile does not Exist
-	//	Response Code should say "PROFILE_DOES_NOT_EXIST"
 	@Test
 	public void testNegativeReadStudentProfileAbsentProfile() throws Exception
 	{
 		User user = userService.findByUsername("mala.das@gmail.com").get();
 		StudentProfile studentProfile = studentProfileService.findByUser(user).get();
-		assertEquals(ResponseCode.PROFILE_DOES_NOT_EXIST.getMessage(),
-				studentProfile.getMessageResponse().getMessage());
 	}
 
-	//	Read Student Profile Success: If Student Profile exists
 	//	Response Code should say "PROFILE_READ_SUCCESSFUL" and profile data should be available
 	@Test
 	public void testPositiveReadStudentProfile() throws Exception
@@ -95,60 +214,4 @@ class JwtAuthApplicationTests {
 		assertEquals(ResponseCode.STUDENT_PROFILE_READ_SUCCESS.getMessage() + " for: "
 						+ studentProfile.getFullName(),	studentProfile.getMessageResponse().getMessage());
 	}
-
-////	If Student Profile Exists then Student profile will be fetched
-//	@Test
-//	public void testPositiveStudentProfileExists() throws Exception {
-//	}
-
-	//	Use Case 1.1: If Student Profile Id not zero, then new student profile won't be added.
-	/*@Test
-	public void testNegativeNewStudentProfileIDNotZero() throws Exception
-	{
-		StudentProfile testStudentProfile=new StudentProfile();
-		testStudentProfile.setStudentProfileId(BigInteger.valueOf(14));
-		testStudentProfile.setFullName("Vicky");
-		Language lng=new Language();
-		lng.setLanguageId(language_Id);
-		testStudentProfile.setLanguage(lng);
-		StudentProfile newStudentProfile=studentProfileService.save(testStudentProfile);
-		String returnMessage=messageService.showMessage(language_Id,"STUDENT_PROFILE_ID_BLANK");
-		assertEquals(newStudentProfile.getMessageResponse().getMessage(),returnMessage);
-	}*/
-
-	//	Use Case 1.2: If Student Profile Id not zero, then new student profile won't be added.
-	/*@Test
-	public void testNegativeExistingStudentProfileIDZeroOrLessThanZero() throws Exception
-	{
-		StudentProfile testStudentProfile=new StudentProfile();
-		testStudentProfile.setStudentProfileId(BigInteger.valueOf(0));
-		testStudentProfile.setFullName("Vicky");
-		StudentProfile newStudentProfile=studentProfileService.modify(testStudentProfile);
-		String returnMessage=messageService.showMessage(language_Id,"STUDENT_PROFILE_ID_INVALID");
-		assertEquals(newStudentProfile.getMessageResponse().getMessage(),returnMessage);
-	}*/
-
-	//	Use Case 1.4: If Language is null, then existing student profile won't be modified.
-	/*@Test
-	public void testNegativeLanguageNullInModifyMode() throws Exception
-	{
-		StudentProfile testStudentProfile=new StudentProfile();
-		testStudentProfile.setStudentProfileId(BigInteger.valueOf(1));
-		testStudentProfile.setFullName("Vicky");
-		User existingUser=userService.GetSingleUser();
-		testStudentProfile.setUser(existingUser);
-		StudentProfile newStudentProfile=studentProfileService.modify(testStudentProfile);
-		String returnMessage=messageService.showMessage(language_Id,"STUDENT_LANGUAGE_ID_BLANK");
-		assertEquals(newStudentProfile.getMessageResponse().getMessage(),returnMessage);
-	}*/
-
-	//	Use Case 3.4.1: If email is invalid, =>
-	//1. Does not contain exactly one '@' character.
-	//2. Does not contain one or more '.' characters after the '@' character.
-	//3. Does not contain any alphabet (a-z, A-Z) before '@'.
-	//4. Does not contain any alphabet (a-z, A-Z) in between '@' and '.'.
-	//5. Does not contain any alphabet (a-z, A-Z) after the last '.' character.
-	// I should NOT be able to register. with the following message:
-	//	"Student registration failure! Invalid email address."
-
 }

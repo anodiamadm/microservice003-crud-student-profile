@@ -2,6 +2,8 @@ package com.anodiam.CRUDStudentProfile.serviceRepository.userProfile.Role;
 
 import com.anodiam.CRUDStudentProfile.model.Role;
 
+import java.util.Optional;
+
 public interface RoleService {
-    Role findByRoleName(String roleName);
+    Optional<Role> findByRoleName(String roleName);
 }

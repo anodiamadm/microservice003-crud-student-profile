@@ -19,15 +19,26 @@ class UserServiceDal extends UserServiceImpl {
 
     @Override
     public Optional<User> findByUsername(String username) {
+        User userReturned = new User();
         try {
             Optional<User> optionalUser = userRepository.findByUsername(username);
             if(optionalUser.isPresent()) {
-                optionalUser.get().setMessageResponse(new MessageResponse(ResponseCode.SUCCESS.getID(), "User Saved Successfully!"));
-                return optionalUser;
+                userReturned = optionalUser.get();
+                userReturned.setMessageResponse(new
+                        MessageResponse(ResponseCode.USER_EXISTS.getID(),
+                        ResponseCode.USER_EXISTS.getMessage()
+                                + userReturned.getUsername()));
+            } else {
+                userReturned.setMessageResponse(new
+                        MessageResponse(ResponseCode.USER_ABSENT.getID(),
+                        ResponseCode.USER_ABSENT.getMessage()
+                                + username));
             }
         } catch (Exception exception) {
             exception.printStackTrace();
+            userReturned.setMessageResponse(new MessageResponse(ResponseCode.FAILURE.getID(),
+                    ResponseCode.FAILURE.getMessage() + exception.getMessage()));
         }
-        return null;
+        return Optional.of(userReturned);
     }
 }

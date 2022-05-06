@@ -1,6 +1,8 @@
 package com.anodiam.CRUDStudentProfile.model.masterData;
 
 import com.anodiam.CRUDStudentProfile.model.common.MessageResponse;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.math.BigInteger;
@@ -15,22 +17,24 @@ public class Level {
 	private BigInteger levelId;
 
 	@Column(name="level_name")
+	@JsonBackReference
+	@JsonIgnore
 	private String levelName;
 
 	@Column(name="level_code")
+	@JsonBackReference
+	@JsonIgnore
 	private String levelCode;
 
 	@Transient
+	@JsonBackReference
+	@JsonIgnore
 	private MessageResponse messageResponse;
 
-	public Level(String levelName, String levelCode) {
-		this.levelName = levelName;
-		this.levelCode = levelCode;
-	}
+	public Level() {}
 
-	public Level() {
-	}
-
+	@JsonBackReference
+	@JsonIgnore
 	public MessageResponse getMessageResponse() {
 		return messageResponse;
 	}
@@ -47,6 +51,8 @@ public class Level {
 		return levelId;
 	}
 
+	@JsonBackReference
+	@JsonIgnore
 	public String getLevelName() {
 		return levelName;
 	}
@@ -55,6 +61,8 @@ public class Level {
 		this.levelName = levelName;
 	}
 
+	@JsonBackReference
+	@JsonIgnore
 	public String getLevelCode() {
 		return levelCode;
 	}

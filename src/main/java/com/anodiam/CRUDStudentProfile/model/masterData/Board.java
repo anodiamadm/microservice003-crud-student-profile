@@ -1,6 +1,8 @@
 package com.anodiam.CRUDStudentProfile.model.masterData;
 
 import com.anodiam.CRUDStudentProfile.model.common.MessageResponse;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.math.BigInteger;
@@ -15,22 +17,25 @@ public class Board {
 	private BigInteger boardId;
 
 	@Column(name="board_name")
+	@JsonBackReference
+	@JsonIgnore
 	private String boardName;
 
 	@Column(name="board_code")
+	@JsonBackReference
+	@JsonIgnore
 	private String boardCode;
 
 	@Transient
+	@JsonBackReference
+	@JsonIgnore
 	private MessageResponse messageResponse;
-
-	public Board(String boardName, String boardShortName) {
-		this.boardName = boardName;
-		this.boardCode = boardCode;
-	}
 
 	public Board() {
 	}
 
+	@JsonBackReference
+	@JsonIgnore
 	public MessageResponse getMessageResponse() {
 		return messageResponse;
 	}
@@ -47,6 +52,8 @@ public class Board {
 		return boardId;
 	}
 
+	@JsonBackReference
+	@JsonIgnore
 	public String getBoardName() {
 		return boardName;
 	}
@@ -55,6 +62,8 @@ public class Board {
 		this.boardName = boardName;
 	}
 
+	@JsonBackReference
+	@JsonIgnore
 	public String getBoardCode() {
 		return boardCode;
 	}
