@@ -4,6 +4,7 @@ import com.anodiam.CRUDStudentProfile.model.Permission;
 import com.anodiam.CRUDStudentProfile.model.Role;
 import com.anodiam.CRUDStudentProfile.model.StudentProfile;
 import com.anodiam.CRUDStudentProfile.model.User;
+import com.anodiam.CRUDStudentProfile.model.common.MessageResponse;
 import com.anodiam.CRUDStudentProfile.model.common.ResponseCode;
 import com.anodiam.CRUDStudentProfile.model.masterData.Board;
 import com.anodiam.CRUDStudentProfile.model.masterData.Level;
@@ -17,8 +18,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import javax.transaction.Transactional;
 import java.math.BigInteger;
 import java.util.Optional;
+import java.util.concurrent.ThreadLocalRandom;
 
 import static org.junit.Assert.*;
 
@@ -171,47 +174,195 @@ class JwtAuthApplicationTests {
 				+ levelService.findById(BigInteger.valueOf(2)).get().getLevelName(), response);
 	}
 
-	//	CREATE: FAILURE: user absent
+
+	//	CREATE student profile: FAILURE: invalid full name
 	@Test
-	public void testNegativeCreateStudentProfileUserAbsent() throws Exception
-	{
+	@Transactional
+	public void testNegativeCreateStudentProfileShortFullName() throws Exception {
+		StudentProfile studentProfile = new StudentProfile();
+		String email = "mala.das@gmail.com";
+		User user = userService.findByUsername(email).get();
+		studentProfileService.deleteByUser(user);
+		studentProfile.setUser(userService.findByUsername(email).get());
+		studentProfile.setFullName("md");
+		studentProfile.setBoard(boardService.findById(BigInteger.valueOf(3)).get());
+		studentProfile.setLevel(levelService.findById(BigInteger.valueOf(7)).get());
+		MessageResponse messageResponse = studentProfileService.save(studentProfile);
+		assertEquals(ResponseCode.STUDENT_PROFILE_SAVE_FAIL_FULL_NAME_SHORT.getMessage()
+						+ studentProfile.getFullName(), messageResponse.getMessage());
 	}
 
-	//	CREATE: FAILURE: profile already exits
+	//	CREATE student profile: FAILURE: invalid levelId
 	@Test
-	public void testNegativeCreateStudentProfileProfileExists() throws Exception
-	{
-		User user = userService.findByUsername("pinaki.sen@gmail.com").get();
-		StudentProfile studentProfile = studentProfileService.findByUser(user).get();
-		assertEquals(ResponseCode.STUDENT_PROFILE_CREATE_FAILURE.getMessage(),
-				studentProfile.getMessageResponse().getMessage());
+	public void testNegativeCreateStudentProfileInvalidLevelId() throws Exception {
+		StudentProfile studentProfile = new StudentProfile();
+		String email = "mala.das@gmail.com";
+		studentProfileService.deleteByUser(userService.findByUsername(email).get());
+		studentProfile.setUser(userService.findByUsername(email).get());
+		studentProfile.setFullName("Mala Das Test");
+		studentProfile.setBoard(boardService.findById(BigInteger.valueOf(3)).get());
+		studentProfile.setLevel(levelService.findById(BigInteger.valueOf(7000)).get());
+		MessageResponse messageResponse = studentProfileService.save(studentProfile);
+		assertEquals(ResponseCode.STUDENT_PROFILE_SAVE_FAIL_LEVEL_INVALID.getMessage(),
+				messageResponse.getMessage());
 	}
 
-	//	CREATE: SUCCESS:
+	//	CREATE student profile: FAILURE: invalid boardId
 	@Test
-	public void testNegativeReadStudentProfileAbsentUser() throws Exception
-	{
-		User user = userService.findByUsername("pinakisen").get();
-		StudentProfile studentProfile = studentProfileService.findByUser(user).get();
-		assertEquals(ResponseCode.USER_ABSENT.getMessage(),
-				studentProfile.getMessageResponse().getMessage());
+	public void testNegativeCreateStudentProfileInvalidBoardId() throws Exception {
+		StudentProfile studentProfile = new StudentProfile();
+		String email = "mala.das@gmail.com";
+		studentProfileService.deleteByUser(userService.findByUsername(email).get());
+		studentProfile.setUser(userService.findByUsername(email).get());
+		studentProfile.setFullName("Mala Das Test");
+		studentProfile.setBoard(boardService.findById(BigInteger.valueOf(3000)).get());
+		studentProfile.setLevel(levelService.findById(BigInteger.valueOf(7)).get());
+		MessageResponse messageResponse = studentProfileService.save(studentProfile);
+		assertEquals(ResponseCode.STUDENT_PROFILE_SAVE_FAIL_BOARD_INVALID.getMessage(),
+				messageResponse.getMessage());
 	}
 
-	//	Read Student Profile Fail: If Student Profile does not Exist
+	//	CREATE student profile: SUCCESS
 	@Test
-	public void testNegativeReadStudentProfileAbsentProfile() throws Exception
+	@Transactional
+	public void testPositiveCreateStudentProfile() throws Exception {
+		StudentProfile studentProfile = new StudentProfile();
+		String email = "mala.das@gmail.com";
+		User user = userService.findByUsername(email).get();
+		studentProfileService.deleteByUser(user);
+		studentProfile.setUser(userService.findByUsername(email).get());
+		studentProfile.setFullName("Mala Das Test");
+		studentProfile.setBoard(boardService.findById(BigInteger.valueOf(3)).get());
+		studentProfile.setLevel(levelService.findById(BigInteger.valueOf(7)).get());
+		MessageResponse messageResponse = studentProfileService.save(studentProfile);
+		assertEquals(ResponseCode.STUDENT_PROFILE_CREATE_SUCCESS.getMessage(),
+				messageResponse.getMessage());
+	}
+
+	//	READ student profile: FAILURE: Valid user but profile absent
+	@Test
+	@Transactional
+	public void testNegativeReadStudentProfileValidUserButProfileAbsent() throws Exception
 	{
 		User user = userService.findByUsername("mala.das@gmail.com").get();
-		StudentProfile studentProfile = studentProfileService.findByUser(user).get();
+		studentProfileService.deleteByUser(user);
+		MessageResponse messageResponse = studentProfileService.deleteByUser(user);
+		assertEquals(ResponseCode.USER_EXISTS_PROFILE_ABSENT.getMessage()
+				+ user.getUsername(), messageResponse.getMessage());
 	}
 
-	//	Response Code should say "PROFILE_READ_SUCCESSFUL" and profile data should be available
+	//	READ student profile: SUCCESS: valid user profile present
 	@Test
-	public void testPositiveReadStudentProfile() throws Exception
+	public void testPositiveReadStudentProfileValidUserAndProfilePresent() throws Exception
 	{
-		User user = userService.findByUsername("pinaki.sen@gmail.com").get();
-		StudentProfile studentProfile = studentProfileService.findByUser(user).get();
-		assertEquals(ResponseCode.STUDENT_PROFILE_READ_SUCCESS.getMessage() + " for: "
-						+ studentProfile.getFullName(),	studentProfile.getMessageResponse().getMessage());
+		StudentProfile studentProfile = new StudentProfile();
+		String email = "mala.das@gmail.com";
+		studentProfile.setUser(userService.findByUsername(email).get());
+		studentProfile.setFullName("Mala Das Test");
+		studentProfile.setBoard(boardService.findById(BigInteger.valueOf(3)).get());
+		studentProfile.setLevel(levelService.findById(BigInteger.valueOf(7)).get());
+		studentProfileService.save(studentProfile);
+		MessageResponse messageResponse =
+				studentProfileService.findByUser(studentProfile.getUser()).get().getMessageResponse();
+		assertEquals(ResponseCode.STUDENT_PROFILE_READ_SUCCESS.getMessage()
+				+ studentProfile.getUser().getUsername(), messageResponse.getMessage());
+	}
+
+	//	UPDATE student profile: FAILURE: Short username < 3 characters
+	@Test
+	@Transactional
+	public void testNegativeUpdateStudentProfileInvalidUsername() throws Exception {
+		StudentProfile studentProfile = new StudentProfile();
+		studentProfile.setFullName("MD");
+		studentProfile.setBoard(boardService.findById(BigInteger.valueOf(3)).get());
+		studentProfile.setLevel(levelService.findById(BigInteger.valueOf(7)).get());
+		User user = userService.findByUsername("mala.das@gmail.com").get();
+		studentProfile.setUser(user);
+		studentProfileService.save(studentProfile);
+		MessageResponse messageResponse = studentProfileService.save(studentProfile);
+		studentProfileService.deleteByUser(user);
+		assertEquals(ResponseCode.STUDENT_PROFILE_SAVE_FAIL_FULL_NAME_SHORT.getMessage()
+				+ studentProfile.getFullName(),	messageResponse.getMessage());
+	}
+
+	//	UPDATE student profile: FAILURE: invalid levelId
+	@Test
+	@Transactional
+	public void testNegativeUpdateStudentProfileInvalidLevelId() throws Exception {
+		StudentProfile studentProfile = new StudentProfile();
+		studentProfile.setFullName("Mala Das Test");
+		studentProfile.setBoard(boardService.findById(BigInteger.valueOf(3)).get());
+		studentProfile.setLevel(levelService.findById(BigInteger.valueOf(7000)).get());
+		User user = userService.findByUsername("mala.das@gmail.com").get();
+		studentProfile.setUser(user);
+		studentProfileService.save(studentProfile);
+		MessageResponse messageResponse = studentProfileService.save(studentProfile);
+		studentProfileService.deleteByUser(user);
+		assertEquals(ResponseCode.STUDENT_PROFILE_SAVE_FAIL_LEVEL_INVALID.getMessage(),
+				messageResponse.getMessage());
+	}
+
+	//	UPDATE student profile: FAILURE: invalid boardId
+	@Test
+	@Transactional
+	public void testNegativeUpdateStudentProfileInvalidBoardId() throws Exception {
+		StudentProfile studentProfile = new StudentProfile();
+		studentProfile.setFullName("Mala Das Test");
+		studentProfile.setBoard(boardService.findById(BigInteger.valueOf(3000)).get());
+		studentProfile.setLevel(levelService.findById(BigInteger.valueOf(7)).get());
+		User user = userService.findByUsername("mala.das@gmail.com").get();
+		studentProfile.setUser(user);
+		studentProfileService.save(studentProfile);
+		MessageResponse messageResponse = studentProfileService.save(studentProfile);
+		studentProfileService.deleteByUser(user);
+		assertEquals(ResponseCode.STUDENT_PROFILE_SAVE_FAIL_BOARD_INVALID.getMessage(),
+				messageResponse.getMessage());
+	}
+
+	//	UPDATE student profile: SUCCESS
+	@Test
+	@Transactional
+	public void testPositiveUpdateStudentProfile() throws Exception {
+		StudentProfile studentProfile = new StudentProfile();
+		studentProfile.setFullName("Mala Das Test");
+		studentProfile.setBoard(boardService.findById(BigInteger.valueOf(3)).get());
+		studentProfile.setLevel(levelService.findById(BigInteger.valueOf(7)).get());
+		User user = userService.findByUsername("mala.das@gmail.com").get();
+		studentProfile.setUser(user);
+		studentProfileService.save(studentProfile);
+		MessageResponse messageResponse = studentProfileService.save(studentProfile);
+		studentProfileService.deleteByUser(user);
+		assertEquals(ResponseCode.STUDENT_PROFILE_UPDATE_SUCCESS.getMessage(),
+				messageResponse.getMessage());
+	}
+
+	//	Delete student profile: FAILURE: Valid user but profile absent
+	@Test
+	@Transactional
+	public void testNegativeDeleteStudentProfileValidUserButProfileAbsent() throws Exception
+	{
+		String email = "mala.das@gmail.com";
+		User user = userService.findByUsername(email).get();
+		studentProfileService.deleteByUser(user);
+		MessageResponse messageResponse = studentProfileService.deleteByUser(user);
+		assertEquals(ResponseCode.USER_EXISTS_PROFILE_ABSENT.getMessage() + user.getUsername(),
+				messageResponse.getMessage());
+	}
+
+	//	Delete student profile: SUCCESS: valid user profile present
+	@Test
+	@Transactional
+	public void testPositiveDeleteStudentProfileValidUserAndProfilePresent() throws Exception
+	{
+		StudentProfile studentProfile = new StudentProfile();
+		studentProfile.setFullName("Mala Das Test");
+		studentProfile.setBoard(boardService.findById(BigInteger.valueOf(3)).get());
+		studentProfile.setLevel(levelService.findById(BigInteger.valueOf(7)).get());
+		User user = userService.findByUsername("mala.das@gmail.com").get();
+		studentProfile.setUser(user);
+		studentProfileService.save(studentProfile);
+		MessageResponse messageResponse = studentProfileService.deleteByUser(user);
+		assertEquals(ResponseCode.STUDENT_PROFILE_DELETE_SUCCESS.getMessage(),
+				messageResponse.getMessage());
 	}
 }

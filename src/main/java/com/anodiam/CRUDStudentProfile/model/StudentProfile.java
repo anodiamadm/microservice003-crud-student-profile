@@ -38,12 +38,6 @@ public class StudentProfile {
 
     public StudentProfile(){}
 
-    public StudentProfile(String fullName, BigInteger boardId, BigInteger levelId) {
-        this.fullName = fullName;
-        this.board.setBoardId(boardId);
-        this.level.setLevelId(levelId);
-    }
-
     public MessageResponse getMessageResponse() {
         return messageResponse;
     }

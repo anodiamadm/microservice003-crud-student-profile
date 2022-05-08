@@ -37,7 +37,7 @@ class StudentProfileServiceDal extends StudentProfileServiceImpl {
                 studentProfileByUser = studentProfileRepository.findByUser(user).get();
                 studentProfileByUser.setMessageResponse(new
                         MessageResponse(ResponseCode.STUDENT_PROFILE_READ_SUCCESS.getID(),
-                        ResponseCode.STUDENT_PROFILE_READ_SUCCESS.getMessage()));
+                        ResponseCode.STUDENT_PROFILE_READ_SUCCESS.getMessage() + user.getUsername()));
             } else {
                 studentProfileByUser.setMessageResponse(new
                         MessageResponse(ResponseCode.USER_EXISTS_PROFILE_ABSENT.getID(),
@@ -86,20 +86,20 @@ class StudentProfileServiceDal extends StudentProfileServiceImpl {
         try{
             Optional<StudentProfile> existingStudentProfileByUser =
                     studentProfileRepository.findByUser(studentProfile.getUser());
-            if(studentProfile.getFullName().length() < 3) {
+            if(studentProfile.getFullName().length() < 3 || studentProfile.getFullName()==null) {
                 return new MessageResponse(ResponseCode.STUDENT_PROFILE_SAVE_FAIL_FULL_NAME_SHORT.getID(),
                         ResponseCode.STUDENT_PROFILE_SAVE_FAIL_FULL_NAME_SHORT.getMessage()
                                 + studentProfile.getFullName());
-            } else if (levelService.findById(studentProfile.getLevel().getLevelId())
+            } else if (studentProfile.getLevel().getLevelId()==null ||
+                    levelService.findById(studentProfile.getLevel().getLevelId())
                     .get().getMessageResponse().getCode() == ResponseCode.LEVEL_ID_NOT_FOUND.getID()) {
                 return new MessageResponse(ResponseCode.STUDENT_PROFILE_SAVE_FAIL_LEVEL_INVALID.getID(),
-                        ResponseCode.STUDENT_PROFILE_SAVE_FAIL_LEVEL_INVALID.getMessage()
-                                + studentProfile.getLevel().getLevelId());
-            } else if (boardService.findById(studentProfile.getBoard().getBoardId())
+                        ResponseCode.STUDENT_PROFILE_SAVE_FAIL_LEVEL_INVALID.getMessage());
+            } else if (studentProfile.getBoard().getBoardId()==null ||
+                    boardService.findById(studentProfile.getBoard().getBoardId())
                     .get().getMessageResponse().getCode() == ResponseCode.BOARD_ID_NOT_FOUND.getID()) {
                 return new MessageResponse(ResponseCode.STUDENT_PROFILE_SAVE_FAIL_BOARD_INVALID.getID(),
-                        ResponseCode.STUDENT_PROFILE_SAVE_FAIL_BOARD_INVALID.getMessage()
-                                + studentProfile.getBoard().getBoardId());
+                        ResponseCode.STUDENT_PROFILE_SAVE_FAIL_BOARD_INVALID.getMessage());
             } else if (existingStudentProfileByUser.isPresent()) {
                 studentProfile.setStudentProfileId(existingStudentProfileByUser.get().getStudentProfileId());
                 studentProfileResponded = studentProfileRepository.save(studentProfile);
