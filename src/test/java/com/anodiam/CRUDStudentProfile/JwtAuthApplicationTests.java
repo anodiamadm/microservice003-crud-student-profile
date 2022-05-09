@@ -194,6 +194,7 @@ class JwtAuthApplicationTests {
 
 	//	CREATE student profile: FAILURE: invalid levelId
 	@Test
+	@Transactional
 	public void testNegativeCreateStudentProfileInvalidLevelId() throws Exception {
 		StudentProfile studentProfile = new StudentProfile();
 		String email = "mala.das@gmail.com";
@@ -209,6 +210,7 @@ class JwtAuthApplicationTests {
 
 	//	CREATE student profile: FAILURE: invalid boardId
 	@Test
+	@Transactional
 	public void testNegativeCreateStudentProfileInvalidBoardId() throws Exception {
 		StudentProfile studentProfile = new StudentProfile();
 		String email = "mala.das@gmail.com";
