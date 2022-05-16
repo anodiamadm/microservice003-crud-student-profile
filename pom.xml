@@ -92,5 +92,6 @@
 				<version>2.5.2</version>
 			</plugin>
 		</plugins>
+		<finalName>microservice003-crud-student-profile</finalName>
 	</build>
 </project>
